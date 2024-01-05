@@ -1,9 +1,9 @@
 namespace api.DTO{
-    public class SubmitParcel{
-        public int Id { get; set; }
+    public class ReturnParcel{
+         public int Id { get; set; }
         public string ParcelName { get; set; }
         public decimal Weight { get; set; }
-        public IFormFile image { get; set; }
+        public string ImageUrl { get; set; }
 
     }
 }

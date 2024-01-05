@@ -70,3 +70,4 @@ C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\obj\Debug\net6.0\refint\
 C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\obj\Debug\net6.0\api.pdb
 C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\obj\Debug\net6.0\api.genruntimeconfig.cache
 C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\obj\Debug\net6.0\ref\api.dll
+C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\api.staticwebassets.runtime.json
