@@ -11,8 +11,8 @@ namespace api.Data{
                     
                    
                
-            // var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-            // await IdentityInitializer.SeedUserAsync(userManager);
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            await IdentityInitializer.SeedUserAsync(userManager);
             }
         }
     }
