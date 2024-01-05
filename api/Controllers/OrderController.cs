@@ -17,7 +17,7 @@ namespace api.Controllers{
             _mapper=mapper;
             _environment=environment;
         }
-        [HttpGet("order")]
+        [HttpGet("order/{customerId}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetAllCustomerOrders([FromRoute] string customerId){
             IEnumerable<Order> originlist = await _unitOfWork.OrderRepository.GetEntityByExpression(null,null,"Customer,Service,OrderPayment,OrderStatus");
             IEnumerable<Order> filter = (IEnumerable<Order>)originlist.Select(x=>x.CustomerId==customerId);
@@ -95,7 +95,7 @@ namespace api.Controllers{
             }
             return Ok();
         }
-        [HttpDelete("order-status")]
+        [HttpDelete("order-status/{id}")]
         public async Task<ActionResult> DeleteOrderStatus([FromRoute] string id){
             int Id=0;
             try
@@ -180,7 +180,7 @@ namespace api.Controllers{
             return Ok();
         }
         //Case get all parcel infos of an order
-        [HttpGet("parcel")]
+        [HttpGet("parcel/{orderId}")]
         public async Task<ActionResult<List<ReturnParcel>>> GetAllParcelsOfOrder([FromRoute] string orderId){
             int OrderId = 0;
             try
@@ -281,7 +281,7 @@ namespace api.Controllers{
             return Ok();
         }
         //Case change details of order
-        [HttpGet("order/edit")]
+        [HttpGet("order/edit/{orderId}")]
         public async Task<ActionResult<SubmitEditOrder>> ReturnOrderForm([FromRoute] string orderId){
             int OrderId = 0;
             try

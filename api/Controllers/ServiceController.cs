@@ -99,7 +99,7 @@ namespace api.Controllers{
             return Ok(serviceList.FirstOrDefault());
         }
         [HttpDelete]
-        public async Task<ActionResult> DeleteService(string id){
+        public async Task<ActionResult> DeleteService([FromQuery]string id){
             int Id = 0;
             try
             {
