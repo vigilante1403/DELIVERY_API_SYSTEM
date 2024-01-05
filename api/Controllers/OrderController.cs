@@ -125,6 +125,7 @@ namespace api.Controllers{
         }
         //parcel controller
         [HttpPost("parcel")]
+        //add list of parcels
         public async Task<ActionResult> AddNewParcelPackage([FromForm]SubmitListParcel parcelList){
             var customerId = parcelList.CustomerId;
             var folderName= "images/customer/"+customerId;
@@ -133,6 +134,11 @@ namespace api.Controllers{
                 Directory.CreateDirectory(uploadsFolder);
             }
             foreach(var parcel in parcelList.list){
+                Parcel p = new Parcel{
+                ParcelName = parcel.ParcelName,
+                Weight = parcel.Weight,
+                CustomerId=customerId
+                };
                 if(parcel.image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.image.FileName);
                 
@@ -140,16 +146,29 @@ namespace api.Controllers{
                 {
                     parcel.image.CopyTo(fileStream);
                 }
+                p.ImageUrl=folderName+"/"+parcel.image.FileName;
+                }else{
+                    p.ImageUrl="empty";
                 }
-                Parcel p = new Parcel{
-                ParcelName = parcel.ParcelName,
-                Weight = parcel.Weight,
-                ImageUrl = folderName+"/"+parcel.image.FileName,
-                CustomerId=customerId
-            };
             try
             {
                 _unitOfWork.ParcelRepository.Add(p);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500));
+            }
+                _ = Task.Delay(1000);
+            var latestList = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.CustomerId==customerId,r=>r.OrderByDescending(e=>e.Id),"Customer");
+            var parcelId= latestList.FirstOrDefault().Id;
+            OrderDetail detail = new OrderDetail{
+                ParcelId=parcelId,
+                OrderId=parcelList.OrderId
+            };
+            try
+            {
+                _unitOfWork.OrderDetailRepository.Add(detail);
             }
             catch (System.Exception)
             {
@@ -160,5 +179,164 @@ namespace api.Controllers{
             
             return Ok();
         }
+        //Case get all parcel infos of an order
+        [HttpGet("parcel")]
+        public async Task<ActionResult<List<ReturnParcel>>> GetAllParcelsOfOrder([FromRoute] string orderId){
+            int OrderId = 0;
+            try
+            {
+                OrderId = int.Parse(orderId);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(400));
+            }
+            IEnumerable<OrderDetail> list = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(r=>r.OrderId==OrderId,null,"Order,Parcel");
+            IEnumerable<int> parcelList = (IEnumerable<int>)list.Select(x=>x.ParcelId);
+            List<ReturnParcel> returnParcel = new List<ReturnParcel>();
+            //list of Ids
+            foreach(var id in parcelList){
+                var parcel1 = await _unitOfWork.ParcelRepository.GetEntityByExpression(w=>w.Id==id,null,null);
+                var parcel = parcel1.FirstOrDefault();
+                ReturnParcel rp = new ReturnParcel{
+                    Id=parcel.Id,
+                    ParcelName=parcel.ParcelName,
+                    Weight=parcel.Weight,
+                    ImageUrl=parcel.ImageUrl
+                };
+                returnParcel.Add(rp);
+            }
+            return Ok(returnParcel);
+        }
+        //Case update the list of parcels of an order
+        public async Task<ActionResult> UpdateListOfParcels([FromForm] SubmitListParcel listParcel){
+            var customerId = listParcel.CustomerId;
+            var folderName = "images/customer/"+customerId;
+            var uploadsFolder = Path.Combine(_environment.WebRootPath,folderName);
+            if(!Directory.Exists(uploadsFolder)){
+                Directory.CreateDirectory(uploadsFolder);
+            }
+            foreach(var parcel in listParcel.list){
+                var id = parcel.Id;
+                var existedParcel = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.Id==id,null,"Customer");
+                if(!existedParcel.Any()){
+                    return BadRequest(new ErrorResponse(400));
+                }
+                Parcel p = existedParcel.FirstOrDefault();
+                p.ParcelName=parcel.ParcelName;
+                p.Weight=parcel.Weight;
+                if(parcel.image.Length>0){
+                     var filePath = Path.Combine(uploadsFolder, parcel.image.FileName);
+                
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    parcel.image.CopyTo(fileStream);
+                }
+                p.ImageUrl=folderName+"/"+parcel.image.FileName;
+                }else{
+                    p.ImageUrl="empty";
+                }
+                try
+                {
+                    _unitOfWork.Save();
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500));
+                }
+            }
+            return Ok();
+        }
+        //Case cancel the order
+        [HttpPost("order/cancel")]
+        public async Task<ActionResult> OrderCancel([FromBody] string orderId){
+            int OrderId=0;
+            try
+            {
+                OrderId=int.Parse(orderId);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(400));
+            }
+            var expectedList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==OrderId,null,"Service,Customer,OrderStatus,OrderPayment");
+            if(!expectedList.Any()){
+                return BadRequest(new ErrorResponse(404));
+            }
+            Order o = expectedList.FirstOrDefault();
+            
+            try
+            {
+                o.OrderStatus.Id=4;
+                _unitOfWork.Save();
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500));
+            }
+            return Ok();
+        }
+        //Case change details of order
+        [HttpGet("order/edit")]
+        public async Task<ActionResult<SubmitEditOrder>> ReturnOrderForm([FromRoute] string orderId){
+            int OrderId = 0;
+            try
+            {
+                OrderId=int.Parse(orderId);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(400));
+            }
+            var expectedList = await _unitOfWork.OrderRepository.GetEntityByExpression(w=>w.Id==OrderId,null,"Service,OrderStatus");
+            if(!expectedList.Any()){
+                return BadRequest(new ErrorResponse(404));
+            }
+            var expected = expectedList.FirstOrDefault();
+            if(expected.OrderStatus.Id==1){
+                 SubmitEditOrder o = new SubmitEditOrder{
+                Id= expected.Id,
+                ContactAddress=expected.ContactAddress,
+                ServiceId=expected.ServiceId,
+                ServiceName=expected.Service.ServiceName,
+                PrePaid=expected.PrePaid
+            };
+            return Ok(o);
+            }else{
+                return BadRequest(new ErrorResponse(401));
+            }
+           
+        }
+        [HttpPost("order/edit")]
+        public async Task<ActionResult> UpdateOrderInfo(SubmitEditOrder submit){
+            var expectedList = await _unitOfWork.OrderRepository.GetEntityByExpression(t=>t.Id==submit.Id,null,"Service,Customer,OrderStatus,OrderPayment");
+            if(!expectedList.Any()){
+                return BadRequest(new ErrorResponse(404));
+            }
+            var expected=expectedList.FirstOrDefault();
+            if(expected.OrderStatus.Id!=1){
+                return BadRequest(new ErrorResponse(401));
+            }
+            try
+            {
+                expected.ContactAddress=submit.ContactAddress;
+                expected.ServiceId=submit.ServiceId;
+                expected.PrePaid=submit.PrePaid;
+                _unitOfWork.Save();
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500));
+            }
+            return Ok();
+        }
+
+
     }
 }
