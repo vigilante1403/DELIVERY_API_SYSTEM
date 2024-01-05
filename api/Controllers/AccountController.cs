@@ -105,7 +105,7 @@ namespace api.Controllers
         [HttpGet("profile/{id}")]
         public async Task<ActionResult<Customer>> GetCustomerInfo(string id)
         {
-            var customer = await _unitOfWork.CustomerRepository.GetEntityByExpression(e => e.Id == id, null, null);
+            var customer = await _unitOfWork.CustomerRepository.GetEntityByExpression(e => e.Id == id, null, "Address");
             if (!customer.Any())
             {
                 return BadRequest(new ErrorResponse(400, "Doesn't exist customer id: " + id));
@@ -116,7 +116,7 @@ namespace api.Controllers
         [HttpGet("profile")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetAllCustomerInfo()
         {
-            IEnumerable<Customer> customers = await _unitOfWork.CustomerRepository.GetEntityByExpression(null, null, null);
+            IEnumerable<Customer> customers = await _unitOfWork.CustomerRepository.GetEntityByExpression(null, null, "Address");
 
             if (!customers.Any())
             {
