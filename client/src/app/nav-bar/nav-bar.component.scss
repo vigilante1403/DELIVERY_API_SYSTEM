@@ -1,0 +1,99 @@
+
+section#navigation-bar {
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    background: #ebfdff;
+  }
+  
+  
+  .nav-link {
+    color: #083c3e;
+  }
+  
+  a.nav-link.active,
+  a.nav-link:focus,
+  a.nav-link:hover {
+    color: #083c3e;
+  }
+  
+  a.nav-link::after {
+    content: "";
+    text-align: center;
+    display: block;
+    width: 0;
+    height: 2px;
+    background: #3ac5ce;
+    transition: width 0.3s;
+  }
+  
+  a.nav-link.active::after,
+  a.nav-link:focus::after,
+  a.nav-link:hover::after {
+    width: 100%;
+    transition: width 0.3s;
+  }
+  
+  /* dropdown  */
+  .dropdown-toggle::after {
+    border: none;
+    margin-left: 0em;
+    vertical-align: 0em;
+  }
+  
+  .dropdown-item.active,
+  .dropdown-item:active {
+    color: #083c3e;
+    text-decoration: none;
+    background-color: #f8f8f8;
+  }
+  
+  /* modal  */
+  .modal-header {
+    border-bottom: none;
+  }
+  
+  /* form-control  */
+  .form-control:focus {
+    border-color: #7c7c7c;
+    box-shadow: none;
+    color: #083c3e;
+  }
+  
+  .modal-backdrop {
+    --bs-backdrop-zindex: 999;
+    --bs-backdrop-bg: #000;
+    --bs-backdrop-opacity: 0.5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .nav {
+      display: grid;
+    }
+  
+    /* .account {
+      justify-content: center !important;
+      margin: 70px 0px;
+    } */
+  }
+  
+  @media only screen and (max-width: 1460px) and (min-width: 990px) {
+    a.login {
+      display: none;
+    }
+  
+    button.signup {
+      display: none;
+    }
+  
+    a.get-pro {
+      display: none;
+    }
+  }
