@@ -117,6 +117,7 @@ namespace api.Controllers{
            try
            {
             _unitOfWork.ServiceRepository.DeleteById(Id);
+            _unitOfWork.Save();
            }
            catch (System.Exception)
            {

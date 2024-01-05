@@ -5,6 +5,7 @@ using api.Models;
 using api.services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using api.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServe
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddAutoMapper(typeof(MyAutoMapper));
 builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 
