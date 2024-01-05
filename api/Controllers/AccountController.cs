@@ -3,87 +3,127 @@ using api.DTO;
 using api.Exceptions;
 using api.Models;
 using api.services;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api. Controllers{
+namespace api.Controllers
+{
     [ApiController]
     [Route("api/[controller]")]
-    public class AccountController:ControllerBase{
+    public class AccountController : ControllerBase
+    {
         private readonly SignInManager<AppUser> _signinManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
-        public AccountController(SignInManager<AppUser> signInManager,UserManager<AppUser> userManager,ITokenService tokenService,IUnitOfWork unitOfWork){
-            _signinManager=signInManager;
-            _userManager=userManager;
-            _tokenService=tokenService;
-            _unitOfWork=unitOfWork;
+
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
+        {
+            _signinManager = signInManager;
+            _userManager = userManager;
+            _tokenService = tokenService;
+            _unitOfWork = unitOfWork;
+
         }
         [HttpPost("register")]
-        public async Task<ActionResult<UserDTO>> Register([FromBody]RegisterDTO register){
-            var user = new AppUser{
-                DisplayName=register.DisplayName,
-                Email=register.Email,
+        public async Task<ActionResult<UserDTO>> Register([FromBody] RegisterDTO register)
+        {
+            var user = new AppUser
+            {
+                DisplayName = register.DisplayName,
+                Email = register.Email,
                 UserName = register.DisplayName
             };
-            var result = await _userManager.CreateAsync(user,register.Password);
-            if(!result.Succeeded){
+            var result = await _userManager.CreateAsync(user, register.Password);
+            if (!result.Succeeded)
+            {
                 return BadRequest(new ErrorResponse(400));
             }
             var newUser = await _userManager.FindByEmailAsync(user.Email);
             var totalAddress = await _unitOfWork.AddressRepository.GetAll();
             var total = totalAddress.Count();
-            Customer customer = new Customer{
+            Customer customer = new Customer
+            {
                 Id = newUser.Id,
                 Name = newUser.DisplayName,
-                Address = new Address{
-                    Id = total+1,
-                    FirstName= newUser.DisplayName,
+                Address = new Address
+                {
+                    Id = total + 1,
+                    FirstName = newUser.DisplayName,
                     LastName = "Unknown",
                     Street = "Unknown",
-                    City="Unknown",
-                    State="Unknown",
-                    ZipCode="Unknown"
+                    City = "Unknown",
+                    State = "Unknown",
+                    ZipCode = "Unknown"
                 },
                 Email = newUser.Email,
-                PhoneNumber="Unknown"
+                PhoneNumber = "Unknown"
             };
             try
             {
-                 _unitOfWork.CustomerRepository.Add(customer);
+                _unitOfWork.CustomerRepository.Add(customer);
 
             }
             catch (System.Exception)
             {
-                
+
                 return BadRequest(new ErrorResponse(500));
             }
-           
-            UserDTO returnUser = new UserDTO{
+
+            UserDTO returnUser = new UserDTO
+            {
                 Email = newUser.Email,
-                DisplayName=newUser.DisplayName,
+                DisplayName = newUser.DisplayName,
                 Token = _tokenService.CreateToken(newUser)
             };
             return Ok(returnUser);
-           
+
         }
         [HttpPost("login")]
-        public async Task<ActionResult<UserDTO>> Login(LoginDTO login){
+        public async Task<ActionResult<UserDTO>> Login(LoginDTO login)
+        {
             var user = await _userManager.FindByEmailAsync(login.Email);
-            if(user==null){
+            if (user == null)
+            {
                 return Unauthorized(new ErrorResponse(401));
             }
-            var result = await _signinManager.CheckPasswordSignInAsync(user,login.Password,false);
-            if(!result.Succeeded){
+            var result = await _signinManager.CheckPasswordSignInAsync(user, login.Password, false);
+            if (!result.Succeeded)
+            {
                 return Unauthorized(new ErrorResponse(401));
             }
-            UserDTO userReturn = new UserDTO{
+            UserDTO userReturn = new UserDTO
+            {
                 Email = user.Email,
-                DisplayName=user.DisplayName,
+                DisplayName = user.DisplayName,
                 Token = _tokenService.CreateToken(user)
             };
             return userReturn;
         }
+
+        [HttpGet("profile/{id}")]
+        public async Task<ActionResult<Customer>> GetCustomerInfo(string id)
+        {
+            var customer = await _unitOfWork.CustomerRepository.GetEntityByExpression(e => e.Id == id, null, null);
+            if (!customer.Any())
+            {
+                return BadRequest(new ErrorResponse(400, "Doesn't exist customer id: " + id));
+            }
+            return Ok(customer.FirstOrDefault());
+        }
+
+        [HttpGet("profile")]
+        public async Task<ActionResult<IEnumerable<Customer>>> GetAllCustomerInfo()
+        {
+            IEnumerable<Customer> customers = await _unitOfWork.CustomerRepository.GetEntityByExpression(null, null, null);
+
+            if (!customers.Any())
+            {
+                return BadRequest(new ErrorResponse(400, "Doesn't exist customers: "));
+            }
+            return Ok(customers);
+        }
+
     }
 }
