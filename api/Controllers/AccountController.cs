@@ -3,7 +3,6 @@ using api.DTO;
 using api.Exceptions;
 using api.Models;
 using api.services;
-using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

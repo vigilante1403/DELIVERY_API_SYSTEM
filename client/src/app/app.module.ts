@@ -13,6 +13,9 @@ import { ModalComponent } from './modal/modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { HomeComponent } from './home/home.component';
 import { CarouselConfig, CarouselModule } from 'ngx-bootstrap/carousel';
+import { AdminComponent } from './admin/admin.component';
+import { UserComponent } from './user/user.component';
+import { EmployeeComponent } from './employee/employee.component';
 // import { ModalService } from './modal/modal.service';
 
 
@@ -24,6 +27,9 @@ import { CarouselConfig, CarouselModule } from 'ngx-bootstrap/carousel';
     SignupComponent,
     ModalComponent,
     HomeComponent,
+    AdminComponent,
+    UserComponent,
+    EmployeeComponent,
    
   ],
   imports: [
