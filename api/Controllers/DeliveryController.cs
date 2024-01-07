@@ -278,7 +278,7 @@ namespace api.Controllers
         }
         [HttpPost("delivery")]
         public async Task<ActionResult> AddNewDelivery([FromForm] SubmitDelivery delivery){
-            var payment = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==delivery.OrderId,null,"OrderPayment");
+            var payment = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==delivery.OrderId,null,"OrderPayment,Service,Customer");
             var paymentId = payment.FirstOrDefault().OrderPaymentId;
             if(paymentId==null){
                 return BadRequest(new ErrorResponse(500));
