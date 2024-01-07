@@ -143,3 +143,5 @@ D:\Users\Uzikami\Downloads\DELIVERY_API_SYSTEM\api\obj\Debug\net6.0\api.pdb
 D:\Users\Uzikami\Downloads\DELIVERY_API_SYSTEM\api\obj\Debug\net6.0\api.genruntimeconfig.cache
 D:\Users\Uzikami\Downloads\DELIVERY_API_SYSTEM\api\obj\Debug\net6.0\ref\api.dll
 C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\api.staticwebassets.runtime.json
+C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

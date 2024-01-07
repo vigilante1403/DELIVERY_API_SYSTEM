@@ -14,9 +14,11 @@ namespace api.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
-        public DeliveryController(IUnitOfWork unitOfWork)
+        private readonly IBasketRepo _basket;
+        public DeliveryController(IUnitOfWork unitOfWork,IBasketRepo basket)
         {
             _unitOfWork = unitOfWork;
+            _basket=basket;
         }
 
     
@@ -273,6 +275,37 @@ namespace api.Controllers
             }
             return Ok("Delete delivery status success");
 
+        }
+        [HttpPost("delivery")]
+        public async Task<ActionResult> AddNewDelivery([FromForm] SubmitDelivery delivery){
+            var payment = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==delivery.OrderId,null,"OrderPayment");
+            var paymentId = payment.FirstOrDefault().OrderPaymentId;
+            if(paymentId==null){
+                return BadRequest(new ErrorResponse(500));
+            }
+            SubmitAddress s = await _basket.GetBasketAsync(delivery.basketId);
+            var totalDistance = await PaymentController.CalculateTotalDistanceAsync(s.startAddress,s.endAddress);
+            var timecost = totalDistance/1000/70/24;
+            var deliveryDays = payment.FirstOrDefault().Service.DaysAdd+timecost; //day
+
+
+            Delivery d = new Delivery{
+                OrderId=delivery.OrderId,
+                DeliveryAgentId=delivery.AgentId,
+                OrderPaymentId= (int)paymentId,
+                DeliveryStatusId=1,
+                DeliveryDate=DateTime.Now.AddDays(deliveryDays),
+            };
+            try
+            {
+                _unitOfWork.DeliveryRepository.Add(d);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500));
+            }
+            return Ok("New delivery ready!");
         }
     }
 }

@@ -1,8 +1,15 @@
+using System.Linq.Expressions;
 using api.DAl;
 using api.DTO;
 using api.Exceptions;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net.Http.Formatting;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace api.Controllers{
     [ApiController]
@@ -103,7 +110,8 @@ namespace api.Controllers{
             }
             CalculateCharges o = new CalculateCharges{
                 BasicPricePerKg=charges.BasicPricePerKg,
-                Year=charges.Year
+                Year=charges.Year,
+                BasicPricePerKm=charges.BasicPricePerKm
             };
             try
             {
@@ -133,6 +141,7 @@ namespace api.Controllers{
             {
                 edit.BasicPricePerKg=charges.BasicPricePerKg;
                 edit.Year=charges.Year;
+                edit.BasicPricePerKm=charges.BasicPricePerKm;
                 _unitOfWork.Save();
             }
             catch (System.Exception)
@@ -170,5 +179,150 @@ namespace api.Controllers{
             }
             return Ok();
         }
+        [HttpPost("order-payment/{orderId}")]
+        public async Task<ActionResult> CreateNewOrderPayment([FromRoute] string orderId,[FromBody] SubmitAddress address){
+            int Id =0;
+            try
+            {
+                Id=int.Parse(orderId);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(400));
+            }
+            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==Id,null,"Service,Customer,OrderStatus,OrderPayment");
+            if(!orderList.Any()){
+                return BadRequest(new ErrorResponse(404));
+            }
+            var order = orderList.FirstOrDefault();
+            var orderPaymentId=order.OrderPaymentId;
+            if(orderPaymentId==null||order.OrderPayment.OrderPaymentStatusId==4){
+                   string apiKey = "AIzaSyDDAFrEoBErPc_5B49M-D4nkcApKvl3fnw";
+
+                    Location origin = await GetLocationAsync(address.startAddress);
+                    Location destination = await GetLocationAsync(address.endAddress);
+
+                    // var totalTime = await CalculateTravelTimeAsync(apiKey, origin, destination);
+                    var totalDistance = await CalculateTotalDistanceAsync(address.startAddress,address.endAddress);
+                    //van toc 70km/h
+                    var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(d=>d.Id==order.ServiceId,null,null);
+                    var ServicePrice = serviceList.FirstOrDefault().Price;
+                    DateTime today = DateTime.Now;
+                    var year = today.Year;
+                    var distanceList = await _unitOfWork.CalculateChargesRepository.GetEntityByExpression(d=>d.Year==year,null,null);
+                    var distancePrice = distanceList.FirstOrDefault().BasicPricePerKm;
+                    var weightCharge = distanceList.FirstOrDefault().BasicPricePerKg;
+                    //get subtotal 
+                    var parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==Id,null,"Parcel");
+                    var weight = parcelList.Sum(x=>x.Parcel.Weight)*weightCharge;
+                    var paymentList = await _unitOfWork.OrderPaymentRepository.GetAll();
+                    var paymentId = paymentList.Count()+1;
+                    OrderPayment o = new OrderPayment{
+                        Id=paymentId,
+                        SubTotal=weight,
+                        PrePaid=order.PrePaid,
+                        ServicePrice=ServicePrice,
+                        DistanceCharges=totalDistance/1000*distancePrice,
+                        TotalCharges=weight=order.PrePaid+ServicePrice+(totalDistance/1000*distancePrice),
+                        OrderPaymentStatusId=2
+                    };
+                    try
+                    {
+                        _unitOfWork.OrderPaymentRepository.Add(o);
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500));
+                    }
+                    try
+                    {
+                        order.OrderPaymentId=paymentId;
+                        _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500));
+                    }
+
+            }else{
+                return BadRequest(new ErrorResponse(401));
+            }
+            return Ok();
+        }
+         public static async Task<int> CalculateTotalDistanceAsync(string origin, string destination)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            string encodedOrigin = Uri.EscapeDataString(origin);
+            string encodedDestination = Uri.EscapeDataString(destination);
+
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={encodedOrigin}&destination={encodedDestination}&key=AIzaSyDDAFrEoBErPc_5B49M-D4nkcApKvl3fnw";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var directionsResponse = JsonConvert.DeserializeObject<DirectionsResponse>(data);
+
+                if (directionsResponse.status == "OK" && directionsResponse.routes.Length > 0)
+                {
+                    int totalDistance = directionsResponse.routes[0].legs.Sum(leg => leg.steps.Sum(step => step.Distance.Value));
+                    return totalDistance;
+                }
+            }
+
+            return -1; // Indicate an error or no valid response
+        }
+    }
+        public static async Task<Location> GetLocationAsync(string address)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            string encodedAddress = Uri.EscapeDataString(address);
+            string url = $"https://maps.googleapis.com/maps/api/geocode/json?address={encodedAddress}&key=AIzaSyDDAFrEoBErPc_5B49M-D4nkcApKvl3fnw";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var geocodingResponse = JsonConvert.DeserializeObject<GeocodingResponse>(data);
+
+                if (geocodingResponse.status == "OK" && geocodingResponse.results.Length > 0)
+                {
+                    var location = geocodingResponse.results[0].geometry.location;
+                    return new Location { Latitude = location.Latitude, Longitude = location.Longitude };
+                }
+            }
+
+            return null;
+        }
+    }
+        public static async Task<double> CalculateTravelTimeAsync(string apiKey, Location origin, Location destination)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={origin.Latitude},{origin.Longitude}&destination={destination.Latitude},{destination.Longitude}&key={apiKey}";
+            
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsAsync<DirectionsResponse>();
+
+                if (data.status == "OK" && data.routes.Length > 0 && data.routes[0].legs.Length > 0)
+                {
+                    return data.routes[0].legs[0].duration.value;
+                }
+            }
+
+            // Handle errors or return a default value
+            return -1;
+        }
+    }
     }
 }
