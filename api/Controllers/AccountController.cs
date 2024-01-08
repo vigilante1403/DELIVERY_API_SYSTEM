@@ -1,8 +1,10 @@
+using System.Net.Http.Headers;
 using api.DAl;
 using api.DTO;
 using api.Exceptions;
 using api.Models;
 using api.services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +41,7 @@ namespace api.Controllers
             {
                 return BadRequest(new ErrorResponse(400));
             }
+            await _userManager.AddToRoleAsync(user,"user");
             var newUser = await _userManager.FindByEmailAsync(user.Email);
             var totalAddress = await _unitOfWork.AddressRepository.GetAll();
             var total = totalAddress.Count();
@@ -74,7 +77,7 @@ namespace api.Controllers
             {
                 Email = newUser.Email,
                 DisplayName = newUser.DisplayName,
-                Token = _tokenService.CreateToken(newUser)
+                Token = await _tokenService.CreateToken(newUser)
             };
             return Ok(returnUser);
 
@@ -96,11 +99,11 @@ namespace api.Controllers
             {
                 Email = user.Email,
                 DisplayName = user.DisplayName,
-                Token = _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user)
             };
             return userReturn;
         }
-
+        [Authorize]
         [HttpGet("profile/{id}")]
         public async Task<ActionResult<Customer>> GetCustomerInfo(string id)
         {
@@ -111,7 +114,7 @@ namespace api.Controllers
             }
             return Ok(customer.FirstOrDefault());
         }
-
+        [Authorize]
         [HttpGet("profile")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetAllCustomerInfo()
         {
@@ -123,6 +126,17 @@ namespace api.Controllers
             }
             return Ok(customers);
         }
+        //doi password
+       
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> ChangePasswordUser(HttpRequestHeaders req){
+            if(req.Contains("Token")){
+
+            }
+            return Ok();
+        }
+        
 
     }
 }
