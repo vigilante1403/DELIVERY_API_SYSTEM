@@ -20,6 +20,7 @@ namespace api.Data{
        public DbSet<OrderPaymentStatus> OrderPaymentStatuses {get;set;}
        public DbSet<OrderStatus> OrderStatuses {get;set;}
        public DbSet<Parcel> Parcels {get;set;}
+       public DbSet<ResetPassword> ResetPasswords{get;set;}
         
     }
 }

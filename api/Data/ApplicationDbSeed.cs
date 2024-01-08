@@ -15,7 +15,7 @@ namespace api.Data{
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             await IdentityInitializer.CreateRolesAsync(roleManager);
             await IdentityInitializer.SeedUserAsync(userManager);
-            await IdentityInitializer.SendEmailAsync();
+             
             }
         }
     }

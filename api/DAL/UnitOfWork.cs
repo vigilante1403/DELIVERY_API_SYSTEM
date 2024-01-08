@@ -17,6 +17,8 @@ namespace api.DAL{
         private GenericRepository<OrderStatus> _orderStatusRepository;
         private GenericRepository<Parcel> _parcelRepository;
         private GenericRepository<Service> _serviceRepository;
+        private GenericRepository<ResetPassword> _resetPasswordRepository;
+
         
         public readonly ApplicationDbContext _db;
         public UnitOfWork(ApplicationDbContext db){
@@ -163,6 +165,17 @@ namespace api.DAL{
             }
             set{
                 _serviceRepository=value;
+            }
+        }
+        public GenericRepository<ResetPassword> ResetPasswordRepository{
+            get{
+                if(_resetPasswordRepository==null){
+                    this._resetPasswordRepository = new GenericRepository<ResetPassword>(_db);
+                }
+                return _resetPasswordRepository;
+            }
+            set{
+                _resetPasswordRepository=value;
             }
         }
          public void Dispose()

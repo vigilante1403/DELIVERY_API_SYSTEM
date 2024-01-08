@@ -1,7 +1,9 @@
 using System.Net;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace api.Data{
     public class IdentityInitializer{
@@ -31,35 +33,6 @@ namespace api.Data{
             }
 
         }
-       public static async Task<bool> SendEmailAsync(string userEmail="new.vytruong.1812@gmail.com")
-    {
-        try
-        {
-            var smtpClient = new SmtpClient("smtp.gmail.com")
-            {
-                Port = 587,
-                Credentials = new NetworkCredential("new.vytruong.1812@gmail.com", "erya gvus chag rvok"),
-                EnableSsl = true,
-            };
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress("new.vytruong.1812@gmail.com"),
-                Subject = "Password Reset Token",
-                Body = $"Your password reset token is: hihi",
-                IsBodyHtml = false,
-            };
-
-            mailMessage.To.Add(userEmail);
-
-            await smtpClient.SendMailAsync(mailMessage);
-            return true;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error sending email: {ex.Message}");
-            return false;
-        }
-    }
+      
     }
 }

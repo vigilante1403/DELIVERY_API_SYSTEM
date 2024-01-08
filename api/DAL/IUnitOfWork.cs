@@ -16,6 +16,8 @@ namespace api.DAl{
         GenericRepository<OrderStatus> OrderStatusRepository{get;set;}
         GenericRepository<Parcel> ParcelRepository{get;set;}
         GenericRepository<Service> ServiceRepository{get;set;}
+        GenericRepository<ResetPassword> ResetPasswordRepository{get;set;}
+        
 
     }
 }
