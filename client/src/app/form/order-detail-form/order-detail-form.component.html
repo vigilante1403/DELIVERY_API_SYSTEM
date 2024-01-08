@@ -1,0 +1,17 @@
+<form [formGroup]="orderDetailForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id">
+    </div>
+  
+    <div>
+      <label for="orderId">Order ID:</label>
+      <input type="text" id="orderId" formControlName="orderId">
+    </div>
+  
+    <div>
+      <label for="parcelId">Parcel ID:</label>
+      <input type="text" id="parcelId" formControlName="parcelId">
+    </div>
+    <button type="submit" [disabled]="orderDetailForm.invalid"></button>
+  </form>

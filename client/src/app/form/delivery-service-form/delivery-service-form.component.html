@@ -1,0 +1,42 @@
+<div> hello</div>
+<form [formGroup]="deliveryServiceForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id">
+    </div>
+  
+    <div>
+      <label for="type_name">Type Name:</label>
+      <select id="type_name" formControlName="type_name">
+        <option value="vpp">Vpp</option>
+        <option value="fastPost">Fast Post</option>
+        <option value="normalPost">Normal Post</option>  
+        <option value="moneyOrder">Money Order</option>
+        <option value="Courier">Courier</option>
+      </select>
+    </div>
+  
+    <div>
+      <label for="price">Price:</label>
+      <input type="number" id="price" formControlName="price">
+    </div>
+  
+    <div>
+      <label for="prePaid">Pre-Paid:</label>
+      <input type="checkbox" id="prePaid" formControlName="prePaid">
+    </div>
+  
+    <div>
+      <label for="collect">Collect:</label>
+      <input type="checkbox" id="collect" formControlName="collect">
+    </div>
+  
+    <div>
+      <label for="dayAdd">Day Added:</label>
+      <select id="dayAdd" formControlName="dayAdd">
+        <option value="oneDay">1 Day</option>
+        <option value="threeDays">3 Days</option>
+      </select>
+    </div>
+    <button type="submit" [disabled]="deliveryServiceForm.invalid"></button>
+  </form>

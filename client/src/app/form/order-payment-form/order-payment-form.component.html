@@ -1,0 +1,47 @@
+<form [formGroup]="orderPaymentForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id" disable> </div>
+  
+    <div>
+      <label for="orderId">Order ID:</label>
+      <input type="text" id="orderId" formControlName="orderId">
+    </div>
+  
+    <div>
+      <label for="subtotal">Subtotal:</label>
+      <input type="number" id="subtotal" formControlName="subtotal">
+    </div>
+  
+    <div>
+      <label for="prepaid">Prepaid:</label>
+      <input type="number" id="prepaid" formControlName="prepaid">
+    </div>
+  
+    <div>
+      <label for="service_price">Service Price:</label>
+      <input type="number" id="service_price" formControlName="service_price">
+    </div>
+  
+    <div>
+      <label for="distance_charges">Distance Charges:</label>
+      <input type="number" id="distance_charges" formControlName="distance_charges">
+    </div>
+  
+    <div>
+      <label for="totalCharges">Total Charges:</label>
+      <input type="number" id="totalCharges" formControlName="totalCharges" disable>
+    </div>
+  
+    <div>
+      <label for="status">Status:</label>
+      <select id="status" formControlName="status">
+        <option value="done">Done</option>
+        <option value="waiting">Waiting</option>
+        <option value="cancel">Cancel</option>
+        <option value="vpp">VPP</option>
+      </select>
+    </div>
+  
+    <button type="submit" [disabled]="orderPaymentForm.invalid">Submit</button>
+  </form>
