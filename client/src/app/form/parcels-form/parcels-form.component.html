@@ -1,0 +1,29 @@
+<form [formGroup]="parcelsForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id" disable>
+    </div>
+  
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" formControlName="name">
+    </div>
+  
+    <div>
+      <label for="weight">Weight:</label>
+      <input type="number" id="weight" formControlName="weight">
+    </div>
+  
+    <div>
+      <label for="imageUrl">Image URL:</label>
+      <input type="file" id="imageUrl" formControlName="imageUrl">
+    </div>
+  
+    <div>
+      <label for="customerId">Customer ID:</label>
+      <input type="text" id="customerId" formControlName="customerId">
+    </div>
+  
+    <button type="submit" [disabled]="parcelsForm.invalid">Submit</button>
+  </form>
+  

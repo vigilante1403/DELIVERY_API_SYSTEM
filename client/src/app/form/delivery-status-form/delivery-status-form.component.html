@@ -1,0 +1,17 @@
+<form [formGroup]="deliveryStatusForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id">
+    </div>
+  
+    <div>
+      <label for="statusName">Status Name:</label>
+      <input type="text" id="statusName" formControlName="statusName">
+      <div *ngIf="statusName.invalid && (statusName.dirty || statusName.touched)">
+        <div *ngIf="statusName.errors.required">Status Name is required.</div>
+        <div *ngIf="statusName.errors.minlength">Status Name must be at least 3 characters long.</div>
+      </div>
+    </div>
+  
+    <button type="submit" [disabled]="deliveryStatusForm.invalid">Submit</button>
+  </form>

@@ -1,0 +1,14 @@
+<form [formGroup]="ordersStatusForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id" disable>
+    </div>
+  
+    <div>
+      <label for="statusName">Status Name:</label>
+      <input type="text" id="statusName" formControlName="statusName">
+    </div>
+  
+    <button type="submit" [disabled]="ordersStatusForm.invalid">Submit</button>
+  </form>
+  

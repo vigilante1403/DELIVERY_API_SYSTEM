@@ -1,0 +1,19 @@
+<form [formGroup]="calculateChargesForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="id">ID:</label>
+      <input type="text" id="id" formControlName="id" disable>
+    </div>
+  
+    <div>
+      <label for="basicPricePerKg">Basic Price Per Kg:</label>
+      <input type="number" step="0.01" id="basicPricePerKg" formControlName="basicPricePerKg">
+    </div>
+  
+    <div>
+      <label for="year">Year:</label>
+      <input type="number" id="year" formControlName="year">
+    </div>
+  
+    <button type="submit" [disabled]="calculateChargesForm.invalid">Calculate Charges</button>
+  </form>
+  
