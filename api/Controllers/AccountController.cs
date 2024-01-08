@@ -1,4 +1,8 @@
+using System.Net;
 using System.Net.Http.Headers;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text.Json;
 using api.DAl;
 using api.DTO;
 using api.Exceptions;
@@ -128,14 +132,82 @@ namespace api.Controllers
         }
         //doi password
        
-        [Authorize]
-        [HttpPost]
-        public async Task<ActionResult> ChangePasswordUser(HttpRequestHeaders req){
-            if(req.Contains("Token")){
-
+        [HttpGet("generate-otp")]
+        public async Task<ActionResult> UserAskToOTPGenerate([FromQuery] string userEmail){
+         var otp= GenerateOTP();
+        var sendResult= await SendEmailAsync(otp);
+         //user get otp then pass to form otp submit on client, if matchs proceed to url change-password
+         if(sendResult==true){
+            ResetPassword otpCode = new ResetPassword{
+                CustomerEmail=userEmail,
+                OTP=otp,
+            };
+            try
+            {
+                _unitOfWork.ResetPasswordRepository.Add(otpCode);
             }
-            return Ok();
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500));
+            }
+             return Ok("Sent otp to customer email");
+         }else{
+            return BadRequest(new ErrorResponse(500));
+         }
+           
         }
+        //after customer input otp and proceed
+        [HttpPost("verification-otp")]
+        public async Task<ActionResult> ProceedToChangePassword([FromBody] SubmitReset otpSubmit){
+            var latestotpList = await _unitOfWork.ResetPasswordRepository.GetEntityByExpression(d=>(d.OTP==otpSubmit.OTP)&&(d.CustomerEmail==otpSubmit.CustomerEmail),r=>r.OrderByDescending(q=>q.Id),null);
+            var latest = latestotpList.FirstOrDefault();
+            if(!latestotpList.Any()){
+                return BadRequest(new ErrorResponse(404));
+            }
+            return Ok("Proceed to change password page");
+        }
+        //send email
+        public static async Task<bool> SendEmailAsync(string otp,string userEmail="new.vytruong.1812@gmail.com")
+    {
+        
+        try
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("new.vytruong.1812@gmail.com", "erya gvus chag rvok"),
+                EnableSsl = true,
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("new.vytruong.1812@gmail.com"),
+                Subject = "Password Reset Token",
+                Body = $"Your password reset token is:{otp}",
+                IsBodyHtml = false,
+            };
+
+            mailMessage.To.Add(userEmail);
+
+            await smtpClient.SendMailAsync(mailMessage);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending email: {ex.Message}");
+            return false;
+        }
+    }
+     public static string  GenerateOTP(){
+       var random= RandomNumberGenerator.Create();
+       byte[] data = new byte[6];
+       random.GetBytes(data);
+       var otp = BitConverter.ToUInt16(data,0).ToString("D6");
+
+       Console.WriteLine(otp);
+       return otp;
+    }
         
 
     }

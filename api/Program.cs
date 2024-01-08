@@ -19,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddIdentityCore<AppUser>(options=>{
+builder.Services.AddIdentity<AppUser,IdentityRole>(options=>{
                         options.Password.RequireNonAlphanumeric=false;
                         options.Password.RequireUppercase=false;
                         options.Password.RequireDigit=false;
@@ -27,7 +27,10 @@ builder.Services.AddIdentityCore<AppUser>(options=>{
                         options.Password.RequiredLength=1;
                         })
 .AddEntityFrameworkStores<ApplicationDbContext>()
-.AddSignInManager<SignInManager<AppUser>>();
+.AddSignInManager<SignInManager<AppUser>>()
+;
+
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(ops=>{
     ops.TokenValidationParameters = new TokenValidationParameters{
@@ -38,6 +41,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidAudience = builder.Configuration["Token:Audience"]
     };
 });
+
 builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
