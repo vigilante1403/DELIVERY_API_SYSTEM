@@ -3478,19 +3478,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Uzikami\\.nuget\\packages\\": {}
+    "C:\\Users\\Kitty\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Users\\Uzikami\\Downloads\\DELIVERY_API_SYSTEM\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "D:\\Users\\Uzikami\\Downloads\\DELIVERY_API_SYSTEM\\api\\api.csproj",
-      "packagesPath": "C:\\Users\\Uzikami\\.nuget\\packages\\",
-      "outputPath": "D:\\Users\\Uzikami\\Downloads\\DELIVERY_API_SYSTEM\\api\\obj\\",
+      "projectPath": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\Kitty\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Uzikami\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Kitty\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3597,7 +3597,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.319\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.320\\RuntimeIdentifierGraph.json"
       }
     }
   }
