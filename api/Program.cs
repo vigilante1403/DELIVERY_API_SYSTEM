@@ -28,6 +28,7 @@ builder.Services.AddIdentity<AppUser,IdentityRole>(options=>{
                         })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddSignInManager<SignInManager<AppUser>>()
+.AddDefaultTokenProviders()
 ;
 
 

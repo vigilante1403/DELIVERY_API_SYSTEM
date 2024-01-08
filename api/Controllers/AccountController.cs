@@ -1,7 +1,10 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using api.DAl;
 using api.DTO;
@@ -11,6 +14,7 @@ using api.services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace api.Controllers
 {
@@ -208,7 +212,57 @@ namespace api.Controllers
        Console.WriteLine(otp);
        return otp;
     }
-        
+    [HttpGet("token")]
+    public async Task<string> GenerateJwtToken([FromQuery]string userEmail)
+    {
+        // Replace "your_secret_key" with a secure, secret key
+        string secretKey = "iza4hdBuIKqpmftelAcEAB8pHrDVWOvrz1xBqPVkGl2GTZldYBFj66pKGyeOMVPt";
 
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(secretKey);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] { new Claim("email", userEmail) }),
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
+    }
+    public static string ReadJwtToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+        var userEmail = "";
+        if (jwtToken != null)
+        {
+            foreach (var claim in jwtToken.Claims)
+            {
+               if(claim.Type=="email"){
+                userEmail=claim.Value;
+               }
+            }
+            return userEmail;
+        }
+        return null;
+    }
+    //change password
+    [HttpPost("3/r/change-password/{token}")]
+    public async Task<ActionResult> UserChangePassword([FromRoute]string token,[FromBody] SubmitChangePassword newpassword){
+       var email= ReadJwtToken(token);
+       var user = await _userManager.FindByEmailAsync(email);
+       if(user==null){
+        return BadRequest(new ErrorResponse(404,"User not found"));
+       }
+       var rsToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+      var result= await _userManager.ResetPasswordAsync(user,rsToken,newpassword.newPassword);
+      if(result.Succeeded){
+        return Ok("Password changed");
+    }else{
+        return BadRequest(new ErrorResponse(500));
+    }
+      }
+       
     }
 }
