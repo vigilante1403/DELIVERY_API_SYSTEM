@@ -2,7 +2,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +29,10 @@ import { OrderDetailFormComponent } from './form/order-detail-form/order-detail-
 import { DeliveryServiceFormComponent } from './form/delivery-service-form/delivery-service-form.component';
 import { CalculateChargesFormComponent } from './form/calculate-charges-form/calculate-charges-form.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AdminModule } from './admin/admin.module';
+import { UserModule } from './user/user.module';
+import { EmployeeModule } from './employee/employee.module';
+import { RouterModule } from '@angular/router';
 // import { ModalService } from './modal/modal.service';
 
 
@@ -40,9 +44,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     SignupComponent,
     ModalComponent,
     HomeComponent,
-    AdminComponent,
-    UserComponent,
-    EmployeeComponent,
+    // AdminComponent,
+    // UserComponent,
+    // EmployeeComponent,
     DeliveryAgentFormComponent,
     DeliveryStatusFormComponent,
     DeliveriesFormComponent,
@@ -65,6 +69,10 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     ModalModule.forRoot(),
     ReactiveFormsModule,
     CarouselModule,
+    AdminModule,
+    UserModule,
+    EmployeeModule,
+    
   ],
   
   providers: [],

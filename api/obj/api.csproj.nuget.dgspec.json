@@ -94,6 +94,10 @@
               "target": "Package",
               "version": "[13.0.3, )"
             },
+            "Nexmo.Csharp.Client": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.7.10, )"
@@ -101,6 +105,14 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "Twilio": {
+              "target": "Package",
+              "version": "[6.3.0, )"
+            },
+            "Vonage": {
+              "target": "Package",
+              "version": "[6.15.0, )"
             }
           },
           "imports": [

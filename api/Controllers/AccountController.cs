@@ -169,6 +169,12 @@ namespace api.Controllers
             if(!latestotpList.Any()){
                 return BadRequest(new ErrorResponse(404));
             }
+            DateTime current = DateTime.Now;
+            var deltaTime = current-latest.CreatedAt;
+            int minuses = deltaTime.Minutes;
+            if(minuses>5){
+                return BadRequest(new ErrorResponse(401,"OTP expired!"));
+            }
             return Ok("Proceed to change password page");
         }
         //send email
@@ -188,7 +194,7 @@ namespace api.Controllers
             {
                 From = new MailAddress("new.vytruong.1812@gmail.com"),
                 Subject = "Password Reset Token",
-                Body = $"Your password reset token is:{otp}",
+                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/user/1/reset",
                 IsBodyHtml = false,
             };
 
@@ -215,8 +221,7 @@ namespace api.Controllers
     [HttpGet("token")]
     public async Task<string> GenerateJwtToken([FromQuery]string userEmail)
     {
-        // Replace "your_secret_key" with a secure, secret key
-        string secretKey = "iza4hdBuIKqpmftelAcEAB8pHrDVWOvrz1xBqPVkGl2GTZldYBFj66pKGyeOMVPt";
+        string secretKey = "CqqXj0t7O2EziQwB16AYFyABPTvsZ9xzf8tWJdc2gwchqwb6gRR7BGZ3PMf5Jt7j5TbqZalHqsYpUiIwW7A380sDIpdUg2FzGFSBuX8z9";
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(secretKey);
@@ -230,10 +235,12 @@ namespace api.Controllers
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+    
     public static string ReadJwtToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+        
         var userEmail = "";
         if (jwtToken != null)
         {
@@ -248,13 +255,14 @@ namespace api.Controllers
         return null;
     }
     //change password
-    [HttpPost("3/r/change-password/{token}")]
+    [HttpPost("3/r/reset-password/{token}")]
     public async Task<ActionResult> UserChangePassword([FromRoute]string token,[FromBody] SubmitChangePassword newpassword){
        var email= ReadJwtToken(token);
        var user = await _userManager.FindByEmailAsync(email);
        if(user==null){
         return BadRequest(new ErrorResponse(404,"User not found"));
        }
+       
        var rsToken = await _userManager.GeneratePasswordResetTokenAsync(user);
       var result= await _userManager.ResetPasswordAsync(user,rsToken,newpassword.newPassword);
       if(result.Succeeded){
