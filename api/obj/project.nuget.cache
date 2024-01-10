@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Hz8OKVsXoUWc/3UH6NPr+TlItn0grWFN9v0e/Go7oBaCMfajBqB8+9pB4dQTKoJ2BEXsC1z3kKIIj5RgKSugag==",
+  "dgSpecHash": "QVelQP7JrrgnvtegxWv0j3Yw9aLqzi05DpovB3YpW2y51Id9OucVd5QUBjPBcvtvzdnW5I6mRTd9GdUckGi5iQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\api.csproj",
   "expectedPackageFiles": [
@@ -175,7 +175,9 @@
     "C:\\Users\\Kitty\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.net.primitives\\4.3.0\\system.net.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\Kitty\\.nuget\\packages\\system.net.requests\\4.3.0\\system.net.requests.4.3.0.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.net.sockets\\4.3.0\\system.net.sockets.4.3.0.nupkg.sha512",
+    "C:\\Users\\Kitty\\.nuget\\packages\\system.net.webheadercollection\\4.3.0\\system.net.webheadercollection.4.3.0.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.objectmodel\\4.3.0\\system.objectmodel.4.3.0.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.reflection.emit\\4.3.0\\system.reflection.emit.4.3.0.nupkg.sha512",
@@ -231,6 +233,7 @@
     "C:\\Users\\Kitty\\.nuget\\packages\\system.xml.xmldocument\\4.0.1\\system.xml.xmldocument.4.0.1.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.xml.xpath\\4.0.1\\system.xml.xpath.4.0.1.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\system.xml.xpath.xdocument\\4.0.1\\system.xml.xpath.xdocument.4.0.1.nupkg.sha512",
+    "C:\\Users\\Kitty\\.nuget\\packages\\telegram.bot\\16.0.2\\telegram.bot.16.0.2.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\testableio.system.io.abstractions\\20.0.4\\testableio.system.io.abstractions.20.0.4.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\testableio.system.io.abstractions.wrappers\\20.0.4\\testableio.system.io.abstractions.wrappers.20.0.4.nupkg.sha512",
     "C:\\Users\\Kitty\\.nuget\\packages\\twilio\\6.3.0\\twilio.6.3.0.nupkg.sha512",

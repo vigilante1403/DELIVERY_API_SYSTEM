@@ -31,7 +31,7 @@ builder.Services.AddIdentity<AppUser,IdentityRole>(options=>{
 .AddDefaultTokenProviders()
 ;
 
-
+builder.Services.AddHttpClient();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(ops=>{
     ops.TokenValidationParameters = new TokenValidationParameters{

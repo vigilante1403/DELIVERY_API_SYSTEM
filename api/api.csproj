@@ -23,6 +23,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.7.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Telegram.Bot" Version="16.0.2" />
     <PackageReference Include="Twilio" Version="6.3.0" />
     <PackageReference Include="Nexmo.Csharp.Client" Version="5.2.0" />
     <PackageReference Include="Vonage" Version="6.15.0" />

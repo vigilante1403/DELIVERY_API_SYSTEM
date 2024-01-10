@@ -210,7 +210,7 @@ var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequ
         }
     }
 
-   public  async Task<string> GenerateRandomOtp()
+   public async Task<string> GenerateRandomOtp()
     {
         // Replace this with your OTP generation logic
         // For example, you can use a library like RandomNumberGenerator to generate a random numeric OTP.

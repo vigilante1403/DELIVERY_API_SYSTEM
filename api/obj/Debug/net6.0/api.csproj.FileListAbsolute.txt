@@ -182,3 +182,4 @@ C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\Testabl
 C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\Vonage.dll
 C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\Yoh.Text.Json.NamingPolicies.dll
 C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\Kitty\Desktop\APTECH\HK3\DeliveryApiSystem\api\bin\Debug\net6.0\Telegram.Bot.dll

@@ -1,14 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalService } from '../modal/modal.service';
-import { LoginComponent } from '../modal/login/login.component';
-import { ModalComponent } from '../modal/modal.component';
+import { ModalService } from './modal/modal.service';
+import { LoginComponent } from './modal/login/login.component';
+import { ModalComponent } from './modal/modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent {
-  constructor(private modalService: ModalService) { } // inject modal service
+  constructor(public bs:BsModalService) { } // inject modal service
 
   ngOnInit(): void {
   }

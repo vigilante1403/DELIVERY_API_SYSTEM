@@ -106,6 +106,10 @@
               "target": "Package",
               "version": "[6.5.0, )"
             },
+            "Telegram.Bot": {
+              "target": "Package",
+              "version": "[16.0.2, )"
+            },
             "Twilio": {
               "target": "Package",
               "version": "[6.3.0, )"
