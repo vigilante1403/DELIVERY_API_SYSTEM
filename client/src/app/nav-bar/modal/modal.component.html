@@ -1,25 +1,9 @@
 <div class="account d-flex align-items-center mt-5 mt-lg-0 justify-content-center justify-content-lg-end">
 
-  <button type="button" class="btn btn-outline-secondary mr-2 px-3 py-3 login" (click)="openModal(template)">Login
-  </button>
-<ng-template #template>
-        
-    <div class="modal-content">
-        <div class="modal-header">
-                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
-                <span aria-hidden="true" class="visually-hidden">&times;</span>
-                </button>
-        </div>
-        <div class="modal-body">
-            <app-login></app-login>
-                    
-        </div>
-    </div>
-        
+  
 
-</ng-template>
 
-<button type="button" class="btn btn-primary first-button signup px-3 py-3" (click)="openModal(template_2)">Sign up
+<button type="button" class="btn btn-primary first-button signup px-4 py-2" (click)="openModal(template_2)">LOGIN
 </button>
 <ng-template #template_2>
       

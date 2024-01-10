@@ -90,6 +90,7 @@ if (app.Environment.IsDevelopment())
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseMiddleware<ServerErrorExceptionMiddleware>();
 app.UseStaticFiles();
+app.UseCors();
 app.UseAuthentication();
 
 app.UseHttpsRedirection();

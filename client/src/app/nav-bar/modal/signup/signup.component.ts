@@ -25,7 +25,10 @@ export class SignupComponent implements OnInit {
   login!:FormGroup;
   emailLogin:FormControl= new FormControl('',[Validators.email,Validators.required])
   passwordLogin:FormControl = new FormControl('',Validators.required)
-
+  error:string=''
+  requiredField:string=''
+  requiredField2:string='';
+  closeForm:boolean=false;
   initFormGroup(){
     this.register= this.fb.group({
       emailRegister:this.email,
@@ -58,10 +61,52 @@ export class SignupComponent implements OnInit {
   
   loginSubmit(){
 
+      if(!this.login.valid){
+        this.requiredField2='You need to fill this field'
+        console.log('login failed')
+      }else{
+        this.requiredField2=''
+        this.loginData=({email:this.getEmailLogin()?.value,password:this.getPasswordLogin()?.value})
+        console.log('form submitted')
+        this.modalService.SignIn(this.loginData).subscribe({
+          next:(res)=>{this.modalService.user=res;console.log(res)},
+          error:(err)=>{console.log(err)}
+        });
+      }
+     
+      
+    
   }
   registerSubmit(){
     if(!this.tickRegister){
-      
+      this.error='You have to accept with our terms';
+      if(!this.register.valid){
+        this.requiredField='You need to fill this field'
+      }else{
+        this.requiredField=''
+      }
+      return;
+    }else{
+      this.error=''
+      if(this.register.valid){
+        this.requiredField=''
+        this.registerData=({email:this.getEmailRegister()?.value,password:this.getPasswordRegister()?.value,displayName:this.getDisplayNameRegister()?.value})
+        console.log('form submitted')
+        this.modalService.SignUp(this.registerData).subscribe({
+          next:(res)=>{this.modalService.user=res},
+          error:(err)=>console.log(err)
+        })
+      }else{
+        this.requiredField='You need to fill this field'
+        console.log('form invalid')
+      }
+    }
+    
+  }
+  tick(){
+    this.tickRegister=!this.tickRegister;
+    if(this.tickRegister){
+      this.error=''
     }
   }
 

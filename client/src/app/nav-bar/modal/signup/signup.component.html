@@ -1,20 +1,20 @@
 <div class="tabs-listing">
     <nav>
       <div class="nav nav-tabs d-flex justify-content-center border-0" id="nav-tab" role="tablist">
-        <button class="btn btn-outline-primary text-uppercase px-4 py-2 me-4 "
+        <button class="btn btn-outline-primary text-uppercase px-4 py-2 me-4 active"
           id="nav-sign-in-tab" data-bs-toggle="tab" data-bs-target="#nav-sign-in" type="button"
-          role="tab" aria-controls="nav-sign-in" aria-selected="false">Log
+          role="tab" aria-controls="nav-sign-in" aria-selected="true">Log
           In</button>
-        <button class="btn btn-outline-primary text-uppercase px-4 py-2 active" id="nav-register-tab"
+        <button class="btn btn-outline-primary text-uppercase px-4 py-2 " id="nav-register-tab"
           data-bs-toggle="tab" data-bs-target="#nav-register" type="button" role="tab"
-          aria-controls="nav-register" aria-selected="true">Sign
+          aria-controls="nav-register" aria-selected="false">Sign
           Up</button>
       </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade " id="nav-sign-in" role="tabpanel"
+      <div class="tab-pane fade active show" id="nav-sign-in" role="tabpanel"
         aria-labelledby="nav-sign-in-tab" >
-        <form id="form1" class="form-group flex-wrap p-3 " [formGroup]="login">
+        <form id="form1" class="form-group flex-wrap p-3 " [formGroup]="login" (ngSubmit)="loginSubmit()">
           <div class="form-input col-lg-12 my-4">
             <label for="exampleInputEmail1"
               class="form-label fs-6 text-uppercase fw-bold text-black">Email
@@ -25,6 +25,9 @@
                 <div *ngIf="emailLogin.errors?.['required']">Email is required.</div>
                 <div *ngIf="emailLogin.errors?.['email']">Invalid email format.</div>
               </div>
+              <div *ngIf="requiredField2.length>0&&emailLogin.pristine&&!(emailLogin.dirty || emailLogin.touched)" class="error text-danger">
+                <div>{{ requiredField2 }}</div>
+              </div>
           </div>
           <div class="form-input col-lg-12 my-4">
             <label for="inputPassword1"
@@ -33,6 +36,9 @@
               class="form-control ps-3">
               <div *ngIf="passwordLogin.invalid && (passwordLogin.dirty || passwordLogin.touched)" class="error text-danger">
                 <div *ngIf="passwordLogin.errors?.['required']">Password is required.</div>
+              </div>
+              <div *ngIf="requiredField2.length>0&&passwordLogin.pristine&&!(passwordLogin.dirty || passwordLogin.touched)" class="error text-danger">
+                <div>{{ requiredField2 }}</div>
               </div>
             <div id="passwordHelpBlock" class="form-text text-center">
               <a href="#" class=" password">Forgot Password ?</a>
@@ -49,9 +55,9 @@
           </div>
         </form>
       </div>
-      <div class="tab-pane fade active show" id="nav-register" role="tabpanel"
+      <div class="tab-pane fade " id="nav-register" role="tabpanel"
         aria-labelledby="nav-register-tab">
-        <form  class="form-group flex-wrap p-3 " [formGroup]="register">
+        <form  class="form-group flex-wrap p-3 " [formGroup]="register" (ngSubmit)="registerSubmit()">
           <div class="form-input col-lg-12 my-4">
             <label for="exampleInputEmail2"
               class="form-label fs-6 text-uppercase fw-bold text-black">Display Name</label>
@@ -59,6 +65,9 @@
               class="form-control ps-3" placeholder="Display Name">
               <div *ngIf="displayName.invalid && (displayName.dirty || displayName.touched)" class="error text-danger">
                 <div *ngIf="displayName.errors?.['required']">Display Name is required.</div>
+              </div>
+              <div *ngIf="requiredField.length>0&&displayName.pristine&&!(displayName.dirty || displayName.touched)" class="error text-danger">
+                <div>{{ requiredField }}</div>
               </div>
           </div>
           <div class="form-input col-lg-12 my-4">
@@ -71,6 +80,9 @@
                 <div *ngIf="email.errors?.['required']">Email is required.</div>
                 <div *ngIf="email.errors?.['email']">Invalid email format.</div>
               </div>
+              <div *ngIf="requiredField.length>0&&email.pristine&&!(email.dirty || email.touched)" class="error text-danger">
+                <div>{{ requiredField }}</div>
+              </div>
           </div>
           <div class="form-input col-lg-12 my-4">
             <label for="inputPassword2"
@@ -80,15 +92,19 @@
               <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error text-danger">
                 <div *ngIf="password.errors?.['required']">Password is required.</div>
               </div>
+              <div *ngIf="requiredField.length>0 && password.pristine&&!(password.dirty || password.touched)" class="error text-danger">
+                <div>{{ requiredField }}</div>
+              </div>
             </div>
             
-          <label class="py-3 col-lg-12">
-            <input type="checkbox"(click)="this.tickRegister=!this.tickRegister" required="" class="d-inline">
+          <label class=" col-lg-12">
+            <input type="checkbox"(click)="tick()"  class="d-inline">
             <span class="label-body text-black">&nbsp; I agree to the <a href="#"
                 class="text-black password border-bottom">Privacy
                 Policy</a>
             </span>
           </label>
+          <label class="error text-danger col-lg-12" *ngIf="this.error.length>0">{{ error }}</label>
           <div class="d-grid my-3">
             <button
               class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6">Sign

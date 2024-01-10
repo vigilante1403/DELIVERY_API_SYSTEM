@@ -11,6 +11,7 @@ import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class ModalService {
   modalRef?: BsModalRef;
+  user:IUser=({displayName:'',email:'',token:''});
   constructor(private http:HttpClient,) { } // inject modal service
   SignIn(login:ILogin):Observable<IUser>{
    return this.http.post<IUser>(env+'/Account/login',login)
