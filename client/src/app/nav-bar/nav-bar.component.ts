@@ -9,7 +9,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent {
-  constructor(public bs:BsModalService) { } // inject modal service
+  constructor(public bs:BsModalService,public modalService:ModalService) { } // inject modal service
 
   ngOnInit(): void {
   }

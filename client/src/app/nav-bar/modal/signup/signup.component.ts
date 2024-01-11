@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ModalService } from '../modal.service';
 import { FormControl, FormGroup, Validators,FormBuilder } from '@angular/forms';
-import { ILogin, IRegister, IUser } from 'src/app/interface/Account/IUser';
+import { ILogin, IRegister, IUser } from 'src/app/interface/account/IUser';
+import { Output } from '@angular/core';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { ILogin, IRegister, IUser } from 'src/app/interface/Account/IUser';
 export class SignupComponent implements OnInit {
   loginData:ILogin=({email:'',password:''})
   registerData:IRegister=({email:'',password:'',displayName:''})
+  @Output() dataToParent  = new EventEmitter<boolean>
   constructor(public modalService:ModalService,private fb:FormBuilder){
 
   }
@@ -64,13 +66,18 @@ export class SignupComponent implements OnInit {
       if(!this.login.valid){
         this.requiredField2='You need to fill this field'
         console.log('login failed')
+        this.closeForm=false;
+        this.modalService.loginStatus.next(false)
       }else{
         this.requiredField2=''
         this.loginData=({email:this.getEmailLogin()?.value,password:this.getPasswordLogin()?.value})
         console.log('form submitted')
         this.modalService.SignIn(this.loginData).subscribe({
-          next:(res)=>{this.modalService.user=res;console.log(res)},
-          error:(err)=>{console.log(err)}
+          next:(res)=>{this.modalService.user=res;console.log(res);localStorage.setItem('access_token',res.token);
+        localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);this.closeForm=true
+      ;this.sendData();
+    this.modalService.loginStatus.next(true)},
+          error:(err)=>{console.log(err);this.modalService.loginStatus.next(false)}
         });
       }
      
@@ -85,19 +92,25 @@ export class SignupComponent implements OnInit {
       }else{
         this.requiredField=''
       }
+      this.closeForm=false;
+      this.modalService.loginStatus.next(false)
       return;
     }else{
       this.error=''
       if(this.register.valid){
         this.requiredField=''
-        this.registerData=({email:this.getEmailRegister()?.value,password:this.getPasswordRegister()?.value,displayName:this.getDisplayNameRegister()?.value})
+        this.registerData=({displayName:this.getDisplayNameRegister()?.value,email:this.getEmailRegister()?.value,password:this.getPasswordRegister()?.value})
         console.log('form submitted')
         this.modalService.SignUp(this.registerData).subscribe({
-          next:(res)=>{this.modalService.user=res},
-          error:(err)=>console.log(err)
+          next:(res)=>{this.modalService.user=res;console.log(res);
+            localStorage.setItem('access_token',res.token);
+            localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);this.closeForm=true;this.sendData();this.modalService.loginStatus.next(true)},
+          error:(err)=>{console.log(err);this.modalService.loginStatus.next(false)}
         })
       }else{
         this.requiredField='You need to fill this field'
+        this.closeForm=false;
+        this.modalService.loginStatus.next(false)
         console.log('form invalid')
       }
     }
@@ -109,5 +122,7 @@ export class SignupComponent implements OnInit {
       this.error=''
     }
   }
-
+  sendData(){
+    this.dataToParent.emit(this.closeForm)
+  }
 }

@@ -2,9 +2,16 @@
 
   
 
+<div *ngIf="!this.login">
+  <button type="button" class="btn btn-primary first-button signup px-4 py-2" (click)="openModal(template_2)">LOGIN
+  </button>
+</div>
+<div *ngIf="this.login">
+  Hello {{ this.service.user.displayName }}
+  <button type="button" class="btn btn-primary first-button signup  py-2" (click)="this.service.Logout()">LOGOUT
+  </button>
+</div>
 
-<button type="button" class="btn btn-primary first-button signup px-4 py-2" (click)="openModal(template_2)">LOGIN
-</button>
 <ng-template #template_2>
       
   <div class="modal-content">
@@ -14,7 +21,7 @@
               </button>
       </div>
       <div class="modal-body">
-                  <app-signup></app-signup>  
+                  <app-signup (dataToParent)="receiveFromChild($event)"></app-signup>  
       </div>
   </div>
 </ng-template>

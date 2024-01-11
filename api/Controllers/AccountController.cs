@@ -42,31 +42,22 @@ namespace api.Controllers
             {
                 DisplayName = register.DisplayName,
                 Email = register.Email,
-                UserName = register.DisplayName
+                UserName = register.Email
             };
             var result = await _userManager.CreateAsync(user, register.Password);
             if (!result.Succeeded)
             {
-                return BadRequest(new ErrorResponse(400));
+                return BadRequest(new ErrorResponse(400,"error in aspnet user"));
             }
-            await _userManager.AddToRoleAsync(user,"user");
+            
             var newUser = await _userManager.FindByEmailAsync(user.Email);
+            await _userManager.AddToRoleAsync(newUser,"user");
             var totalAddress = await _unitOfWork.AddressRepository.GetAll();
             var total = totalAddress.Count();
             Customer customer = new Customer
             {
                 Id = newUser.Id,
                 Name = newUser.DisplayName,
-                Address = new Address
-                {
-                    Id = total + 1,
-                    FirstName = newUser.DisplayName,
-                    LastName = "Unknown",
-                    Street = "Unknown",
-                    City = "Unknown",
-                    State = "Unknown",
-                    ZipCode = "Unknown"
-                },
                 Email = newUser.Email,
                 PhoneNumber = "Unknown"
             };
@@ -78,8 +69,28 @@ namespace api.Controllers
             catch (System.Exception)
             {
 
-                return BadRequest(new ErrorResponse(500));
+                return BadRequest(new ErrorResponse(500,"Error at customer table"));
             }
+            Address a = new Address
+                {
+                    
+                    FirstName = newUser.DisplayName,
+                    LastName = "Unknown",
+                    Street = "Unknown",
+                    City = "Unknown",
+                    State = "Unknown",
+                    ZipCode = "Unknown",
+                    CustomerId=newUser.Id
+                };
+                try
+                {
+                    _unitOfWork.AddressRepository.Add(a);
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500,"error at address table"));
+                }
 
             UserDTO returnUser = new UserDTO
             {
