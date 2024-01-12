@@ -33,15 +33,34 @@ builder.Services.AddIdentity<AppUser,IdentityRole>(options=>{
 
 builder.Services.AddHttpClient();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(ops=>{
+.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,ops=>{
     ops.TokenValidationParameters = new TokenValidationParameters{
         ValidateIssuerSigningKey=true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"])),
         ValidIssuer=builder.Configuration["Token:Issuer"],
         ValidateIssuer = true,
+        ValidateLifetime=true,
         ValidAudience = builder.Configuration["Token:Audience"]
     };
 });
+builder.Services.AddAuthorization(options =>
+    {
+        // Define a policy for administrators
+        options.AddPolicy("AdminPolicy", policy =>
+        {
+            policy.RequireRole("admin");
+            // Add other requirements as needed
+        });
+
+        // Define a policy for users
+        options.AddPolicy("UserPolicy", policy =>
+        {
+            policy.RequireRole("user");
+            // Add other requirements as needed
+        });
+
+        // Add other policies as needed...
+    });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -66,6 +85,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options=>{
         return new BadRequestObjectResult(errorResponse);
     }; //get content of controller when model submit invalid
 });
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options=>{
     options.AddDefaultPolicy(policy=>{
         policy.WithOrigins("http://localhost:4200");
@@ -84,6 +104,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();  
     // app.UseSwagger();
     // app.UseSwaggerUI();
 }
@@ -92,10 +113,10 @@ app.UseMiddleware<ServerErrorExceptionMiddleware>();
 app.UseStaticFiles();
 app.UseCors();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
 
 app.MapControllers();
 await ApplicationDbSeed.Seed(app);

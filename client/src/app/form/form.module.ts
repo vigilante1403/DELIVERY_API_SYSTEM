@@ -9,7 +9,7 @@ import { DeliveryStatusFormComponent } from './delivery-status-form/delivery-sta
 import { OrderDetailFormComponent } from './order-detail-form/order-detail-form.component';
 import { OrderPaymentFormComponent } from './order-payment-form/order-payment-form.component';
 import { OrderPaymentStatusFormComponent } from './order-payment-status-form/order-payment-status-form.component';
-import { OrdersFormComponent } from './orders-form/orders-form.component';
+import { OrdersFormComponent } from '../user/form/orders-form/orders-form.component';
 import { OrdersStatusFormComponent } from './orders-status-form/orders-status-form.component';
 import { ParcelsFormComponent } from './parcels-form/parcels-form.component';
 import { SharedModule } from '../shared/shared.module';

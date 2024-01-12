@@ -24,12 +24,12 @@ namespace api.Controllers{
         public ServiceController(IUnitOfWork unitOfWork){
             _unitOfWork=unitOfWork;
         }
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<Service>>> GetServicesList(){
             IEnumerable<Service> list = await _unitOfWork.ServiceRepository.GetEntityByExpression(null,q=>q.OrderBy(e=>e.ServiceName),null);
             return Ok(list);
         }
-        [HttpPost]
+        [HttpPost("new")]
         public async Task<ActionResult> AddService(ServiceDTO service){
             //validate
             var name = service.ServiceName;
@@ -58,7 +58,7 @@ namespace api.Controllers{
              return Ok();
 
         }
-        [HttpPut]
+        [HttpPut("edit")]
         public async Task<ActionResult> EditService(ServiceDTO service){
             var id = service.Id;
             var existList= await _unitOfWork.ServiceRepository.GetEntityByExpression(r=>r.Id==id,null,null);

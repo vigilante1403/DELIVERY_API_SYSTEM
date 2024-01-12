@@ -17,11 +17,11 @@ namespace api.Controllers{
             _mapper=mapper;
             _environment=environment;
         }
-        [HttpGet("order/{customerId}")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetAllCustomerOrders([FromRoute] string customerId){
-            IEnumerable<Order> originlist = await _unitOfWork.OrderRepository.GetEntityByExpression(null,null,"Customer,Service,OrderPayment,OrderStatus");
-            IEnumerable<Order> filter = (IEnumerable<Order>)originlist.Select(x=>x.CustomerId==customerId);
-            return Ok(_mapper.Map<IEnumerable<Order>,IEnumerable<OrderDTO>>(filter));
+        [HttpGet("order/1/{customerId}")]
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllCustomerOrders([FromRoute] string customerId){
+            IEnumerable<Order> originlist = await _unitOfWork.OrderRepository.GetEntityByExpression(q=>q.CustomerId==customerId,null,"Customer,Service,OrderPayment,OrderStatus");
+            var result = _mapper.Map<IEnumerable<Order>,IEnumerable<OrderDTO>>(originlist);
+            return Ok(result);
         }
         [HttpPost("order")]
         public async Task<ActionResult> AddNewOrder(SubmitOrder order){

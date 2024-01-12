@@ -12,3 +12,9 @@ export interface IRegister{
     email:string,
     password:string
 }
+export interface ICustomer{
+    id:string,
+    name:string,
+    email:string,
+    phoneNumber:string
+}
