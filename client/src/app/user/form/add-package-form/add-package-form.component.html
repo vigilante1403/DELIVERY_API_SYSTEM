@@ -1,0 +1,42 @@
+<div class="container d-flex flex-column  mt-4 justify-content-lg-center" style="padding-top: 60px;">
+    <div class="row justify-content-center"><div class="col-lg-6"><h4>ADD PACKAGE TO YOUR ORDER</h4></div></div>
+    <div class="row justify-content-center">
+      <div class="col-lg-6 ">
+        <!-- file-upload.component.html -->
+<form (ngSubmit)="onSubmit()" class="form-control" *ngFor="let formData of fileForms" [formGroup]="formData">
+  <div>ID:{{ formData.get('i')?.value }}</div>
+    <div>
+      <label for="file">File:</label>
+      <input type="file" accept="image/*"  (change)="onFileSelected($event,formData.get('i')?.value)" id="file" formControlName="file">
+      <div *ngIf="formData.get('file')?.hasError('required') && formData.get('file')?.touched">
+        File is required.
+      </div>
+    </div>
+    <div>
+      <label for="parcelName">Parcel Name:</label>
+      <input type="text" id="parcelName" formControlName="parcelName">
+    </div>
+    <div>
+      <label for="weight">Weight:</label>
+      <input type="number" min="0.1" id="weight" formControlName="weight">
+    </div>
+    <div>
+      <button type="button" (click)="removeFormDataEntry(formData.get('i')?.value)">Remove Entry</button>
+    </div>
+
+  </form>
+  <div>
+    <button type="button" (click)="addFormDataEntry()">Add Entry</button>
+  </div>
+  <div>
+    <button type="submit" (click)="onSubmit()">Upload Files</button>
+  </div>
+  
+  
+      </div>
+    </div>
+    
+    
+  </div>
+  
+    

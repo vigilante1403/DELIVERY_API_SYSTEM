@@ -133,20 +133,20 @@ namespace api.Controllers{
             if(!Directory.Exists(uploadsFolder)){
                 Directory.CreateDirectory(uploadsFolder);
             }
-            foreach(var parcel in parcelList.list){
+            foreach(var parcel in parcelList.List){
                 Parcel p = new Parcel{
                 ParcelName = parcel.ParcelName,
-                Weight = parcel.Weight,
+                Weight = parcel.Weight ,
                 CustomerId=customerId
                 };
-                if(parcel.image.Length>0){
-                     var filePath = Path.Combine(uploadsFolder, parcel.image.FileName);
+                if(parcel.Image.Length>0){
+                     var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
                 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    parcel.image.CopyTo(fileStream);
+                    parcel.Image.CopyTo(fileStream);
                 }
-                p.ImageUrl=folderName+"/"+parcel.image.FileName;
+                p.ImageUrl=folderName+"/"+parcel.Image.FileName;
                 }else{
                     p.ImageUrl="empty";
                 }
@@ -157,14 +157,14 @@ namespace api.Controllers{
             catch (System.Exception)
             {
                 
-                return BadRequest(new ErrorResponse(500));
+                return BadRequest(new ErrorResponse(500,"Error in parcel table"));
             }
                 _ = Task.Delay(1000);
             var latestList = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.CustomerId==customerId,r=>r.OrderByDescending(e=>e.Id),"Customer");
             var parcelId= latestList.FirstOrDefault().Id;
             OrderDetail detail = new OrderDetail{
                 ParcelId=parcelId,
-                OrderId=parcelList.OrderId
+                OrderId=int.Parse(parcelList.OrderId) 
             };
             try
             {
@@ -173,7 +173,7 @@ namespace api.Controllers{
             catch (System.Exception)
             {
                 
-                return BadRequest(new ErrorResponse(500));
+                return BadRequest(new ErrorResponse(500,"Error in order detail table"));
             }
             }
             
@@ -217,23 +217,23 @@ namespace api.Controllers{
             if(!Directory.Exists(uploadsFolder)){
                 Directory.CreateDirectory(uploadsFolder);
             }
-            foreach(var parcel in listParcel.list){
-                var id = parcel.Id;
+            foreach(var parcel in listParcel.List){
+                var id =parcel.Id ;
                 var existedParcel = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.Id==id,null,"Customer");
                 if(!existedParcel.Any()){
                     return BadRequest(new ErrorResponse(400));
                 }
                 Parcel p = existedParcel.FirstOrDefault();
                 p.ParcelName=parcel.ParcelName;
-                p.Weight=parcel.Weight;
-                if(parcel.image.Length>0){
-                     var filePath = Path.Combine(uploadsFolder, parcel.image.FileName);
+                p.Weight=parcel.Weight ;
+                if(parcel.Image.Length>0){
+                     var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
                 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    parcel.image.CopyTo(fileStream);
+                    parcel.Image.CopyTo(fileStream);
                 }
-                p.ImageUrl=folderName+"/"+parcel.image.FileName;
+                p.ImageUrl=folderName+"/"+parcel.Image.FileName;
                 }else{
                     p.ImageUrl="empty";
                 }

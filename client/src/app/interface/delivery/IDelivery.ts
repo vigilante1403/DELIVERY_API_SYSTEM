@@ -23,3 +23,14 @@ export interface IOrderShow{
     orderStatus:string,
     orderPaymentId?:number
 }
+export interface ISubmitParcel{
+    id:number,
+    parcelName:string,
+    weight:number,
+    image:File
+}
+export interface ISubmitListParcel{
+    list:ISubmitParcel[],
+    orderId:number,
+    customerId:string
+}

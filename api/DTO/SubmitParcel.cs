@@ -3,7 +3,7 @@ namespace api.DTO{
         public int Id { get; set; }
         public string ParcelName { get; set; }
         public decimal Weight { get; set; }
-        public IFormFile image { get; set; }
+        public IFormFile Image { get; set; }
 
     }
 }

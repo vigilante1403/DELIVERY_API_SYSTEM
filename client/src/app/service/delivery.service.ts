@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IOrderShow, IService, ISubmitOrder } from '../interface/delivery/IDelivery';
+import { IOrderShow, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
 import { ICustomer } from '../interface/account/IUser';
 
@@ -26,5 +26,13 @@ export class DeliveryService {
   getCustomerOrderHistories(customerId:any):Observable<IOrderShow[]>{
    
     return this.http.get<IOrderShow[]>(env+'/Order/order/1/'+customerId)
+  }
+  addPackageToOrder(submitList:any){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'multipart/form-data',
+      }),
+    };
+    return this.http.post<any>(env+'/Order/parcel',submitList)
   }
 }
