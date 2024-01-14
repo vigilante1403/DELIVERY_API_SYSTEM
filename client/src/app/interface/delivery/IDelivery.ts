@@ -34,3 +34,8 @@ export interface ISubmitListParcel{
     orderId:number,
     customerId:string
 }
+export interface ISubmitAddress{
+    id:string,
+    startAddress:string,
+    endAddress:string
+}

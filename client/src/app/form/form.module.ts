@@ -17,7 +17,7 @@ import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-  declarations: [CalculateChargesFormComponent,CustomerFormComponent,DeliveriesFormComponent,DeliveryAgentFormComponent,DeliveryServiceFormComponent,DeliveryStatusFormComponent,OrderDetailFormComponent,OrderPaymentFormComponent,OrderPaymentStatusFormComponent,OrdersFormComponent,OrdersStatusFormComponent,ParcelsFormComponent],
+  declarations: [CalculateChargesFormComponent,CustomerFormComponent,DeliveriesFormComponent,DeliveryAgentFormComponent,DeliveryServiceFormComponent,DeliveryStatusFormComponent,OrderDetailFormComponent,OrderPaymentFormComponent,OrderPaymentStatusFormComponent,OrdersStatusFormComponent,ParcelsFormComponent],
   imports: [
     CommonModule,
     SharedModule,

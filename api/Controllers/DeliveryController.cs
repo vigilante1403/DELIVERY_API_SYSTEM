@@ -284,7 +284,8 @@ namespace api.Controllers
                 return BadRequest(new ErrorResponse(500));
             }
             SubmitAddress s = await _basket.GetBasketAsync(delivery.basketId);
-            var totalDistance = await PaymentController.CalculateTotalDistanceAsync(s.startAddress,s.endAddress);
+            // var totalDistance = await PaymentController.CalculateTotalDistanceAsync(s.startAddress,s.endAddress);
+            var totalDistance=0;
             var timecost = totalDistance/1000/70/24;
             var deliveryDays = payment.FirstOrDefault().Service.DaysAdd+timecost; //day
 

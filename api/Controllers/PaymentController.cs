@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Formatting;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using Nexmo.Api.Voice.EventWebhooks;
 
 namespace api.Controllers{
     [ApiController]
@@ -198,13 +199,17 @@ namespace api.Controllers{
             var order = orderList.FirstOrDefault();
             var orderPaymentId=order.OrderPaymentId;
             if(orderPaymentId==null||order.OrderPayment.OrderPaymentStatusId==4){
-                   string apiKey = "AIzaSyDDAFrEoBErPc_5B49M-D4nkcApKvl3fnw";
+                   string apiKey = "AIzaSyCwrRsY8vEyGBrnJ4jWFWJa_6lAuVVX77o";
 
-                    Location origin = await GetLocationAsync(address.startAddress);
-                    Location destination = await GetLocationAsync(address.endAddress);
+                    // Location origin = await GetLocationAsync(address.startAddress);
+                    // Location destination = await GetLocationAsync(address.endAddress);
 
                     // var totalTime = await CalculateTravelTimeAsync(apiKey, origin, destination);
                     var totalDistance = await CalculateTotalDistanceAsync(address.startAddress,address.endAddress);
+                    if(totalDistance==-1){
+                        var errorMessage =  "Error at calculating distance!" +address.startAddress;
+                        return BadRequest(new ErrorResponse(500,errorMessage));
+                    }
                     //van toc 70km/h
                     var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(d=>d.Id==order.ServiceId,null,null);
                     var ServicePrice = serviceList.FirstOrDefault().Price;
@@ -214,17 +219,17 @@ namespace api.Controllers{
                     var distancePrice = distanceList.FirstOrDefault().BasicPricePerKm;
                     var weightCharge = distanceList.FirstOrDefault().BasicPricePerKg;
                     //get subtotal 
-                    var parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==Id,null,"Parcel");
+                    IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==Id,null,"Parcel");
                     var weight = parcelList.Sum(x=>x.Parcel.Weight)*weightCharge;
+                    
                     var paymentList = await _unitOfWork.OrderPaymentRepository.GetAll();
                     var paymentId = paymentList.Count()+1;
                     OrderPayment o = new OrderPayment{
-                        Id=paymentId,
                         SubTotal=weight,
                         PrePaid=order.PrePaid,
                         ServicePrice=ServicePrice,
-                        DistanceCharges=totalDistance/1000*distancePrice,
-                        TotalCharges=weight=order.PrePaid+ServicePrice+(totalDistance/1000*distancePrice),
+                        DistanceCharges=(totalDistance*distancePrice)/1000,
+                        TotalCharges=weight+order.PrePaid+ServicePrice+((totalDistance*distancePrice)/1000),
                         OrderPaymentStatusId=2
                     };
                     try
@@ -234,7 +239,7 @@ namespace api.Controllers{
                     catch (System.Exception)
                     {
                         
-                        return BadRequest(new ErrorResponse(500));
+                        return BadRequest(new ErrorResponse(500,"Error at order payment table"));
                     }
                     try
                     {
@@ -244,7 +249,7 @@ namespace api.Controllers{
                     catch (System.Exception)
                     {
                         
-                        return BadRequest(new ErrorResponse(500));
+                        return BadRequest(new ErrorResponse(500,"Error at order table"));
                     }
 
             }else{
@@ -252,6 +257,7 @@ namespace api.Controllers{
             }
             return Ok();
         }
+        
          public static async Task<int> CalculateTotalDistanceAsync(string origin, string destination)
     {
         using (HttpClient client = new HttpClient())
@@ -259,7 +265,7 @@ namespace api.Controllers{
             string encodedOrigin = Uri.EscapeDataString(origin);
             string encodedDestination = Uri.EscapeDataString(destination);
 
-            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={encodedOrigin}&destination={encodedDestination}&key=AIzaSyDDAFrEoBErPc_5B49M-D4nkcApKvl3fnw";
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={encodedOrigin}&destination={encodedDestination}&key=AIzaSyCwrRsY8vEyGBrnJ4jWFWJa_6lAuVVX77o";
 
             HttpResponseMessage response = await client.GetAsync(url);
 
@@ -270,12 +276,40 @@ namespace api.Controllers{
 
                 if (directionsResponse.status == "OK" && directionsResponse.routes.Length > 0)
                 {
-                    int totalDistance = directionsResponse.routes[0].legs.Sum(leg => leg.steps.Sum(step => step.Distance.Value));
+                    int totalDistance = directionsResponse.routes[0].legs.Sum(leg => leg.steps.Sum(step => step.Distance1.Value));
                     return totalDistance;
                 }
             }
 
             return -1; // Indicate an error or no valid response
+        }
+    }
+    [HttpGet("distance")]
+    public async Task<ActionResult<int>> CalculateTotalDistanceAsync1(string origin, string destination)
+    {
+        using (HttpClient client = new HttpClient())
+        {
+            string encodedOrigin = Uri.EscapeDataString(origin);
+            string encodedDestination = Uri.EscapeDataString(destination);
+
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={encodedOrigin}&destination={encodedDestination}&key=AIzaSyDjTiE5SihVKBc4pqsQr-r9phTYXmmuHx0";
+
+            HttpResponseMessage response = await client.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var directionsResponse = JsonConvert.DeserializeObject<DirectionsResponse>(data);
+
+                if (directionsResponse.status == "OK" && directionsResponse.routes.Length > 0)
+                {
+                    int totalDistance = directionsResponse.routes[0].legs.Sum(leg => leg.steps.Sum(step => step.Distance1.Value));
+                    return totalDistance;
+                }
+                return Ok(directionsResponse);
+            }
+
+            return BadRequest(new ErrorResponse(500,response.ToString())); // Indicate an error or no valid response
         }
     }
         public static async Task<Location> GetLocationAsync(string address)

@@ -1,0 +1,26 @@
+<div class="container d-flex flex-column  mt-4 justify-content-lg-center" style="padding-top: 60px;">
+    <div class="row justify-content-center"><div class="col-lg-6"><h4>ADD ADDRESSES TO YOUR ORDER</h4></div></div>
+    <div class="row justify-content-center">
+      <div class="col-lg-6 ">
+
+<form  class="form-control" [formGroup]="addressForm" (ngSubmit)="onSubmit()">  
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" formControlName="address1" placeholder="Enter pick up location">
+    <label>Address 1:</label>
+  </div>  
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
+    <label>Address 2:</label>
+  </div>
+  <button type="submit" class="btn btn-primary" >Add this delivery address to order </button>
+
+  <!-- <agm-map id="map"[latitude]="location.latitude" [longitude]="location.longitude"></agm-map> -->
+  </form>
+  
+      </div>
+    </div>
+    
+    
+  </div>
+ 
+    

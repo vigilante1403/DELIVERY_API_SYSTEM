@@ -6,19 +6,26 @@ import { UserRoute } from './user.routing';
 import { CartComponent } from './cart/cart.component';
 import { AddPackageFormComponent } from './form/add-package-form/add-package-form.component';
 import { SharedModule } from '../shared/shared.module';
+import { AddressFormComponent } from './form/address-form/address-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OrdersFormComponent } from './form/orders-form/orders-form.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 
 @NgModule({
   declarations: [
     UserComponent,
+    OrdersFormComponent,
     CartComponent,
-    AddPackageFormComponent
+    AddPackageFormComponent,
+    CheckoutComponent,
+    
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(UserRoute),
-    SharedModule
+    ReactiveFormsModule,FormsModule
   ],
   exports:[
     UserComponent

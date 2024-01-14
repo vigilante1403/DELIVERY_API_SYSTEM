@@ -7,8 +7,8 @@ namespace api.Models{
    public class Step
 {
     public Duration duration { get; set; }
-    public DistanceMatrix Distance { get; set; }
-    public DurationMatrix Duration { get; set; }
+    public DistanceMatrix Distance1 { get; set; }
+    public DurationMatrix Duration1 { get; set; }
 }
 public class DistanceMatrix
 {
