@@ -19,7 +19,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
     OrdersFormComponent,
     CartComponent,
     AddPackageFormComponent,
-    CheckoutComponent,
+
     
   ],
   imports: [

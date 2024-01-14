@@ -67,11 +67,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options=>options.UseSqlServe
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<ITokenService,TokenService>();
-builder.Services.AddScoped<IBasketRepo,BasketRepo>();
-builder.Services.AddSingleton<IConnectionMultiplexer>(_=>{
-   var connectionRedisurl= ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"),true);
-    return ConnectionMultiplexer.Connect(connectionRedisurl);
-});
+// builder.Services.AddScoped<IBasketRepo,BasketRepo>();
+// builder.Services.AddSingleton<IConnectionMultiplexer>(_=>{
+//    var connectionRedisurl= ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"),true);
+//     return ConnectionMultiplexer.Connect(connectionRedisurl);
+// });
 builder.Services.Configure<ApiBehaviorOptions>(options=>{
     options.InvalidModelStateResponseFactory = ActionContext =>{
         var errors = ActionContext.ModelState

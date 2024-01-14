@@ -11,11 +11,13 @@ namespace api.Controllers{
     public class OrderController:ControllerBase{
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
-        public OrderController(IUnitOfWork unitOfWork,IMapper mapper,IWebHostEnvironment environment){
+        public OrderController(IUnitOfWork unitOfWork,IMapper mapper,IWebHostEnvironment environment,IHttpContextAccessor httpContextAccessor){
             _unitOfWork=unitOfWork;
             _mapper=mapper;
             _environment=environment;
+            _httpContextAccessor=httpContextAccessor;
         }
         [HttpGet("order/1/{customerId}")]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> GetAllCustomerOrders([FromRoute] string customerId){
@@ -193,8 +195,9 @@ namespace api.Controllers{
                 return BadRequest(new ErrorResponse(400));
             }
             IEnumerable<OrderDetail> list = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(r=>r.OrderId==OrderId,null,"Order,Parcel");
-            IEnumerable<int> parcelList = (IEnumerable<int>)list.Select(x=>x.ParcelId);
+            IEnumerable<int> parcelList = list.Where(x=>x.ParcelId.HasValue).Select(x=>x.ParcelId.Value).ToList();
             List<ReturnParcel> returnParcel = new List<ReturnParcel>();
+             string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
             //list of Ids
             foreach(var id in parcelList){
                 var parcel1 = await _unitOfWork.ParcelRepository.GetEntityByExpression(w=>w.Id==id,null,null);
@@ -203,7 +206,7 @@ namespace api.Controllers{
                     Id=parcel.Id,
                     ParcelName=parcel.ParcelName,
                     Weight=parcel.Weight,
-                    ImageUrl=parcel.ImageUrl
+                    ImageUrl=baseUrl+'/'+parcel.ImageUrl
                 };
                 returnParcel.Add(rp);
             }
@@ -336,6 +339,36 @@ namespace api.Controllers{
             }
             return Ok();
         }
+        [HttpGet("order/{customerId}/{orderId}")]
+        public async Task<ActionResult<OrderDTO>> ReturnOrderInfo([FromRoute] string customerId,[FromRoute] string orderId){
+            int Id = 0;
+            try
+            {
+                Id=int.Parse(orderId);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(400,"Error orderId"));
+            }
+            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==Id&&d.CustomerId==customerId,null,"Service,Customer,OrderStatus,OrderPayment");
+            if(!orderList.Any()){
+                return BadRequest(new ErrorResponse(404,"Khong tim thay order yeu cau"));
+            }
+            var order = orderList.FirstOrDefault();
+            OrderDTO o = new OrderDTO{
+                Id=order.Id,
+                ContactAddress=order.ContactAddress,
+                Service=order.Service.ServiceName,
+                CustomerId=order.CustomerId,
+                PrePaid=order.PrePaid,
+                OrderDate=order.OrderDate,
+                OrderPaymentId=order.OrderPaymentId,
+                OrderStatus=order.OrderStatus.StatusName
+            };
+            return Ok(o);
+        }
+
 
 
     }

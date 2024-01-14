@@ -44,6 +44,9 @@
               <button type="button" class="btn btn-link btn-sm btn-rounded" routerLink="{{ order.id }}/add-addresses">
                 DETAILS Addresses
               </button>
+              <button type="button" class="btn btn-link btn-sm btn-rounded" (click)="getOrder(order.customerId,order.id)" routerLink="{{ order.id }}/checkout">
+                DETAILS Checkout
+              </button>
             </td>
           </tr>
         </tbody>

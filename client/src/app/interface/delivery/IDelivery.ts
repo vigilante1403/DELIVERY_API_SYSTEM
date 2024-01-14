@@ -39,3 +39,18 @@ export interface ISubmitAddress{
     startAddress:string,
     endAddress:string
 }
+export interface IReturnParcel{
+    id:number,
+    parcelName:string,
+    weight:number,
+    imageUrl:string
+}
+export interface IPayment{
+    id:number,
+    subTotal:number,
+    prePaid:number,
+    servicePrice:number,
+    distanceCharges:number,
+    totalCharges:number,
+    orderPaymentStatus:string
+}

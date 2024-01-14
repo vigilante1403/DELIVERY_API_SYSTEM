@@ -19,6 +19,8 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { AgmCoreModule } from '@agm/core';
 import { AddressFormComponent } from './user/form/address-form/address-form.component';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { CheckoutComponent } from './user/checkout/checkout.component';
 
 
 
@@ -29,7 +31,8 @@ import { AddressFormComponent } from './user/form/address-form/address-form.comp
     HomeComponent,
     ModalComponent,
     LoginComponent,SignupComponent,
-    AddressFormComponent
+    AddressFormComponent,
+    CheckoutComponent
   ],
   imports: [
    AgmCoreModule.forRoot({
@@ -46,6 +49,7 @@ import { AddressFormComponent } from './user/form/address-form/address-form.comp
     ModalModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPayPalModule,
     ReactiveFormsModule,
     JwtModule.forRoot({
       config: {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { delay } from 'rxjs';
 import { DeliveryService } from 'src/app/service/delivery.service';
+import { CheckoutService } from '../checkout/checkout.service';
 
 @Component({
   selector: 'app-cart',
@@ -9,7 +10,7 @@ import { DeliveryService } from 'src/app/service/delivery.service';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit{
-  constructor(public service:DeliveryService,private route:ActivatedRoute){
+  constructor(public service:DeliveryService,private route:ActivatedRoute,private checkoutService:CheckoutService){
 
   }
   ngOnInit(): void {
@@ -35,6 +36,9 @@ export class CartComponent implements OnInit{
     }
     
      
+  }
+  getOrder(customerId:any,orderId:any){
+    this.checkoutService.fetchOrder(customerId,orderId)
   }
 
 

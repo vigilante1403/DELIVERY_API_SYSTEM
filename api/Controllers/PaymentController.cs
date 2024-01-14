@@ -180,6 +180,39 @@ namespace api.Controllers{
             }
             return Ok();
         }
+        [HttpGet("order-payment/{orderId}")]
+        public async Task<ActionResult<ReturnPayment>> GetOrderPaymentRequired([FromRoute] string orderId){
+            int Id = 0;
+            try
+            {
+                Id=int.Parse(orderId);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(400,"Invalid order Id"));
+            }
+            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(e=>e.Id==Id,null,"OrderPayment");
+            if(!orderList.Any()){
+                return BadRequest(new ErrorResponse(404,"Khong tim thay order theo yeu cau!"));
+            }
+            var paymentId = orderList.FirstOrDefault().OrderPaymentId;
+            var paymentList = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(w=>w.Id==paymentId,null,"OrderPaymentStatus");
+            if(!paymentList.Any()){
+                return BadRequest(new ErrorResponse(404,"Payment method cua order chua duoc kich hoat!"));
+            }
+            var payment = paymentList.FirstOrDefault();
+            ReturnPayment rp = new ReturnPayment{
+                Id=payment.Id,
+                SubTotal=payment.SubTotal,
+                PrePaid=payment.PrePaid,
+                ServicePrice=payment.ServicePrice,
+                DistanceCharges=payment.DistanceCharges,
+                TotalCharges=payment.TotalCharges,
+                OrderPaymentStatus=payment.OrderPaymentStatus.StatusName
+            };
+            return Ok(rp);
+        }
         [HttpPost("order-payment/{orderId}")]
         public async Task<ActionResult> CreateNewOrderPayment([FromRoute] string orderId,[FromBody] SubmitAddress address){
             int Id =0;

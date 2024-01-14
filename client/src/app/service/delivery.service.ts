@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IOrderShow, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
+import { IOrderShow, IPayment, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
 import { ICustomer } from '../interface/account/IUser';
 
@@ -34,5 +34,14 @@ export class DeliveryService {
       }),
     };
     return this.http.post<any>(env+'/Order/parcel',submitList)
+  }
+  checkout(customerId:any,orderId:any){
+      return this.http.get<IOrderShow>(env+'/Order/order/'+customerId+'/'+orderId)
+  }
+  parcelInfo(orderId:any){
+    return this.http.get<any>(env+'/Order/parcel/'+orderId)
+  }
+  paymentInfo(orderId:any){
+    return this.http.get<IPayment>(env+'/Payment/order-payment/'+orderId)
   }
 }
