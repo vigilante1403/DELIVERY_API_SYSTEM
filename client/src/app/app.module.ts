@@ -16,11 +16,12 @@ import { SignupComponent } from './nav-bar/modal/signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtInterceptor } from './middleware/jwt.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
-import { GoogleMapsModule } from '@angular/google-maps';
+// import { GoogleMapsModule } from '@angular/google-maps';
 import { AgmCoreModule } from '@agm/core';
 import { AddressFormComponent } from './user/form/address-form/address-form.component';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { CheckoutComponent } from './user/checkout/checkout.component';
+import { IconPickerModule } from 'ngx-icon-picker';
 
 
 
@@ -39,7 +40,7 @@ import { CheckoutComponent } from './user/checkout/checkout.component';
     apiKey: "AIzaSyCwrRsY8vEyGBrnJ4jWFWJa_6lAuVVX77o",
     libraries: ["places", "geometry"]
 }),
-    GoogleMapsModule,
+    // GoogleMapsModule,
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
@@ -60,6 +61,7 @@ import { CheckoutComponent } from './user/checkout/checkout.component';
         // disallowedRoutes: ['https://localhost:7000/api/Account/login'], // replace with your login API route
       },
     }),
+   
     
   ],
   providers: [{provide:HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},BsModalService,],

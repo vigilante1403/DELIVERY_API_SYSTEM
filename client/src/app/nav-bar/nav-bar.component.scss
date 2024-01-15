@@ -3,7 +3,7 @@ div#navigation-bar {
     width: 100%;
     top: 0;
     z-index: 1000;
-    background: #ebfdff;
+    background: #91d8dd;
     position: fixed;
     margin:auto;
   }
@@ -11,8 +11,11 @@ div#navigation-bar {
   
   .nav-link {
     color: #083c3e;
-  }
   
+  }
+  a.nav-link{
+    font-size: 30px!important;
+  }
   a.nav-link.active,
   a.nav-link:focus,
   a.nav-link:hover {
@@ -61,7 +64,9 @@ div#navigation-bar {
     box-shadow: none;
     color: #083c3e;
   }
-  
+  h5{
+    font-size: 20px;
+  }
   .modal-backdrop {
     --bs-backdrop-zindex: 999;
     --bs-backdrop-bg: #000;
