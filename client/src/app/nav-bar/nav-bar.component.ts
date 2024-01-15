@@ -3,6 +3,8 @@ import { ModalService } from './modal/modal.service';
 import { LoginComponent } from './modal/login/login.component';
 import { ModalComponent } from './modal/modal.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -10,7 +12,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 })
 export class NavBarComponent {
   constructor(public bs:BsModalService) { } // inject modal service
-
+  faUser = faUser;
   ngOnInit(): void {
   }
 

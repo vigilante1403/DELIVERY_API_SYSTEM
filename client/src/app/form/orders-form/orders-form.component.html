@@ -1,47 +1,47 @@
 <form [formGroup]="ordersForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="id">ID:</label>
-      <input type="text" id="id" formControlName="id" disable>
+    <div class="mb-3">
+      <label class="form-label" for="id">ID:</label>
+      <input class="form-control" type="text" id="id" formControlName="id" readonly>
     </div>
   
-    <div>
-      <label for="customerId">Customer ID:</label>
-      <input type="text" id="customerId" formControlName="customerId" required>
+    <div class="mb-3">
+      <label class="form-label" for="customerId">Customer ID:</label>
+      <input class="form-control" type="text" id="customerId" formControlName="customerId" required>
     </div>
   
-    <div>
-      <label for="contactAddress">Contact Address:</label>
-      <textarea id="contactAddress" formControlName="contactAddress" required></textarea>
+    <div class="mb-3">
+      <label class="form-label" for="contactAddress">Contact Address:</label>
+      <textarea class="form-control" id="contactAddress" formControlName="contactAddress" required></textarea>
     </div>
   
-    <div>
-      <label for="deliveryTypeId">Delivery Type:</label>
-      <select id="deliveryTypeId" formControlName="deliveryTypeId" required>
+    <div class="mb-3">
+      <label class="form-label" for="deliveryTypeId">Delivery Type:</label>
+      <select class="form-select" id="deliveryTypeId" formControlName="deliveryTypeId" required>
         </select>
     </div>
   
-    <div>
-      <label for="prePaid">Pre-Paid:</label>
-      <input type="checkbox" id="prePaid" formControlName="prePaid">
+    <div class="mb-3">
+      <label class="form-label" for="prePaid">Pre-Paid:</label>
+      <input class="form-control" type="checkbox" id="prePaid" formControlName="prePaid">
     </div>
   
-    <div>
-      <label for="orderDate">Order Date:</label>
-      <input type="date" id="orderDate" formControlName="orderDate" required>
+    <div class="mb-3">
+      <label class="form-label" for="orderDate">Order Date:</label>
+      <input class="form-control" type="date" id="orderDate" formControlName="orderDate" required>
     </div>
   
-    <div>
-      <label for="status">Status:</label>
-      <select id="status" formControlName="status" required>
+    <div class="mb-3">
+      <label class="form-label" for="status">Status:</label>
+      <select class="form-select" id="status" formControlName="status" required>
         <option value="processing">Processing</option>
         <option value="delivering">Delivering</option>
         <option value="delivered">Delivered</option>
       </select>
     </div>
   
-    <div>
-      <label for="orderPaymentId">Order Payment ID:</label>
-      <input type="text" id="orderPaymentId" formControlName="orderPaymentId">
+    <div class="mb-3">
+      <label class="form-label" for="orderPaymentId">Order Payment ID:</label>
+      <input class="form-control" type="text" id="orderPaymentId" formControlName="orderPaymentId">
     </div>
   
     <button type="submit" [disabled]="ordersForm.invalid">Submit</button>
