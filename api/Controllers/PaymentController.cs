@@ -318,14 +318,14 @@ namespace api.Controllers{
         }
     }
     [HttpGet("distance")]
-    public async Task<ActionResult<int>> CalculateTotalDistanceAsync1(string origin, string destination)
+    public static async Task<ActionResult<int>> CalculateTotalDistanceAsync1([FromQuery]string origin, [FromQuery]string destination)
     {
         using (HttpClient client = new HttpClient())
         {
             string encodedOrigin = Uri.EscapeDataString(origin);
             string encodedDestination = Uri.EscapeDataString(destination);
 
-            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={encodedOrigin}&destination={encodedDestination}&key=AIzaSyDjTiE5SihVKBc4pqsQr-r9phTYXmmuHx0";
+            string url = $"https://maps.googleapis.com/maps/api/directions/json?origin={encodedOrigin}&destination={encodedDestination}&key=AIzaSyCwrRsY8vEyGBrnJ4jWFWJa_6lAuVVX77o";
 
             HttpResponseMessage response = await client.GetAsync(url);
 
@@ -339,10 +339,10 @@ namespace api.Controllers{
                     int totalDistance = directionsResponse.routes[0].legs.Sum(leg => leg.steps.Sum(step => step.Distance1.Value));
                     return totalDistance;
                 }
-                return Ok(directionsResponse);
+                return -2;
             }
 
-            return BadRequest(new ErrorResponse(500,response.ToString())); // Indicate an error or no valid response
+            return -1; // Indicate an error or no valid response
         }
     }
         public static async Task<Location> GetLocationAsync(string address)
@@ -389,6 +389,45 @@ namespace api.Controllers{
 
             // Handle errors or return a default value
             return -1;
+        }
+    }
+    static void ProcessDistanceMatrixResponse(string jsonResponse)
+    {
+        // You'll need to use a JSON library to parse the response
+        // In this example, I'm using Newtonsoft.Json
+        // You can install it via NuGet Package Manager: Install-Package Newtonsoft.Json
+        dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonResponse);
+
+        string distance = data.rows[0].elements[0].distance.text;
+        string duration = data.rows[0].elements[0].duration.text;
+
+        Console.WriteLine($"Distance: {distance}");
+        Console.WriteLine($"Duration: {duration}");
+    }
+    [HttpGet("distance-matrix")]
+    public async Task GetDistance(string origin,string destination){
+        string apiUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={destination}&key=AIzaSyCwrRsY8vEyGBrnJ4jWFWJa_6lAuVVX77o";
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    // Parse the JSON response
+                    ProcessDistanceMatrixResponse(jsonResponse);
+                }
+                else
+                {
+                    Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception: {ex.Message}");
+            }
         }
     }
     }
