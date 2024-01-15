@@ -1,41 +1,41 @@
 <form [formGroup]="orderPaymentForm" (ngSubmit)="onSubmit()">
     <div>
-      <label for="id">ID:</label>
-      <input type="text" id="id" formControlName="id" disable> </div>
+      <label class="form-label" for="id">ID:</label>
+      <input class="form-control" type="text" id="id" formControlName="id" readonly> </div>
   
     <div>
-      <label for="orderId">Order ID:</label>
-      <input type="text" id="orderId" formControlName="orderId">
+      <label class="form-label" for="orderId">Order ID:</label>
+      <input class="form-control" type="text" id="orderId" formControlName="orderId">
     </div>
   
     <div>
-      <label for="subtotal">Subtotal:</label>
-      <input type="number" id="subtotal" formControlName="subtotal">
+      <label class="form-label" for="subtotal">Subtotal:</label>
+      <input class="form-control" type="number" id="subtotal" formControlName="subtotal">
     </div>
   
     <div>
-      <label for="prepaid">Prepaid:</label>
-      <input type="number" id="prepaid" formControlName="prepaid">
+      <label class="form-label" for="prepaid">Prepaid:</label>
+      <input class="form-control" type="number" id="prepaid" formControlName="prepaid">
     </div>
   
     <div>
-      <label for="service_price">Service Price:</label>
-      <input type="number" id="service_price" formControlName="service_price">
+      <label class="form-label" for="service_price">Service Price:</label>
+      <input class="form-control" type="number" id="service_price" formControlName="service_price">
     </div>
   
     <div>
-      <label for="distance_charges">Distance Charges:</label>
-      <input type="number" id="distance_charges" formControlName="distance_charges">
+      <label class="form-label" for="distance_charges">Distance Charges:</label>
+      <input class="form-control" type="number" id="distance_charges" formControlName="distance_charges">
     </div>
   
     <div>
-      <label for="totalCharges">Total Charges:</label>
-      <input type="number" id="totalCharges" formControlName="totalCharges" disable>
+      <label class="form-label" for="totalCharges">Total Charges:</label>
+      <input class="form-control" type="number" id="totalCharges" formControlName="totalCharges" readonly>
     </div>
   
     <div>
-      <label for="status">Status:</label>
-      <select id="status" formControlName="status">
+      <label class="form-label" for="status">Status:</label>
+      <select class="form-select" id="status" formControlName="status">
         <option value="done">Done</option>
         <option value="waiting">Waiting</option>
         <option value="cancel">Cancel</option>

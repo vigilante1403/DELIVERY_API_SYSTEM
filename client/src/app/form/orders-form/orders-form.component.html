@@ -1,0 +1,49 @@
+<form [formGroup]="ordersForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label" for="id">ID:</label>
+      <input class="form-control" type="text" id="id" formControlName="id" readonly>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="customerId">Customer ID:</label>
+      <input class="form-control" type="text" id="customerId" formControlName="customerId" required>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="contactAddress">Contact Address:</label>
+      <textarea class="form-control" id="contactAddress" formControlName="contactAddress" required></textarea>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="deliveryTypeId">Delivery Type:</label>
+      <select class="form-select" id="deliveryTypeId" formControlName="deliveryTypeId" required>
+        </select>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="prePaid">Pre-Paid:</label>
+      <input class="form-control" type="checkbox" id="prePaid" formControlName="prePaid">
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="orderDate">Order Date:</label>
+      <input class="form-control" type="date" id="orderDate" formControlName="orderDate" required>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="status">Status:</label>
+      <select class="form-select" id="status" formControlName="status" required>
+        <option value="processing">Processing</option>
+        <option value="delivering">Delivering</option>
+        <option value="delivered">Delivered</option>
+      </select>
+    </div>
+  
+    <div class="mb-3">
+      <label class="form-label" for="orderPaymentId">Order Payment ID:</label>
+      <input class="form-control" type="text" id="orderPaymentId" formControlName="orderPaymentId">
+    </div>
+  
+    <button type="submit" [disabled]="ordersForm.invalid">Submit</button>
+  </form>
+  

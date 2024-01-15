@@ -1,0 +1,66 @@
+<div style="padding-top: 100px;"></div>
+<mat-toolbar color="primary">
+    <div>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>My App</span>
+        <span class="example-spacer"></span>
+        
+    </div>
+    <div class="d-flex align-items-center ms-4 mb-4">
+      <div class="position-relative">
+          <img class="rounded-circle" src="https://secure.gravatar.com/avatar/d09eaad01aea86c51b4f892b4f8abf6f?s=100&d=wavatar&r=g" alt="" style="width: 40px; height: 40px;">
+          <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+      </div>
+      <div class="ms-3">
+          <h6 class="mb-0">Uzikami</h6>
+          <span>Admin</span>
+      </div>
+  </div>
+  </mat-toolbar>
+  
+  <mat-drawer-container class="example-container" autosize>
+      <mat-drawer #drawer class="example-sidenav" mode="side">
+          <mat-list role="list">
+            <div class="py-5">
+              Dashboard
+            </div>
+
+                  <ul class="sidenav-nav">
+                    <li class="sidenav-nav-item"  *ngFor="let item of items">
+                        <a (click)="item.show= !item.show" [routerLink]="" class="sidenav-nav-link"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}"
+                        >
+                            <i class="sidenav-link-icon" class="fal fa-file"></i>
+                            <span class="sidenav-link-text">{{item.title}}</span>
+                        </a>
+                        <div [collapse]="item.show">
+                          <ul class="p-1" role="">
+                           
+                            <li [ngClass]="{'hover-effect': i.i}" (mouseenter)="i.i = true" (mouseleave)="i.i = false" class="nav-link; " style="cursor: pointer; list-style: none;color: rgb(249, 242, 242);" *ngFor="let i of item.content" routerLink="{{i.link}}">{{i.name}}</li> 
+                          </ul>
+                        </div>
+                        
+                    </li>
+                </ul>
+
+            </mat-list>
+            
+          
+      </mat-drawer>
+    
+      <div class="example-sidenav-content">
+          <label style="cursor: pointer;" routerLink="/">Home</label>
+          <hr>
+       <mat-card class="main-content">
+          <mat-card-content>
+              <router-outlet></router-outlet>
+              
+          </mat-card-content>
+       </mat-card>
+      </div>
+    
+    </mat-drawer-container>
+   

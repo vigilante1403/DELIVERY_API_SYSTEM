@@ -1,3 +1,4 @@
+import { DashboardModule } from './admin/dashboard/dashboard.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
@@ -8,7 +9,7 @@ export const routes: Routes = [
   {path: 'admin', loadChildren: ()=>import('./admin/admin.module').then(mod => mod.AdminModule)},
   {path: 'employee', loadChildren: ()=>import('./employee/employee.module').then(mod => mod.EmployeeModule)},
   {path: 'user', loadChildren: ()=>import('./user/user.module').then(mod => mod.UserModule)},
-
+  
 ];
 
 @NgModule({

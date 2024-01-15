@@ -1,36 +1,61 @@
 <form [formGroup]="deliveriesForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="id">ID:</label>
-      <input type="text" id="id" formControlName="id" readonly>
-    </div>
-  
-    <div>
-      <label for="orderId">Order ID:</label>
-      <input type="text" id="orderId" formControlName="orderId">
-    </div>
-  
-    <div>
-      <label for="agentId">Agent ID:</label>
-      <input type="text" id="agentId" formControlName="agentId">
-    </div>
-  
-    <div>
-      <label for="orderPaymentId">Order Payment ID:</label>
-      <input type="text" id="orderPaymentId" formControlName="orderPaymentId">
-    </div>
-  
-    <div>
-      <label for="deliveryDate">Delivery Date:</label>
-      <input type="date" id="deliveryDate" formControlName="deliveryDate">
-    </div>
-  
-    <div>
-      <label for="status">Status:</label>
-      <select id="status" formControlName="status">
-        
-        <option value="inTransit">In Transit</option>
-        <option value="delivered">Delivered</option>
-      </select>
-    </div>
-  <button type="submit" [disabled]="deliveriesForm.invalid"></button>
-    </form>
+  <div class="mb-3">
+    <label class="form-label" for="id">ID:</label>
+    <input
+      class="form-control"
+      type="text"
+      id="id"
+      formControlName="id"
+      readonly
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="orderId">Order ID:</label>
+    <input
+      class="form-control"
+      type="text"
+      id="orderId"
+      formControlName="orderId"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="agentId">Agent ID:</label>
+    <input
+      class="form-control"
+      type="text"
+      id="agentId"
+      formControlName="agentId"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="orderPaymentId">Order Payment ID:</label>
+    <input
+      class="form-control"
+      type="text"
+      id="orderPaymentId"
+      formControlName="orderPaymentId"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="deliveryDate">Delivery Date:</label>
+    <input
+      class="form-control"
+      type="date"
+      id="deliveryDate"
+      formControlName="deliveryDate"
+    />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="status">Status:</label>
+    <select class="form-select" id="status" formControlName="status">
+      <option value="inTransit">In Transit</option>
+      <option value="delivered">Delivered</option>
+    </select>
+  </div>
+  <button type="submit" [disabled]="deliveriesForm.invalid">Submit</button>
+</form>

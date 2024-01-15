@@ -1,23 +1,23 @@
 
 <form [formGroup]="deliveryAgentForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="id">ID:</label>
-      <input type="text" id="id" formControlName="id">
+    <div class="mb-3">
+      <label class="form-label" for="id">ID:</label>
+      <input class="form-control" type="text" id="id" formControlName="id" readonly>
     </div>
   
-    <div>
-      <label for="name_of_agent">Name of Agent:</label>
-      <input type="text" id="name_of_agent" formControlName="name_of_agent">
+    <div class="mb-3">
+      <label class="form-label" for="name_of_agent">Name of Agent:</label>
+      <input class="form-control" type="text" id="name_of_agent" formControlName="name_of_agent">
     </div>
   
-    <div>
-      <label for="vehicle_number">Vehicle Number:</label>
-      <input type="text" id="vehicle_number" formControlName="vehicle_number">
+    <div class="mb-3">
+      <label class="form-label" for="vehicle_number">Vehicle Number:</label>
+      <input class="form-control" type="text" id="vehicle_number" formControlName="vehicle_number">
     </div>
   
-    <div>
-      <label for="contact_number">Contact Number:</label>
-      <input type="text" id="contact_number" formControlName="contact_number">
+    <div class="mb-3">
+      <label class="form-label" for="contact_number">Contact Number:</label>
+      <input class="form-control" type="text" id="contact_number" formControlName="contact_number">
     </div>
-    <button type="submit" [disabled]="deliveryAgentForm.invalid"></button>
+    <button type="submit" [disabled]="deliveryAgentForm.invalid">Submit</button>
   </form>
