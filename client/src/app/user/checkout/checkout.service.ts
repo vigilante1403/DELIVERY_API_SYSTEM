@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { IOrderShow, IPayment, IReturnParcel } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
+import { env } from 'src/app/config/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +32,7 @@ export class CheckoutService {
     totalCharges:0,
     orderPaymentStatus:''
     })
-  constructor(private deliveryService:DeliveryService) { }
+  constructor(private deliveryService:DeliveryService,private http:HttpClient) { }
 
   fetchOrder(customerId:any,orderId:any){
     this.deliveryService.checkout(customerId,orderId).subscribe({
@@ -45,6 +47,9 @@ export class CheckoutService {
       next:(res)=>{console.log(res); this.payment=res;this.savePaymentInfo()},
       error:(err)=>{console.log(err)}
     })
+  }
+  createNewDelivery(submitDelivery:any){
+    return this.http.post<any>(env+'/Delivery/delivery',submitDelivery)
   }
   convertDataToString(){
    var jsonString = JSON.stringify(this.orderShow);

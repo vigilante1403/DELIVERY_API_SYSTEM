@@ -292,7 +292,11 @@ namespace api.Controllers
             if(paymentId==null){
                 return BadRequest(new ErrorResponse(500));
             }
-            
+            //double check
+            var deliveryExisted = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.OrderId==delivery.OrderId,null,null);
+            if(deliveryExisted.Any()){
+                return BadRequest(new ErrorResponse(400,"Existed this delivery"));
+            }
             var combo = await _unitOfWork.PricePerDistanceRepository.GetEntityByExpression(e=>e.Id==payment.FirstOrDefault().PricePerDistanceId,null,null);
             var expectedDays = combo.FirstOrDefault().DeliveryTime;
             string[] days = expectedDays.Split("-");

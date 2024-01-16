@@ -35,4 +35,5 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
   fetchAllExpress(){
     return this.http.get<IDeliveryAgent[]>(env+'/Delivery/delivery-agent')
   }
+  
 }
