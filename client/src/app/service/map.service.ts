@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../config/environment';
+import { ICountry, IDistrict, IWard } from '../interface/delivery/IDelivery';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,14 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
 }
   createNewOrderPayment(orderId:any,submitAddress:any){
     return this.http.post<any>(env+'/Payment/order-payment/'+orderId,submitAddress)
+  }
+  fetchAllDistricts(){
+    return this.http.get<IDistrict[]>(env+'/Address/districts')
+  }
+  fetchAllWards(){
+    return this.http.get<IWard[]>(env+'/Address/wards')
+  }
+  fetchAllCountries(){
+    return this.http.get<ICountry[]>(env+'/Address/countries')
   }
 }

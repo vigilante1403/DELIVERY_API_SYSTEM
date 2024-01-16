@@ -6,14 +6,14 @@
 
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="customerId" value="{{ this.service.customer.id }}" disabled>
-          <label for="customerId">Customer ID:</label>
+          <label for="customerId">Your ID:</label>
         </div>
       
-        <div class="form-floating mb-3">
+        <!-- <div class="form-floating mb-3">
           <textarea id="contactAddress" class="form-control" formControlName="contactAddress" required></textarea>
           <label for="contactAddress">Contact Address:(recipientName-address-phoneNumber)</label>
           <div class="text-danger error" *ngIf="this.error.length>0">{{ error }}</div>
-        </div>
+        </div> -->
       
         <div class="form-floating mb-3" *ngIf="this.service.services.length>0">
           <select id="deliveryTypeId" class="form-control" (change)="getPrepaidLimit($event)"  required>

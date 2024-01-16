@@ -3,16 +3,76 @@
     <div class="row justify-content-center">
       <div class="col-lg-6 ">
 
-<form  class="form-control" [formGroup]="addressForm" (ngSubmit)="onSubmit()">  
+<form  class="form-control" [formGroup]="addressForm" (ngSubmit)="onSubmit()" >  
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" formControlName="name1" placeholder="Enter sender name">
+    <label>Sender Name:</label>
+  </div>
   <div class="form-floating mb-3">
     <input type="text" class="form-control" formControlName="address1" placeholder="Enter pick up location">
-    <label>Address 1:</label>
+    <label>Where do you want your package picked up?</label>
   </div>  
   <div class="form-floating mb-3">
-    <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
-    <label>Address 2:</label>
+    <input type="text" class="form-control" formControlName="phone1" placeholder="Enter sender phoneNumber">
+    <label>Sender phone number</label>
   </div>
-  <button type="submit" class="btn btn-primary" >Add this delivery address to order </button>
+  <div class="form-floating mb-3" >
+    <select id="deliveryTypeId" (change)="getListDistrict($event)" class="form-control"   required>
+        <option value="0" selected>Please choose an option</option>
+        <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+      </select>
+      <label for="deliveryTypeId">City/Province</label>
+  </div>
+  <div class="form-floating mb-3" >
+    <select id="deliveryTypeId"  class="form-control" (change)="getListWard($event)"   required>
+        <option value="0" selected>Please choose an option</option>
+        <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict">{{ district.name }}</option>
+      </select>
+      <label for="deliveryTypeId">District</label>
+  </div>
+  <div class="form-floating mb-3" >
+    <select id="deliveryTypeId" (change)="getChosenWard($event)"  class="form-control"   required>
+        <option value="0" selected>Please choose an option</option>
+        <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard">{{ ward.name }}</option>
+      </select>
+      <label for="deliveryTypeId">Ward</label>
+  </div>
+  <hr>
+  <hr>
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" formControlName="name2" placeholder="Enter recipient name">
+    <label>Recipient Name:</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
+    <label>Where do you want recipient recieve the package?</label>
+  </div>
+  <div class="form-floating mb-3">
+    <input type="text" class="form-control" formControlName="phone2" placeholder="Enter recipient phoneNumber">
+    <label>Recipient phone number</label>
+  </div>
+  <div class="form-floating mb-3" >
+    <select id="deliveryTypeId" (change)="getListDistrict2($event)" class="form-control"   required>
+        <option value="0" selected>Please choose an option</option>
+        <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+      </select>
+      <label for="deliveryTypeId">City/Province</label>
+  </div>
+  <div class="form-floating mb-3" >
+    <select id="deliveryTypeId"  class="form-control" (change)="getListWard2($event)"   required>
+        <option value="0" selected>Please choose an option</option>
+        <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict2">{{ district.name }}</option>
+      </select>
+      <label for="deliveryTypeId">District</label>
+  </div>
+  <div class="form-floating mb-3" >
+    <select id="deliveryTypeId" (change)="getChosenWard2($event)"  class="form-control"required>
+        <option value="0" selected>Please choose an option</option>
+        <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard2">{{ ward.name }}</option>
+      </select>
+      <label for="deliveryTypeId">Ward</label>
+  </div>
+  <button type="submit" class="btn btn-primary" >Add this delivery address to order</button>
 
   <!-- <agm-map id="map"[latitude]="location.latitude" [longitude]="location.longitude"></agm-map> -->
   </form>

@@ -18,6 +18,10 @@ namespace api.DAL{
         private GenericRepository<Parcel> _parcelRepository;
         private GenericRepository<Service> _serviceRepository;
         private GenericRepository<ResetPassword> _resetPasswordRepository;
+        private GenericRepository<AllPlacesInCountry> _allPlacesInCountryRepository;
+        private GenericRepository<District> _districtRepository;
+        private GenericRepository<Ward> _wardRepository;
+        private GenericRepository<PricePerDistance> _pricePerDistanceRepository;
 
         
         public readonly ApplicationDbContext _db;
@@ -178,7 +182,50 @@ namespace api.DAL{
                 _resetPasswordRepository=value;
             }
         }
-         public void Dispose()
+
+        public GenericRepository<AllPlacesInCountry> AllPlacesInCountryRepository { 
+            get{
+                if(_allPlacesInCountryRepository==null){
+                    this._allPlacesInCountryRepository = new GenericRepository<AllPlacesInCountry>(_db);
+                }
+                return _allPlacesInCountryRepository;
+            }
+            set{
+                _allPlacesInCountryRepository=value;
+            } 
+            }
+        public GenericRepository<District> DistrictRepository {
+            get{
+                if(_districtRepository==null){
+                    this._districtRepository = new GenericRepository<District>(_db);
+                }
+                return _districtRepository;
+            }
+            set{
+                _districtRepository=value;
+            } }
+        public GenericRepository<Ward> WardRepository {
+             get{
+                if(_wardRepository==null){
+                    this._wardRepository = new GenericRepository<Ward>(_db);
+                }
+                return _wardRepository;
+            }
+            set{
+                _wardRepository=value;
+            } }
+        public GenericRepository<PricePerDistance> PricePerDistanceRepository {
+            get{
+                if(_pricePerDistanceRepository==null){
+                    this._pricePerDistanceRepository = new GenericRepository<PricePerDistance>(_db);
+                }
+                return _pricePerDistanceRepository;
+            }
+            set{
+                _pricePerDistanceRepository=value;
+            } }
+
+        public void Dispose()
         {
             _db.Dispose();
         }

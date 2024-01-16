@@ -39,16 +39,16 @@ export class CheckoutComponent {
     this.ConvertContactData(this.orderShow.contactAddress)
     this.arrayParcels=this.service.convertStringToArray()
     this.payment=this.service.convertPaymentStringInfoToObj()
-    this.initConfig();
+    this.initConfig(this.payment.totalCharges.toString());
   }
   ConvertContactData(contactAddress:any){
     var json = JSON.parse(contactAddress);
-    var name = json["name"]
-    var address= json["address"]
-    var phone = json["phoneNumber"]
+    var name = json["FullName"]
+    var address= json["Address"]
+    var phone = json["PhoneNumber"]
     this.contactAddress = name+', Address: '+address+', PhoneNumber: (+84)'+phone
   }
-  private initConfig(): void {
+  private initConfig(totalAmount:any): void {
     this.payPalConfig = {
     currency: 'USD',
     clientId: 'sb',
@@ -58,22 +58,22 @@ export class CheckoutComponent {
         {
           amount: {
             currency_code: 'USD',
-            value: '9.99',
+            value: totalAmount,
             breakdown: {
               item_total: {
                 currency_code: 'USD',
-                value: '9.99'
+                value: totalAmount
               }
             }
           },
           items: [
             {
-              name: 'Enterprise Subscription',
+              name: 'Shipping Delivery',
               quantity: '1',
               category: 'DIGITAL_GOODS',
               unit_amount: {
                 currency_code: 'USD',
-                value:'9.99',
+                value:totalAmount,
               },
             }
           ]

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3aHQk18tnM6n2HMfTYL99U0bD5Ct6W+y8uUtZOZj3Kk=",
+  "Hash": "T6vEZbUEV5FTyurojMUv0cmsiHCeg0aTVwLq1HYkVkI=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -17,6 +17,23 @@
   ],
   "Assets": [
     {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\02hpv-superJumbo.jpg",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/02hpv-superJumbo.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\02hpv-superJumbo.jpg"
+    },
+    {
       "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
@@ -32,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\rubella-MMR.png",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/rubella-MMR.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\rubella-MMR.png"
     },
     {
       "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\shutterstock_682265785_4.2e16d0ba.fill-1600x775.jpg",

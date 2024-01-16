@@ -21,6 +21,9 @@ namespace api.Data{
        public DbSet<OrderStatus> OrderStatuses {get;set;}
        public DbSet<Parcel> Parcels {get;set;}
        public DbSet<ResetPassword> ResetPasswords{get;set;}
-        
+        public DbSet<AllPlacesInCountry> AllPlacesInCountries{get;set;}
+        public DbSet<District> Districts{get;set;}
+        public DbSet<Ward> Wards{get;set;}
+        public DbSet<PricePerDistance> PricePerDistances{get;set;}
     }
 }

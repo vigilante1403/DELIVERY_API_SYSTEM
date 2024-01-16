@@ -20,20 +20,20 @@ namespace api.DAL{
            return await db.KeyDeleteAsync(basketId);
         }
 
-        public async Task<SubmitAddress> GetBasketAsync(string basketId)
+        public async Task<RedisSaveTravelData> GetBasketAsync(string basketId)
         {
             var data = await db.StringGetAsync(basketId);
-            return data.IsNullOrEmpty?null:JsonSerializer.Deserialize<SubmitAddress>(data);
+            return data.IsNullOrEmpty?null:JsonSerializer.Deserialize<RedisSaveTravelData>(data);
         }
         
 
-        public async Task<SubmitAddress> UpdateBasketAsync(SubmitAddress address)
+        public async Task<RedisSaveTravelData> UpdateBasketAsync(RedisSaveTravelData address)
         {
-           bool flag= await db.StringSetAsync(address.Id,JsonSerializer.Serialize(address),TimeSpan.FromDays(2));
+           bool flag= await db.StringSetAsync(address.orderId,JsonSerializer.Serialize(address),TimeSpan.FromDays(2));
            if(!flag){
             return null;
            }
-           return await GetBasketAsync(address.Id);
+           return await GetBasketAsync(address.orderId);
         }
         
 

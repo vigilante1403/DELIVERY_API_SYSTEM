@@ -11,14 +11,22 @@ using System.Net.Http.Formatting;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using Nexmo.Api.Voice.EventWebhooks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Text.Json;
+using System.Text;
+using Twilio.Rest.Microvisor.V1;
+using api.services;
 
 namespace api.Controllers{
     [ApiController]
     [Route("api/[controller]")]
     public class PaymentController:ControllerBase{
         private readonly IUnitOfWork _unitOfWork;
-        public PaymentController(IUnitOfWork unitOfWork){
+        private readonly IHandleRoute _handleRoute;
+      
+        public PaymentController(IUnitOfWork unitOfWork, IHandleRoute handleRoute){
             _unitOfWork=unitOfWork;
+            _handleRoute=handleRoute;
         }
         [HttpGet("order-payment-status")]
         public async Task<ActionResult<IEnumerable<OrderPaymentStatus>>> GetAllOrderPaymentStatus(){
@@ -214,7 +222,7 @@ namespace api.Controllers{
             return Ok(rp);
         }
         [HttpPost("order-payment/{orderId}")]
-        public async Task<ActionResult> CreateNewOrderPayment([FromRoute] string orderId,[FromBody] SubmitAddress address){
+        public async Task<ActionResult> CreateNewOrderPayment([FromRoute] string orderId,[FromBody] SubmitAddressNew address){
             int Id =0;
             try
             {
@@ -223,7 +231,7 @@ namespace api.Controllers{
             catch (System.Exception)
             {
                 
-                return BadRequest(new ErrorResponse(400));
+                return BadRequest(new ErrorResponse(400,"blah blah"));
             }
             var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==Id,null,"Service,Customer,OrderStatus,OrderPayment");
             if(!orderList.Any()){
@@ -232,37 +240,42 @@ namespace api.Controllers{
             var order = orderList.FirstOrDefault();
             var orderPaymentId=order.OrderPaymentId;
             if(orderPaymentId==null||order.OrderPayment.OrderPaymentStatusId==4){
-                   string apiKey = "AIzaSyCwrRsY8vEyGBrnJ4jWFWJa_6lAuVVX77o";
-
-                    // Location origin = await GetLocationAsync(address.startAddress);
-                    // Location destination = await GetLocationAsync(address.endAddress);
-
-                    // var totalTime = await CalculateTravelTimeAsync(apiKey, origin, destination);
-                    var totalDistance = await CalculateTotalDistanceAsync(address.startAddress,address.endAddress);
-                    if(totalDistance==-1){
-                        var errorMessage =  "Error at calculating distance!" +address.startAddress;
-                        return BadRequest(new ErrorResponse(500,errorMessage));
-                    }
-                    //van toc 70km/h
+         
+                    //xet diem dau va diem cuoi cua route //vi du 62-63
+                    var startPlaceId = address.LocationStartPlaceId;
+                    var endPlaceId = address.LocationEndPlaceId;
+                    var Places = await _unitOfWork.AllPlacesInCountryRepository.GetEntityByExpression(null,null,null);
+                    var startPlace = Places.Where(x=>x.Id==startPlaceId).FirstOrDefault();
+                    var endPlace = Places.Where(x=>x.Id==endPlaceId).FirstOrDefault();
+                    var routeChooseId = _handleRoute.ChooseRoute(startPlace,endPlace);
+                    var comboList = await _unitOfWork.PricePerDistanceRepository.GetEntityByExpression(d=>d.Id==routeChooseId,null,null);
+                    var combo = comboList.FirstOrDefault();
                     var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(d=>d.Id==order.ServiceId,null,null);
                     var ServicePrice = serviceList.FirstOrDefault().Price;
-                    DateTime today = DateTime.Now;
-                    var year = today.Year;
-                    var distanceList = await _unitOfWork.CalculateChargesRepository.GetEntityByExpression(d=>d.Year==year,null,null);
-                    var distancePrice = distanceList.FirstOrDefault().BasicPricePerKm;
-                    var weightCharge = distanceList.FirstOrDefault().BasicPricePerKg;
+                    // DateTime today = DateTime.Now;
+                    // var year = today.Year;
+                    // var distanceList = await _unitOfWork.CalculateChargesRepository.GetEntityByExpression(d=>d.Year==year,null,null);
+                    // var distancePrice = distanceList.FirstOrDefault().BasicPricePerKm;
+                    // var weightCharge = distanceList.FirstOrDefault().BasicPricePerKg;
+
                     //get subtotal 
                     IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==Id,null,"Parcel");
-                    var weight = parcelList.Sum(x=>x.Parcel.Weight)*weightCharge;
+                    var weight = parcelList.Sum(x=>x.Parcel.Weight);
+                    decimal weightPlus =0;
+                    if(weight>combo.PricePerKg){
+                        var delta = weight -combo.PricePerKg;
+                        weightPlus = (decimal)(delta *combo.PriceAdd1Kg)/23;
+                    }
+                    var distancePrice =(decimal) combo.PriceRoute/23;
                     
                     var paymentList = await _unitOfWork.OrderPaymentRepository.GetAll();
                     var paymentId = paymentList.Count()+1;
                     OrderPayment o = new OrderPayment{
-                        SubTotal=weight,
+                        SubTotal=weightPlus,
                         PrePaid=order.PrePaid,
                         ServicePrice=ServicePrice,
-                        DistanceCharges=(totalDistance*distancePrice)/1000,
-                        TotalCharges=weight+order.PrePaid+ServicePrice+((totalDistance*distancePrice)/1000),
+                        DistanceCharges=distancePrice,
+                        TotalCharges=weightPlus+order.PrePaid+ServicePrice+distancePrice,
                         OrderPaymentStatusId=2
                     };
                     try
@@ -274,9 +287,37 @@ namespace api.Controllers{
                         
                         return BadRequest(new ErrorResponse(500,"Error at order payment table"));
                     }
+                   var WardList = await _unitOfWork.WardRepository.GetEntityByExpression(null,null,"District");
+                   var DistrictList = await _unitOfWork.DistrictRepository.GetEntityByExpression(null,null,"AllPlacesInCountry");
+                   var CountryList = await _unitOfWork.AllPlacesInCountryRepository.GetEntityByExpression(null,null,null);
+                   var contactWard = WardList.Where(e=>e.Id==address.LocationEndWardId).FirstOrDefault().Name;
+                   var contactDistrict = DistrictList.Where(r=>r.Id==address.LocationEndDistrictId).FirstOrDefault().Name;
+                   var contactCountry = CountryList.Where(w=>w.Id==address.LocationEndPlaceId).FirstOrDefault().Name;
+                   var contactCityMark =  CountryList.Where(w=>w.Id==address.LocationEndPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   string ContactAddress = string.Concat(address.LocationEndStreet,", ",contactWard," Ward ",contactDistrict," District ",contactCountry," ",contactCityMark);
+                    var senderWard = WardList.Where(e=>e.Id==address.LocationStartWardId).FirstOrDefault().Name;
+                   var senderDistrict = DistrictList.Where(r=>r.Id==address.LocationStartDistrictId).FirstOrDefault().Name;
+                   var senderCountry = CountryList.Where(w=>w.Id==address.LocationStartPlaceId).FirstOrDefault().Name;
+                   var senderCityMark =  CountryList.Where(w=>w.Id==address.LocationStartPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   string SenderAddress = string.Concat(address.LocationStartStreet,", ",senderWard," Ward ",senderDistrict," District ",senderCountry," ",senderCityMark);
+                    InfoCombine contact = new InfoCombine{
+                        FullName= address.ContactName,
+                        PhoneNumber=address.ContactPhoneNumber,
+                       Address=ContactAddress
+                    };
+                    InfoCombine sender = new InfoCombine{
+                        FullName = address.SenderName,
+                        PhoneNumber = address.SenderPhoneNumber,
+                        Address=SenderAddress
+                    };
+                    var contactString = System.Text.Json.JsonSerializer.Serialize(contact);
+                    var senderString = System.Text.Json.JsonSerializer.Serialize(sender);
                     try
                     {
                         order.OrderPaymentId=paymentId;
+                        order.ContactAddress=contactString;
+                        order.SenderInfo=senderString;
+                        order.PricePerDistanceId=combo.Id;
                         _unitOfWork.Save();
                     }
                     catch (System.Exception)
@@ -286,9 +327,9 @@ namespace api.Controllers{
                     }
 
             }else{
-                return BadRequest(new ErrorResponse(401));
+                return BadRequest(new ErrorResponse(401,"something is wrong"));
             }
-            return Ok();
+            return Ok("Update data");
         }
         
          public static async Task<int> CalculateTotalDistanceAsync(string origin, string destination)
@@ -393,17 +434,36 @@ namespace api.Controllers{
     }
     static void ProcessDistanceMatrixResponse(string jsonResponse)
     {
-        // You'll need to use a JSON library to parse the response
-        // In this example, I'm using Newtonsoft.Json
-        // You can install it via NuGet Package Manager: Install-Package Newtonsoft.Json
+       try
+    {
         dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonResponse);
 
-        string distance = data.rows[0].elements[0].distance.text;
-        string duration = data.rows[0].elements[0].duration.text;
+        // Check if the expected properties exist
+        //do chua check exist prop trong dynamic data
+        if (data != null && data.rows != null && data.rows.Count > 0 &&
+            data.rows[0].elements != null && data.rows[0].elements.Count > 0 &&
+            data.rows[0].elements[0].distance != null && data.rows[0].elements[0].duration != null)
+        {
+            string distance = data.rows[0].elements[0].distance.text;
+            string duration = data.rows[0].elements[0].duration.text;
 
-        Console.WriteLine($"Distance: {distance}");
-        Console.WriteLine($"Duration: {duration}");
+            Console.WriteLine($"Distance: {distance}");
+            Console.WriteLine($"Duration: {duration}");
+        }
+        else
+        {
+            Console.WriteLine(data);
+            Console.WriteLine("Invalid JSON structure. Unable to parse distance and duration.");
+        }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error parsing JSON response: {ex.Message}");
+    }
+
+        
+    }
+    
     [HttpGet("distance-matrix")]
     public async Task GetDistance(string origin,string destination){
         string apiUrl = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={destination}&key=AIzaSyCwrRsY8vEyGBrnJ4jWFWJa_6lAuVVX77o";
@@ -418,6 +478,7 @@ namespace api.Controllers{
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     // Parse the JSON response
                     ProcessDistanceMatrixResponse(jsonResponse);
+                  
                 }
                 else
                 {
@@ -428,6 +489,7 @@ namespace api.Controllers{
             {
                 Console.WriteLine($"Exception: {ex.Message}");
             }
+         
         }
     }
     }

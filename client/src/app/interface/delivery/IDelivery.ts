@@ -7,7 +7,6 @@ export interface IService{
     daysAdd:number,
 }
 export interface ISubmitOrder{
-    contactAddress:string,
     serviceId:number,
     customerId:string,
     prePaid:number,
@@ -35,9 +34,18 @@ export interface ISubmitListParcel{
     customerId:string
 }
 export interface ISubmitAddress{
-    id:string,
-    startAddress:string,
-    endAddress:string
+    locationStartPlaceId:number,
+    locationEndPlaceId:number,
+    locationStartDistrictId:number,
+    locationEndDistrictId:number,
+    locationStartWardId:number,
+    locationEndWardId:number,
+    locationStartStreet:string,
+    locationEndStreet:string,
+    contactName:string,
+    contactPhoneNumber:string,
+    senderName:string,
+    senderPhoneNumber:string
 }
 export interface IReturnParcel{
     id:number,
@@ -53,4 +61,20 @@ export interface IPayment{
     distanceCharges:number,
     totalCharges:number,
     orderPaymentStatus:string
+}
+export interface ICountry{
+    id:number,
+    name:string,
+    specila:boolean,
+    state:number
+}
+export interface IDistrict{
+    id:number,
+    name:string,
+    allPlacesInCountryId:number
+}
+export interface IWard{
+    id:number,
+    name:string,
+    districtId:number
 }

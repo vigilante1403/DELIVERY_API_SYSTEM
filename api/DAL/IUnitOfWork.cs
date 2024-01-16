@@ -17,6 +17,10 @@ namespace api.DAl{
         GenericRepository<Parcel> ParcelRepository{get;set;}
         GenericRepository<Service> ServiceRepository{get;set;}
         GenericRepository<ResetPassword> ResetPasswordRepository{get;set;}
+        GenericRepository<AllPlacesInCountry> AllPlacesInCountryRepository{get;set;}
+        GenericRepository<District> DistrictRepository{get;set;}
+        GenericRepository<Ward> WardRepository{get;set;}
+        GenericRepository<PricePerDistance> PricePerDistanceRepository{get;set;}
         
 
     }

@@ -23,7 +23,7 @@ export class OrdersFormComponent implements OnInit {
 
   ngOnInit() {
     this.ordersForm = this.formBuilder.group({
-      contactAddress: ['', Validators.required],
+      // contactAddress: ['', Validators.required],
       deliveryTypeId: [this.selected, Validators.required],
       prePaid: [this.prePaid,Validators.required],
     });
@@ -93,12 +93,12 @@ export class OrdersFormComponent implements OnInit {
     }else{
       this.selectedError=''
     }
-   this.validateContactAddress();
+  //  this.validateContactAddress();
    if(this.error.length>0||this.selectedError.length>0){
     console.log('submit failed!')
    }else{
     if(this.ordersForm.valid){
-      var submit:ISubmitOrder = ({contactAddress:this.contact,serviceId:this.selected,customerId:this.service.customer.id,
+      var submit:ISubmitOrder = ({serviceId:this.selected,customerId:this.service.customer.id,
       prePaid:this.ordersForm.get('prePaid')?.value,orderDate:new Date()})
       console.log(submit)
       this.service.addNewOrder(submit).subscribe({

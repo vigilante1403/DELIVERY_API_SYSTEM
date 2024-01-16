@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,10 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240115180539_AddTables")]
+    partial class AddTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -330,12 +332,6 @@ namespace api.Migrations
                     b.Property<decimal>("PrePaid")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("PricePerDistanceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SenderInfo")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
@@ -346,8 +342,6 @@ namespace api.Migrations
                     b.HasIndex("OrderPaymentId");
 
                     b.HasIndex("OrderStatusId");
-
-                    b.HasIndex("PricePerDistanceId");
 
                     b.HasIndex("ServiceId");
 
@@ -786,10 +780,6 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api.Models.PricePerDistance", "PricePerDistance")
-                        .WithMany()
-                        .HasForeignKey("PricePerDistanceId");
-
                     b.HasOne("api.Models.Service", "Service")
                         .WithMany()
                         .HasForeignKey("ServiceId")
@@ -801,8 +791,6 @@ namespace api.Migrations
                     b.Navigation("OrderPayment");
 
                     b.Navigation("OrderStatus");
-
-                    b.Navigation("PricePerDistance");
 
                     b.Navigation("Service");
                 });

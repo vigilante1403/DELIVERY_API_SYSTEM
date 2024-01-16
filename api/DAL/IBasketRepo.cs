@@ -1,9 +1,9 @@
 using api.DTO;
 namespace api.DAl{
     public interface IBasketRepo{
-        Task<SubmitAddress> GetBasketAsync(string basketId);
+        Task<RedisSaveTravelData> GetBasketAsync(string basketId);
         
-        Task<SubmitAddress> UpdateBasketAsync(SubmitAddress basket);
+        Task<RedisSaveTravelData> UpdateBasketAsync(RedisSaveTravelData basket);
        
         Task<bool> DeleteBasketAsync(string basketId);
     }

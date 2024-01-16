@@ -28,7 +28,7 @@ namespace api.Controllers{
         [HttpPost("order")]
         public async Task<ActionResult> AddNewOrder(SubmitOrder order){
             Order o = new Order{
-                ContactAddress=order.ContactAddress,
+                ContactAddress="Not update",
                 ServiceId=order.ServiceId,
                 CustomerId=order.CustomerId,
                 PrePaid=order.PrePaid,
@@ -364,7 +364,8 @@ namespace api.Controllers{
                 PrePaid=order.PrePaid,
                 OrderDate=order.OrderDate,
                 OrderPaymentId=order.OrderPaymentId,
-                OrderStatus=order.OrderStatus.StatusName
+                OrderStatus=order.OrderStatus.StatusName,
+                SenderAddress=order.SenderInfo,
             };
             return Ok(o);
         }

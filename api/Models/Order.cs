@@ -19,5 +19,8 @@ namespace api.Models{
         
         public int? OrderPaymentId { get; set; }
         public OrderPayment? OrderPayment { get; set; }
+        public string? SenderInfo { get; set; }
+        public int? PricePerDistanceId { get; set; }
+        public PricePerDistance PricePerDistance { get; set; }
     }
 }

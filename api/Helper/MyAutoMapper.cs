@@ -13,6 +13,10 @@ namespace api.Helper{
                 .ForMember(t=>t.OrderPaymentId,y=>y.MapFrom(q=>q.OrderPayment.Id))
                  //khai bao input & output
             ;
+            CreateMap<District,DistrictDTO>()
+            .ForMember(d=>d.AllPlacesInCountryId,r=>r.MapFrom(o=>o.AllPlacesInCountry.Id));
+            CreateMap<Ward,WardDTO>()
+            .ForMember(e=>e.DistrictId,w=>w.MapFrom(q=>q.District.Id));
             
         }
     }
