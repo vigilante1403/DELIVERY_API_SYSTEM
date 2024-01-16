@@ -2,10 +2,10 @@
 import { Component, AfterViewInit, ElementRef,NgZone, ViewChild, OnInit } from '@angular/core';
 import { MapService } from 'src/app/service/map.service';
 import { FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
-import { ICountry, IDistrict, ISubmitAddress, IWard } from 'src/app/interface/delivery/IDelivery';
+import { ICountry, IDeliveryAgent, IDistrict, IOrderShow, ISubmitAddress, IWard } from 'src/app/interface/delivery/IDelivery';
 import { ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
-import { uuid } from 'uuidv4';
+import { DeliveryService } from 'src/app/service/delivery.service';
+
 
 
 
@@ -32,7 +32,23 @@ export class AddressFormComponent implements OnInit {
   selectedWard2:number=0;
   addressForm!:FormGroup
   flag:boolean=false;
-  constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute) { }
+  storedExpress:IDeliveryAgent[]=[]
+  chooseDelivery:string=''
+  chooseDeliveryId:number=0;
+  change:boolean=false;
+  storedOrder:IOrderShow=({
+    id:0,
+    contactAddress:'',
+    senderInfo:'',
+    service:'',
+    customerId:'',
+    prePaid:0,
+    orderDate:new Date(),
+    orderStatus:'',
+    orderPaymentId:0,
+    deliveryAgentId:0
+  })
+  constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService) { }
  initForm(){
   this.addressForm=this.fb.group({
     name1:['',Validators.required],
@@ -112,6 +128,32 @@ export class AddressFormComponent implements OnInit {
           next:(res)=>{console.log(res);this.storedWards=res},
           error:(err)=>{console.log(err)}
         })
+        this.service.fetchAllExpress().subscribe({
+          next:(res)=>{console.log(res);this.storedExpress=res},
+          error:(err)=>{console.log(err)}
+        })
+        var orderId=Number(this.routeActivate.snapshot.paramMap.get('orderId'))
+        var customerId=this.routeActivate.snapshot.paramMap.get('customerId')
+        this.deliveryService.checkout(customerId,orderId).subscribe({
+          next:(res)=>{console.log(res);this.storedOrder=res;this.defaultChooseDelivery()},
+          error:(err)=>{console.log(err)}
+        })
+    }
+    defaultChooseDelivery(){
+      var agentId = this.storedOrder.deliveryAgentId!;
+      this.chooseDeliveryId=agentId
+      var temp = this.storedExpress
+      this.chooseDelivery = temp.filter(d=>d.id==agentId)[0].agentName
+    }
+    changeDelivery(){
+      this.change=true;
+    }
+    getAgentChanged(event:Event){
+      const id =Number((event.target as HTMLSelectElement).value) 
+      var temp = this.storedExpress
+      this.chooseDeliveryId=id
+      this.chooseDelivery=temp.filter(d=>d.id==id)[0].agentName
+      
     }
     onSubmit(){
       if(this.addressForm.invalid){
@@ -138,7 +180,8 @@ export class AddressFormComponent implements OnInit {
     contactName:this.addressForm.get('name2')?.value,
     contactPhoneNumber:this.addressForm.get('phone2')?.value,
     senderName:this.addressForm.get('name1')?.value,
-    senderPhoneNumber:this.addressForm.get('phone1')?.value
+    senderPhoneNumber:this.addressForm.get('phone1')?.value,
+    deliveryAgentId:this.chooseDeliveryId
           })
           var orderId = this.routeActivate.snapshot.paramMap.get('orderId')
           this.service.createNewOrderPayment(orderId,submitAddress).subscribe({

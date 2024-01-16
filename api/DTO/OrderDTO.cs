@@ -10,6 +10,7 @@ namespace api.DTO{
         public string OrderStatus { get; set; }
         
         public int? OrderPaymentId { get; set; }
+        public int? DeliveryAgentId { get; set; }
         
     }
 }

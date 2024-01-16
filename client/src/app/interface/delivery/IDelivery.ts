@@ -15,12 +15,14 @@ export interface ISubmitOrder{
 export interface IOrderShow{
     id:number,
     contactAddress:string,
+    senderInfo?:string
     service:string,
     customerId:string,
     prePaid:number,
     orderDate:Date,
     orderStatus:string,
-    orderPaymentId?:number
+    orderPaymentId?:number,
+    deliveryAgentId?:number
 }
 export interface ISubmitParcel{
     id:number,
@@ -45,7 +47,8 @@ export interface ISubmitAddress{
     contactName:string,
     contactPhoneNumber:string,
     senderName:string,
-    senderPhoneNumber:string
+    senderPhoneNumber:string,
+    deliveryAgentId:number
 }
 export interface IReturnParcel{
     id:number,
@@ -77,4 +80,19 @@ export interface IWard{
     id:number,
     name:string,
     districtId:number
+}
+export interface IDeliveryAgent{
+    id:number,
+    agentName:string,
+    vehicleNumber:string,
+    agentContactNumber:string,
+    startWorkingTime?:string,
+    endWorkingTime?:string,
+    pickUpTimeInCity?:string
+    pickUpTimeInOtherPlace?:string
+    pickUpTimeForSpecialOrder?:number,
+    dayMayDelay?:number,
+    requiredTimeForOrderToPickUp?:string,
+    charges?:number,
+    maxFreeWeight:number
 }

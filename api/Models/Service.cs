@@ -9,5 +9,7 @@ namespace api.Models{
         public bool PrePaid { get; set; }
         public bool Collect { get; set; }
         public int DaysAdd { get; set; }
+        public int? DeliveryAgentId { get; set; }
+        public DeliveryAgent? DeliveryAgent { get; set; }
     }
 }

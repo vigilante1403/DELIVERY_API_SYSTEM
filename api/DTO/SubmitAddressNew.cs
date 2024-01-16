@@ -12,6 +12,7 @@ namespace api.DTO{
         public string ContactPhoneNumber { get; set; }
         public string SenderName { get; set; }
         public string SenderPhoneNumber { get; set; }
+        public int DeliveryAgentId { get; set; }
 
     }
 }

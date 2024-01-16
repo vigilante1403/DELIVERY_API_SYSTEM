@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,10 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240116135515_AddColumnsInDeliveryAgent")]
+    partial class AddColumnsInDeliveryAgent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,9 +227,6 @@ namespace api.Migrations
                     b.Property<int>("OrderPaymentId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PickUpDateTime")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DeliveryAgentId");
@@ -348,9 +347,6 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("DeliveryAgentId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -375,8 +371,6 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("DeliveryAgentId");
 
                     b.HasIndex("OrderPaymentId");
 
@@ -576,9 +570,6 @@ namespace api.Migrations
                     b.Property<int>("DaysAdd")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DeliveryAgentId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("PrePaid")
                         .HasColumnType("bit");
 
@@ -590,8 +581,6 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DeliveryAgentId");
 
                     b.ToTable("Services");
                 });
@@ -816,10 +805,6 @@ namespace api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("api.Models.DeliveryAgent", "DeliveryAgent")
-                        .WithMany()
-                        .HasForeignKey("DeliveryAgentId");
-
                     b.HasOne("api.Models.OrderPayment", "OrderPayment")
                         .WithMany()
                         .HasForeignKey("OrderPaymentId");
@@ -841,8 +826,6 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
-
-                    b.Navigation("DeliveryAgent");
 
                     b.Navigation("OrderPayment");
 
@@ -890,15 +873,6 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("api.Models.Service", b =>
-                {
-                    b.HasOne("api.Models.DeliveryAgent", "DeliveryAgent")
-                        .WithMany()
-                        .HasForeignKey("DeliveryAgentId");
-
-                    b.Navigation("DeliveryAgent");
                 });
 
             modelBuilder.Entity("api.Models.Ward", b =>

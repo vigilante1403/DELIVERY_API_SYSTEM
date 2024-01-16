@@ -250,21 +250,30 @@ namespace api.Controllers{
                     var routeChooseId = _handleRoute.ChooseRoute(startPlace,endPlace);
                     var comboList = await _unitOfWork.PricePerDistanceRepository.GetEntityByExpression(d=>d.Id==routeChooseId,null,null);
                     var combo = comboList.FirstOrDefault();
-                    var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(d=>d.Id==order.ServiceId,null,null);
-                    var ServicePrice = serviceList.FirstOrDefault().Price;
+                    var agentList = await _unitOfWork.DeliveryAgentRepository.GetEntityByExpression(null,null,null);
+                    var agent = agentList.Where(e=>e.Id==address.DeliveryAgentId).FirstOrDefault();
+                    var charges = agent.Charges.Value;
+                    var maxWeight=agent.MaxFreeWeight;
+                    var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(null,null,"DeliveryAgent");
+                    var newServiceChosen = serviceList.Where(r=>r.DeliveryAgentId==address.DeliveryAgentId).FirstOrDefault();
+                    var ServicePrice = newServiceChosen.Price;
                     // DateTime today = DateTime.Now;
                     // var year = today.Year;
                     // var distanceList = await _unitOfWork.CalculateChargesRepository.GetEntityByExpression(d=>d.Year==year,null,null);
                     // var distancePrice = distanceList.FirstOrDefault().BasicPricePerKm;
                     // var weightCharge = distanceList.FirstOrDefault().BasicPricePerKg;
-
+                    
                     //get subtotal 
                     IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==Id,null,"Parcel");
                     var weight = parcelList.Sum(x=>x.Parcel.Weight);
                     decimal weightPlus =0;
-                    if(weight>combo.PricePerKg){
-                        var delta = weight -combo.PricePerKg;
+                    var freeWeightUpTo = combo.PricePerKg+maxWeight;
+                    if(weight>freeWeightUpTo){
+                        var delta = weight -freeWeightUpTo;
                         weightPlus = (decimal)(delta *combo.PriceAdd1Kg)/23;
+                    }
+                    if(weight<=maxWeight){
+                        weightPlus=0;
                     }
                     var distancePrice =(decimal) combo.PriceRoute/23;
                     
@@ -274,7 +283,7 @@ namespace api.Controllers{
                         SubTotal=weightPlus,
                         PrePaid=order.PrePaid,
                         ServicePrice=ServicePrice,
-                        DistanceCharges=distancePrice,
+                        DistanceCharges=distancePrice+charges,
                         TotalCharges=weightPlus+order.PrePaid+ServicePrice+distancePrice,
                         OrderPaymentStatusId=2
                     };
@@ -318,6 +327,7 @@ namespace api.Controllers{
                         order.ContactAddress=contactString;
                         order.SenderInfo=senderString;
                         order.PricePerDistanceId=combo.Id;
+                        order.DeliveryAgentId=agent.Id;
                         _unitOfWork.Save();
                     }
                     catch (System.Exception)

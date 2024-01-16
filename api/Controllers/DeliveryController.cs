@@ -14,11 +14,11 @@ namespace api.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IBasketRepo _basket;
-        public DeliveryController(IUnitOfWork unitOfWork,IBasketRepo basket)
+      
+        public DeliveryController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _basket=basket;
+        
         }
 
     
@@ -69,7 +69,15 @@ namespace api.Controllers
                 AgentName = delivery.AgentName,
                 VehicleNumber = delivery.VehicleNumber,
                 AgentContactNumber = delivery.AgentContactNumber,
-
+                StartWorkingTime =delivery.StartWorkingTime,    
+                EndWorkingTime=delivery.EndWorkingTime,
+                PickUpTimeInCity=delivery.PickUpTimeInCity,
+                PickUpTimeInOtherPlace=delivery.PickUpTimeInOtherPlace,
+                PickUpTimeForSpecialOrder=delivery.PickUpTimeForSpecialOrder,
+                DayMayDelay=delivery.DayMayDelay,
+                RequiredTimeForOrderToPickUp=delivery.RequiredTimeForOrderToPickUp,
+                Charges=delivery.Charges,
+                MaxFreeWeight=delivery.MaxFreeWeight
             };
 
             try

@@ -72,6 +72,20 @@
       </select>
       <label for="deliveryTypeId">Ward</label>
   </div>
+  <div class=" mb-3" >
+    <label for="deliveryTypeId">Delivery Service:</label>
+    &nbsp;
+    {{ this.chooseDelivery }}&nbsp;<button class="btn btn-outline-success" (click)="changeDelivery()">Change Delivery Agent</button>
+      </div>
+      <div class="mb-3">
+        <div *ngIf="this.change==true" class="">
+          <select id="deliveryAgentId" (change)="getAgentChanged($event)"   class="form-control">
+            <option value="{{ agent.id }}"  *ngFor="let agent of this.storedExpress">{{ agent.agentName }}</option>
+          </select>
+        </div>
+        
+      
+      </div>
   <button type="submit" class="btn btn-primary" >Add this delivery address to order</button>
 
   <!-- <agm-map id="map"[latitude]="location.latitude" [longitude]="location.longitude"></agm-map> -->

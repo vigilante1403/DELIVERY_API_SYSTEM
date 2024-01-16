@@ -14,6 +14,7 @@ namespace api.Models{
         [Required]
         public int OrderPaymentId { get; set; }
         public OrderPayment OrderPayment { get; set; }
+        public DateTime PickUpDateTime { get; set; }
         public DateTime DeliveryDate { get; set; } //expect date
         [Required]
         public int DeliveryStatusId { get; set; }

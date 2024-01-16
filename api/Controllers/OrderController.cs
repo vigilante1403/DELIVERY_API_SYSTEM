@@ -35,6 +35,9 @@ namespace api.Controllers{
                 OrderDate=order.OrderDate,
                 OrderStatusId=1
             };
+            var sList = await _unitOfWork.ServiceRepository.GetEntityByExpression(null,null,"DeliveryAgent");
+            var selectedDeliveryAgentId = sList.Where(r=>r.Id==order.ServiceId).FirstOrDefault().DeliveryAgentId;
+                o.DeliveryAgentId=selectedDeliveryAgentId;
             try
             {
                 _unitOfWork.OrderRepository.Add(o);
@@ -366,6 +369,7 @@ namespace api.Controllers{
                 OrderPaymentId=order.OrderPaymentId,
                 OrderStatus=order.OrderStatus.StatusName,
                 SenderAddress=order.SenderInfo,
+                DeliveryAgentId=order.DeliveryAgentId
             };
             return Ok(o);
         }
