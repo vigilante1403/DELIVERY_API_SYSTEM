@@ -1,3 +1,4 @@
+using System.Text.Json;
 using api.DAl;
 using api.DTO;
 using api.Exceptions;
@@ -285,25 +286,75 @@ namespace api.Controllers
 
         }
         [HttpPost("delivery")]
-        public async Task<ActionResult> AddNewDelivery([FromForm] SubmitDelivery delivery){
-            var payment = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==delivery.OrderId,null,"OrderPayment,Service,Customer");
+        public async Task<ActionResult> AddNewDelivery([FromBody] SubmitDelivery delivery){
+            var payment = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==delivery.OrderId,null,"OrderPayment,Service,Customer,PricePerDistance,DeliveryAgent");
             var paymentId = payment.FirstOrDefault().OrderPaymentId;
             if(paymentId==null){
                 return BadRequest(new ErrorResponse(500));
             }
-            // SubmitAddress s = await _basket.GetBasketAsync(delivery.basketId);
-            // var totalDistance = await PaymentController.CalculateTotalDistanceAsync(s.startAddress,s.endAddress);
-            var totalDistance=0; // tam thoi xet 0 vi google api chua hoat dong
-            var timecost = totalDistance/1000/70/24;
-            var deliveryDays = payment.FirstOrDefault().Service.DaysAdd+timecost; //day
+            
+            var combo = await _unitOfWork.PricePerDistanceRepository.GetEntityByExpression(e=>e.Id==payment.FirstOrDefault().PricePerDistanceId,null,null);
+            var expectedDays = combo.FirstOrDefault().DeliveryTime;
+            string[] days = expectedDays.Split("-");
+            var sameState = combo.FirstOrDefault().Route.Contains("Same");
+            var responseAgentList = await _unitOfWork.DeliveryAgentRepository.GetEntityByExpression(w=>w.Id==payment.FirstOrDefault().DeliveryAgentId,null,null);
+            var responseAgent = responseAgentList.FirstOrDefault();
+            var senderAddress=payment.FirstOrDefault().SenderInfo;
+            var contactAddress=payment.FirstOrDefault().ContactAddress;
+            var info = JsonSerializer.Deserialize<InfoCombine>(senderAddress);
+            var info2=JsonSerializer.Deserialize<InfoCombine>(contactAddress);
+            var format = "HH:mm:ss";
+            var timeCreated = payment.FirstOrDefault().OrderDate;
+            TimeSpan timeOfDay = timeCreated.TimeOfDay;
+            TimeOnly time1 = TimeOnly.FromTimeSpan(timeOfDay);
+            var timeRequired = responseAgent.RequiredTimeForOrderToPickUp;
+            DateTime pickUp =  DateTime.Now;
+            var deliveryDate = DateTime.Now;
+            if(timeRequired==null||responseAgent.PickUpTimeForSpecialOrder!=0){
+                //case special delivery
+                pickUp=pickUp.AddHours((double)responseAgent.PickUpTimeForSpecialOrder);
+                if(info.Address.Contains("City")&&info2.Address.Contains("City")){
+                    deliveryDate=pickUp.AddHours(3);
+                }else{
+                    if(sameState){
+                        deliveryDate=pickUp.AddHours(12);
+                    }else{
+                        deliveryDate=pickUp.AddDays(2);
+                    }
+                }
+            }else{
+                 TimeOnly time2 = TimeOnly.ParseExact(timeRequired, format);
+                    if(info.Address.Contains("City")){
+                        if(time1<=time2){//th tao don truoc thoi gian yeu cau
+                        pickUp = pickUp.Date.Add(new TimeSpan(18,0,0));
+                       
+                        
+                        }else{
+                            pickUp=pickUp.AddDays(1);
+                            pickUp=pickUp.Date.Add(new TimeSpan(7,0,0));
+                        }
+                      
+                //xet th thowi gian tao don    //nguoi gui o tp, xet TH pick up o tp->anh huong toi pick up date time
+                     }else{
+                        pickUp=pickUp.Date.Add(new TimeSpan(8,0,0));
+                     }
+                        int dayAdd = int.Parse(days[0]);
+                        deliveryDate=pickUp.AddDays(dayAdd);
+
+            }
+           
+            
+    
+            var deliveryDays = payment.FirstOrDefault().Service.DaysAdd; //day
 
 
             Delivery d = new Delivery{
                 OrderId=delivery.OrderId,
-                DeliveryAgentId=delivery.AgentId,
+                DeliveryAgentId=responseAgent.Id,
                 OrderPaymentId= (int)paymentId,
                 DeliveryStatusId=1,
-                DeliveryDate=DateTime.Now.AddDays(deliveryDays),
+                DeliveryDate=deliveryDate,
+                PickUpDateTime=pickUp
             };
             try
             {
@@ -316,5 +367,33 @@ namespace api.Controllers
             }
             return Ok("New delivery ready!");
         }
+        [HttpGet("update-delivery-status/{customerId}")]
+        public async Task UpdateStatusOfDelivery([FromRoute] string customerId)
+        {
+            var processingList = await _unitOfWork.OrderRepository.GetEntityByExpression(
+                e=>e.CustomerId==customerId&&(e.OrderStatusId==1||e.OrderStatusId==2)&&e.OrderPayment.OrderPaymentStatusId==1,null,"OrderPayment,Service,Customer,PricePerDistance,DeliveryAgent"
+            );
+            var deliveryList = await _unitOfWork.DeliveryRepository.GetEntityByExpression(null,null,null);
+           var orderIdList = processingList.Select(r=>r.Id);
+           var processDeliveryList = new List<Delivery>();
+           foreach(var id in orderIdList){
+            var delivery = deliveryList.Where(e=>e.OrderId==id).FirstOrDefault();
+            processDeliveryList.Add(delivery);
+           }
+           var now = DateTime.Now;
+           foreach(var process in processDeliveryList){
+            var order = processingList.Where(x=>x.Id==process.OrderId).FirstOrDefault();
+                if(now>=process.PickUpDateTime&&now<process.DeliveryDate){
+                    process.DeliveryStatusId=2;
+                    order.OrderStatusId=2;
+                }else if(now>process.DeliveryDate){
+                    process.DeliveryStatusId=3;
+                    order.OrderStatusId=3;
+                }
+           }
+           _unitOfWork.Save();
+
+        }
     }
+    
 }
