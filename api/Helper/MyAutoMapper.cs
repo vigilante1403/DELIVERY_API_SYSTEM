@@ -11,13 +11,16 @@ namespace api.Helper{
                 .ForMember(f=>f.CustomerId,r=>r.MapFrom(w=>w.Customer.Id))
                 .ForMember(d=>d.OrderStatus,e=>e.MapFrom(r=>r.OrderStatus.StatusName))
                 .ForMember(t=>t.OrderPaymentId,y=>y.MapFrom(q=>q.OrderPayment.Id))
+                .ForMember(w=>w.PricePerDistanceId,p=>p.MapFrom(q=>q.PricePerDistanceId))
+
                  //khai bao input & output
             ;
             CreateMap<District,DistrictDTO>()
             .ForMember(d=>d.AllPlacesInCountryId,r=>r.MapFrom(o=>o.AllPlacesInCountry.Id));
             CreateMap<Ward,WardDTO>()
             .ForMember(e=>e.DistrictId,w=>w.MapFrom(q=>q.District.Id));
-            
+            CreateMap<OrderPayment,ReturnPayment>()
+            .ForMember(d=>d.OrderPaymentStatus,f=>f.MapFrom(q=>q.OrderPaymentStatus.StatusName));
         }
     }
 }

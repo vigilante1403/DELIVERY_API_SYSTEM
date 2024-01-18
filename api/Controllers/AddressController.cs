@@ -31,5 +31,47 @@ namespace api.Controllers{
          var CountryList = await _unitOfWork.AllPlacesInCountryRepository.GetEntityByExpression(null,q=>q.OrderBy(r=>r.Name),null);
          return Ok(CountryList);
        }
+       [HttpPost("district")]
+       public async Task<ActionResult> AddNewDistrict([FromBody] DistrictDTO district){
+        var exist = await _unitOfWork.DistrictRepository.GetEntityByExpression(e=>e.Name==district.Name&&e.AllPlacesInCountryId==district.AllPlacesInCountryId,null,"AllPlacesInCountry");
+        if(exist.Any()){
+          return BadRequest(new ErrorResponse(400,"Exist district with that name"));
+        }
+        District d = new District{
+          Name=district.Name,
+          AllPlacesInCountryId=district.AllPlacesInCountryId
+        };
+        try
+        {
+          _unitOfWork.DistrictRepository.Add(d);
+        }
+        catch (System.Exception)
+        {
+          
+          return BadRequest(new ErrorResponse(500,"error at district table"));
+        }
+        return Ok();
+       }
+       [HttpPost("ward")]
+       public async Task<ActionResult> AddNewWard([FromBody] WardDTO ward){
+        var exist = await _unitOfWork.WardRepository.GetEntityByExpression(e=>e.Name==ward.Name&&e.DistrictId==ward.DistrictId,null,"District");
+        if(exist.Any()){
+          return BadRequest(new ErrorResponse(400,"Exist ward with that name"));
+        }
+        Ward d = new Ward{
+          Name=ward.Name,
+          DistrictId=ward.DistrictId
+        };
+        try
+        {
+          _unitOfWork.WardRepository.Add(d);
+        }
+        catch (System.Exception)
+        {
+          
+          return BadRequest(new ErrorResponse(500,"error at ward table"));
+        }
+        return Ok();
+       }
     }
 }

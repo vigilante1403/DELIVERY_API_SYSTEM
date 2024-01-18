@@ -7,20 +7,23 @@ import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { IconPickerModule } from 'ngx-icon-picker';
 import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+import { ManageComponent } from './manage/manage.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
 @NgModule({
-  declarations: [AdminComponent],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule.forChild(AdminRoute),
     IconPickerModule,
     MatCardModule,
-    MatListModule
+    MatListModule,
+    FontAwesomeModule
   ],
   exports:[
-    AdminComponent
+
   ],
   schemas: [
    

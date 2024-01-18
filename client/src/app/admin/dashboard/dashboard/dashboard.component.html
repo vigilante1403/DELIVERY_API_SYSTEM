@@ -1,5 +1,5 @@
-<div style="padding-top: 100px;"></div>
-<mat-toolbar color="primary">
+<div style="padding-top: 60px;"></div>
+<!-- <mat-toolbar color="primary">
     <div>
       <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
           <mat-icon>menu</mat-icon>
@@ -18,8 +18,15 @@
           <span>Admin</span>
       </div>
   </div>
-  </mat-toolbar>
-  
+  </mat-toolbar> -->
+  <div>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>My App</span>
+      <span class="example-spacer"></span>
+      
+  </div>
   <mat-drawer-container class="example-container" autosize>
       <mat-drawer #drawer class="example-sidenav" mode="side">
           <mat-list role="list">

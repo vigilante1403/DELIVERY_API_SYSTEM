@@ -15,7 +15,8 @@ export class CheckoutService {
     prePaid:0,
     orderDate:new Date(),
     orderStatus:'',
-    orderPaymentId:0});
+    orderPaymentId:0,
+  pricePerDistanceId:0});
     arrayParcels:IReturnParcel[]=[];
     parcel:IReturnParcel=({
       id:0,
@@ -32,6 +33,7 @@ export class CheckoutService {
     totalCharges:0,
     orderPaymentStatus:''
     })
+   
   constructor(private deliveryService:DeliveryService,private http:HttpClient) { }
 
   fetchOrder(customerId:any,orderId:any){

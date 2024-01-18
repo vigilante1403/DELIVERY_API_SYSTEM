@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../config/environment';
-import { ICountry, IDeliveryAgent, IDistrict, IWard } from '../interface/delivery/IDelivery';
+import { ICountry, IDeliveryAgent, IDistrict, IPayment, IPaymentStatus, IWard } from '../interface/delivery/IDelivery';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,12 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
   }
   fetchAllExpress(){
     return this.http.get<IDeliveryAgent[]>(env+'/Delivery/delivery-agent')
+  }
+  fetchAllOrderPaymentStatus(){
+    return this.http.get<IPaymentStatus[]>(env+'/Payment/order-payment-status')
+  }
+  fetchAllOrderPayments(){
+    return this.http.get<IPayment[]>(env+'/Payment/order-payment/all')
   }
   
 }

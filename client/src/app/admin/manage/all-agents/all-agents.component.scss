@@ -1,0 +1,50 @@
+.container{
+    padding-top:60px;
+}
+h5{
+    font-size: 10px!important;
+}
+html,
+body,
+.intro {
+  height: 100%;
+}
+table thead{
+  --bs-table-bg:#5fd1a3;
+
+  --bs-table-color:white;
+}
+body{
+  background-color: white;
+}
+tr.theadcustome{
+    background-color: #002d72!important;
+    color: black!important;
+    font-size: 10px;
+}
+table td,
+table th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+thead  {
+ background-color: #002d72!important;
+}
+
+.card {
+  border-radius: .5rem;
+}
+
+.table-scroll {
+  border-radius: .5rem;
+}
+
+.table-scroll table thead th {
+  font-size: 1.25rem;
+}
+thead {
+  top: 0;
+  position: sticky;
+}

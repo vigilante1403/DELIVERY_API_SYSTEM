@@ -18,6 +18,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FormComponent } from './form/form.component';
 import { OrdersComponent } from './orders/orders.component';
+import { AllOrdersComponent } from '../manage/all-orders/all-orders.component';
 
 const routes : Routes =[
   {
@@ -31,7 +32,8 @@ const routes : Routes =[
   declarations: [
     DashboardComponent,
     FormComponent,
-    OrdersComponent
+    OrdersComponent,
+
   ],
   imports: [
     CommonModule,

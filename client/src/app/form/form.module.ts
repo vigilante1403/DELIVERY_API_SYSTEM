@@ -14,29 +14,32 @@ import { OrdersStatusFormComponent } from './orders-status-form/orders-status-fo
 import { ParcelsFormComponent } from './parcels-form/parcels-form.component';
 import { SharedModule } from '../shared/shared.module';
 import { Routes, RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  {path: 'calculatecharges', component: CalculateChargesFormComponent},
-  {path: 'customer', component: CustomerFormComponent},
-  {path: 'deliveries', component: DeliveriesFormComponent},
-  {path: 'deliveryAgent', component: DeliveryAgentFormComponent},
-  {path: 'deliveryService', component: DeliveryServiceFormComponent},
-  {path: 'deliveryStatus', component: DeliveryStatusFormComponent},
-  {path: 'orderDetail', component: OrderDetailFormComponent},
-  {path: 'orderPayMent', component: OrderPaymentFormComponent},
-  {path: 'orderPaymentStatus', component: OrderPaymentStatusFormComponent},
-  {path: 'orders', component: OrdersFormComponent},
-  {path: 'ordersStatus', component: OrdersStatusFormComponent},
-  {path: 'parcel', component: ParcelsFormComponent},
+  // {path: 'calculatecharges', component: CalculateChargesFormComponent},
+  // {path: 'customer', component: CustomerFormComponent},
+  // {path: 'deliveries', component: DeliveriesFormComponent},
+  // {path: 'deliveryAgent', component: DeliveryAgentFormComponent},
+  // {path: 'deliveryService', component: DeliveryServiceFormComponent},
+  // {path: 'deliveryStatus', component: DeliveryStatusFormComponent},
+  // {path: 'orderDetail', component: OrderDetailFormComponent},
+  // {path: 'orderPayMent', component: OrderPaymentFormComponent},
+  // {path: 'orderPaymentStatus', component: OrderPaymentStatusFormComponent},
+  // {path: 'orders', component: OrdersFormComponent},
+  // {path: 'ordersStatus', component: OrdersStatusFormComponent},
+  // {path: 'parcel', component: ParcelsFormComponent},
   
 ]
 
 @NgModule({
-  declarations: [CalculateChargesFormComponent,CustomerFormComponent,DeliveriesFormComponent,DeliveryAgentFormComponent,DeliveryServiceFormComponent,DeliveryStatusFormComponent,OrderDetailFormComponent,OrderPaymentFormComponent,OrderPaymentStatusFormComponent,OrdersStatusFormComponent,ParcelsFormComponent],
+  declarations: [CalculateChargesFormComponent,DeliveriesFormComponent,DeliveryAgentFormComponent,DeliveryServiceFormComponent,DeliveryStatusFormComponent,OrderDetailFormComponent,OrderPaymentFormComponent,OrderPaymentStatusFormComponent,OrdersStatusFormComponent,ParcelsFormComponent],
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    FormsModule,
+    ReactiveFormsModule
     
   ]
 })

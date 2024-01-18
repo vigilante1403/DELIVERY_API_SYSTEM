@@ -16,7 +16,8 @@ export class CheckoutComponent {
     prePaid:0,
     orderDate:new Date(),
     orderStatus:'',
-    orderPaymentId:0})
+    orderPaymentId:0,
+  pricePerDistanceId:0})
     contactAddress:string=''
     arrayParcels:IReturnParcel[]=[];
     payment:IPayment=({

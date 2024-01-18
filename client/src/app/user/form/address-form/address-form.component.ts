@@ -46,7 +46,8 @@ export class AddressFormComponent implements OnInit {
     orderDate:new Date(),
     orderStatus:'',
     orderPaymentId:0,
-    deliveryAgentId:0
+    deliveryAgentId:0,
+    pricePerDistanceId:0
   })
   constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService) { }
  initForm(){

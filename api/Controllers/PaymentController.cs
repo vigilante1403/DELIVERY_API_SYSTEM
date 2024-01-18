@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Text;
 using Twilio.Rest.Microvisor.V1;
 using api.services;
+using AutoMapper;
 
 namespace api.Controllers{
     [ApiController]
@@ -23,10 +24,12 @@ namespace api.Controllers{
     public class PaymentController:ControllerBase{
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHandleRoute _handleRoute;
+        private readonly IMapper _mapper;
       
-        public PaymentController(IUnitOfWork unitOfWork, IHandleRoute handleRoute){
+        public PaymentController(IUnitOfWork unitOfWork, IHandleRoute handleRoute,IMapper mapper){
             _unitOfWork=unitOfWork;
             _handleRoute=handleRoute;
+            _mapper=mapper;
         }
         [HttpGet("order-payment-status")]
         public async Task<ActionResult<IEnumerable<OrderPaymentStatus>>> GetAllOrderPaymentStatus(){
@@ -187,6 +190,11 @@ namespace api.Controllers{
                 return BadRequest(new ErrorResponse(500));
             }
             return Ok();
+        }
+        [HttpGet("order-payment/all")]
+        public async Task<ActionResult<IEnumerable<ReturnPayment>>> GetAllPayments(){
+            var payments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(null,null,"OrderPaymentStatus");
+            return Ok(_mapper.Map<IEnumerable<OrderPayment>,IEnumerable<ReturnPayment>>(payments));
         }
         [HttpGet("order-payment/{orderId}")]
         public async Task<ActionResult<ReturnPayment>> GetOrderPaymentRequired([FromRoute] string orderId){

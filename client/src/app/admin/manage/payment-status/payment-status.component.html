@@ -1,0 +1,37 @@
+
+<div class="bg-image h-100" style="background-color: white;">
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
+                  <table class="table table-striped mb-0">
+                    <thead >
+                      <tr >
+                        <th scope="col">Id</th>
+                        <th scope="col">Status Name</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let status of this.storedStatus">
+                            <td>{{ status.id }}</td>
+                            <td>{{ status.statusName }}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+

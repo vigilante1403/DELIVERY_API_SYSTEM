@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="row">
+      <section class="col-3">
+        <h5 class="text-warning ml-3">Search</h5>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span
+              class="input-group-text"
+              id="basic-addon1"
+              
+              ><fa-icon [icon]="faSearch" size="1x"></fa-icon></span>
+          </div>
+          <input
+            #search
+            type="text"     
+
+            class="form-control"
+            placeholder="Looking for..."
+            aria-label="search"
+            aria-describedby="basic-addon1"
+            
+          />
+        </div>
+        <h5 class="text-warning ml-3">Sort</h5>
+        <select
+          class="custom-select mb-3"
+       
+        >
+          <option value="default">Alphabet</option>
+          <option value="price">Price: low to high</option>
+          <option value="pricedesc">Price: high to low</option>
+        </select>
+        <h5 class="text-warning ml-3">Categories</h5>
+        <ul style="list-style-type: none; padding: 0"  >
+   
+          <li class="card card-text align-items-center" *ngFor="let option of this.options" (click)="switchTable(option)">{{ option }}
+          </li>
+          
+          
+        </ul>
+      </section>
+      <section class="intro col-9">
+        <div *ngIf="this.options.indexOf(this.choose)==0">
+          <app-all-users></app-all-users>
+        </div>
+        <div *ngIf="this.options.indexOf(this.choose)==1">
+           <app-all-orders></app-all-orders>
+        </div>
+        <div *ngIf="this.options.indexOf(this.choose)==2">
+          <app-all-agents></app-all-agents>
+        </div>
+        <div *ngIf="this.options.indexOf(this.choose)==3">
+          <app-location></app-location>
+        </div>
+        <div *ngIf="this.options.indexOf(this.choose)==4">
+          <app-payment-status></app-payment-status>
+        </div>
+        <div *ngIf="this.options.indexOf(this.choose)==5">
+          <app-order-status></app-order-status>
+        </div>
+        <div *ngIf="this.options.indexOf(this.choose)==6">
+          <app-service></app-service>
+        </div>
+
+       
+        
+      </section>
+      
+    </div>
+</div>

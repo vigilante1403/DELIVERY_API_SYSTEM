@@ -35,7 +35,7 @@ namespace api.Data{
 
             if (message.Text != null)
             {
-                Console.WriteLine($"Received a message from {message.Chat.Id}: {message.Text}");
+                Console.WriteLine($"Received a message from {message.Chat.FirstName}: {message.Text}");
                 if(message.Text=="/start"){
                      await botClient.SendTextMessageAsync(
                     chatId: message.Chat.Id,
@@ -61,11 +61,22 @@ namespace api.Data{
                         );
                     }
                 }else{
+                    var id = message.Chat.Id;
+                    while(true){
+                       string input = ReadLineWithTimeout(TimeSpan.FromSeconds(10));
+
+            // If the user pressed Ctrl+C or the timeout occurred
+                    if (string.IsNullOrEmpty(input))
+                        {
+                            return;
+                        }
                      await botClient.SendTextMessageAsync(
-                        chatId: message.Chat.Id,
-                        text: "Okay I get what u said but I'm not programmed to answer another question :)",
+                        chatId: id,
+                        text: input,
                         parseMode: ParseMode.Markdown
                         );
+                    }
+                    
                 }
 
                 // Respond with the chat ID when the user sends any message
@@ -73,5 +84,23 @@ namespace api.Data{
                 
             }
         }
+        static string ReadLineWithTimeout(TimeSpan timeout)
+    {
+        DateTime startTime = DateTime.Now;
+        string input = null;
+
+        while ((DateTime.Now - startTime) < timeout)
+        {
+            if (Console.KeyAvailable)
+            {
+                input = Console.ReadLine();
+                break;
+            }
+
+            Thread.Sleep(100); // Sleep for a short duration to avoid high CPU usage
+        }
+
+        return input;
+    }
     }
 }

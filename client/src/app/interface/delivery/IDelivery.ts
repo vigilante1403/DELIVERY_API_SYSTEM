@@ -22,7 +22,8 @@ export interface IOrderShow{
     orderDate:Date,
     orderStatus:string,
     orderPaymentId?:number,
-    deliveryAgentId?:number
+    deliveryAgentId?:number,
+    pricePerDistanceId:number
 }
 export interface ISubmitParcel{
     id:number,
@@ -95,4 +96,30 @@ export interface IDeliveryAgent{
     requiredTimeForOrderToPickUp?:string,
     charges?:number,
     maxFreeWeight:number
+}
+export interface IOrderShow2{
+    id:number,
+    service:string,
+    route:string,
+    customerId:string,
+    prePaid:number,
+    orderDate:Date,
+    orderStatus:string,
+    orderPaymentStatus:string,
+    deliveryAgent:string,
+}
+export interface IPaymentStatus{
+    id:number,
+    statusName:string
+}
+export interface IOrderStatus{
+    id:number,
+    statusName:string
+}
+export interface IUser{
+    id:string,
+    email:string,
+    password:string,
+    displayName:string,
+    roleName:string
 }

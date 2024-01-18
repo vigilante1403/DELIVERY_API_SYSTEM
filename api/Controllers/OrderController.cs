@@ -368,8 +368,9 @@ namespace api.Controllers{
                 OrderDate=order.OrderDate,
                 OrderPaymentId=order.OrderPaymentId,
                 OrderStatus=order.OrderStatus.StatusName,
-                SenderAddress=order.SenderInfo,
-                DeliveryAgentId=order.DeliveryAgentId
+                SenderInfo=order.SenderInfo,
+                DeliveryAgentId=order.DeliveryAgentId,
+                PricePerDistanceId=order.PricePerDistanceId
             };
             return Ok(o);
         }

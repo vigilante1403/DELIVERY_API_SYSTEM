@@ -192,12 +192,12 @@ namespace api.Controllers
                 Credentials = new NetworkCredential("new.vytruong.1812@gmail.com", "erya gvus chag rvok"),
                 EnableSsl = true,
             };
-
+            var token = await GenerateJwtToken(userEmail);
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("new.vytruong.1812@gmail.com"),
                 Subject = "Password Reset Token",
-                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/user/1/reset",
+                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/user/1/reset/{token}",
                 IsBodyHtml = false,
             };
 
@@ -221,8 +221,8 @@ namespace api.Controllers
        Console.WriteLine(otp);
        return otp;
     }
-    [HttpGet("token")]
-    public async Task<string> GenerateJwtToken([FromQuery]string userEmail)
+    
+    public static async Task<string> GenerateJwtToken(string userEmail)
     {
         string secretKey = "CqqXj0t7O2EziQwB16AYFyABPTvsZ9xzf8tWJdc2gwchqwb6gRR7BGZ3PMf5Jt7j5TbqZalHqsYpUiIwW7A380sDIpdUg2FzGFSBuX8z9";
 

@@ -1,0 +1,41 @@
+
+<div class="container">
+    <h3><strong>ADD NEW LOCATION</strong></h3>
+    <form class="form-control col-4">
+        <div class="form-group mb-3">
+          <label for="select1">City/Province:</label>
+          <select class="form-control" (change)="getListDistrict($event)" id="select1" name="select1">
+            <option value="{{ place.id }}" *ngFor="let place of this.storedCountries">{{ place.name }}</option>
+          </select>
+        </div>
+    
+        <div class="form-group mb-3">
+          <label for="select2">District:</label>
+          <select class="form-control" (change)="getDistrictOptions($event)" id="select2" name="select2">
+            <option value="-1">District</option>
+            <option value="0">Add New District</option>
+            <option value="{{ district.id }}" *ngFor="let district of this.tempDistrict">{{ district.name }}</option>
+          </select>
+        </div>
+        <div class="form-floating mb-3" *ngIf="this.allowDistrictAdd==true">
+            <input type="text" name="districtName" [(ngModel)]="this.districtName" placeholder="Enter new district" class="form-control">
+            <label>District Name:</label>
+        </div>
+    
+        <div class="form-group mb-3" *ngIf="this.allowDistrictAdd==false">
+          <label for="select3">Ward:</label>
+          <select class="form-control" (change)="getWardOptions($event)"  id="select3" name="select3">
+            <option value="-1">Ward</option>
+            <option value="0">Add New Ward</option>
+            <option value="{{ ward.id }}" *ngFor="let ward of this.tempWard">{{ ward.name }}</option>
+          </select>
+        </div>
+        <div class="form-floating mb-3" *ngIf="this.allowWardAdd==true">
+            <input type="text" name="wardName" [(ngModel)]="this.wardName" placeholder="Enter new ward" class="form-control">
+            <label>Ward Name:</label>
+        </div>
+        
+        <a type="btn btn-primary" *ngIf="this.allowDistrictAdd==true" (click)="addNewDistrict()" class="btn btn-primary">Submit</a>
+        <a type="btn btn-primary" *ngIf="this.allowWardAdd==true" (click)="addNewWard()" class="btn btn-primary">Submit</a>
+      </form>
+</div>
