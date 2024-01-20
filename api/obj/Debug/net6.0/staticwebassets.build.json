@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Jd52VmVoabs3INBUFo4n/rQ9IOebJfETb1cbobKTUH0=",
+  "Hash": "fEUKGUKipYpztyOWBmwnSEj1iGdgd5SN5pBbBn/T5W4=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -34,6 +34,40 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\02hpv-superJumbo.jpg"
     },
     {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\358542514_264018662995250_7483664225137075538_n.jpg",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/358542514_264018662995250_7483664225137075538_n.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\358542514_264018662995250_7483664225137075538_n.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\abc.png",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/abc.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\abc.png"
+    },
+    {
       "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
@@ -49,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\istockphoto-621481132-1024x1024.jpg",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/istockphoto-621481132-1024x1024.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\istockphoto-621481132-1024x1024.jpg"
     },
     {
       "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\rubella-MMR.png",
@@ -85,6 +136,23 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\shutterstock_682265785_4.2e16d0ba.fill-1600x775.jpg"
     },
     {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\theracy_fotto.jpg",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/theracy_fotto.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\theracy_fotto.jpg"
+    },
+    {
       "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\ultravac-5-in-1.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
@@ -100,6 +168,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\ultravac-5-in-1.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\null\\rubella-MMR.png",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/null/rubella-MMR.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\null\\rubella-MMR.png"
     }
   ]
 }

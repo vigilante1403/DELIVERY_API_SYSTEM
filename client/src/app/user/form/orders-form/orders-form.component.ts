@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { delay } from 'rxjs';
 
-import { IService, ISubmitOrder } from 'src/app/interface/delivery/IDelivery';
+import { IOrderShow, IService, ISubmitOrder } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
 
 @Component({
@@ -38,6 +39,7 @@ export class OrdersFormComponent implements OnInit {
     console.log(localStorage.getItem('userEmail'))
     
   }
+
   getPrepaidLimit(event:Event){
     this.selectedError=''
     const id = (event.target as HTMLSelectElement).value
@@ -84,8 +86,12 @@ export class OrdersFormComponent implements OnInit {
    
  
   }
+  showButton:string='Next Step'
   updatePrePaid(){
     this.prePaid=this.paid.nativeElement.value
+    this.ordersForm.patchValue({prePaid:this.prePaid})
+    console.log("Prepaid la: ",this.prePaid)
+    console.log(this.ordersForm.get('prePaid'))
   }
   onSubmit() {
     if(this.selected==0){
@@ -102,11 +108,52 @@ export class OrdersFormComponent implements OnInit {
       prePaid:this.ordersForm.get('prePaid')?.value,orderDate:new Date()})
       console.log(submit)
       this.service.addNewOrder(submit).subscribe({
-        next:(res)=>{console.log(res),console.log('submit ok')},
+        next:(res)=>{console.log(res),console.log('submit ok');this.afterClass1Finished()},
         error:(err)=>console.log(err)
       })
+      this.showButton='Saving...'
+      delay(1000)
+      this.showButton='Next Step'
     }
    }
     // console.log(this.ordersForm.value);
   }
+  Input:IOrderShow=({
+    id:0,
+    contactAddress:'',
+    senderInfo:'',
+    service:'',
+    customerId:'',
+    prePaid:0,
+    orderDate:new Date(),
+    orderStatus:'',
+    orderPaymentId:0,
+    deliveryAgentId:0,
+    pricePerDistanceId:0
+  })
+  afterClass1Finished(){
+    this.service.getLatestOrder(this.service.customer.id).subscribe({
+      next:(res)=>{this.Input=res;this.isClass1=false;this.isClass2=true;this.showClass2=true;if(res.service!='money order'){
+        this.allowPackage=true;
+      }},
+      error:(err)=>{console.log(err)}
+    })
+  }
+  moveNextForm(){
+    
+      this.showClass2=false;
+      this.isClass3=true
+    
+  }
+  receiveDataFromChild(data:any){
+    if(data==="close form 2"){
+      this.showClass2=false;
+      this.isClass3=true
+    }
+  }
+  allowPackage:boolean=false;
+  showClass2:boolean=false;
+  isClass1:boolean=true;
+  isClass2:boolean=false;
+  isClass3:boolean=false;
 }

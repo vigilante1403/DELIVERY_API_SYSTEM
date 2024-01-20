@@ -1,0 +1,96 @@
+
+<div class="container mt-4 custom">
+  <form  class="form-control" [formGroup]="addressForm" (ngSubmit)="onSubmit()" >  
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" formControlName="name1" placeholder="Enter sender name">
+      <label>Sender Name:</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" formControlName="address1" placeholder="Enter pick up location">
+      <label>Where do you want your package picked up?</label>
+    </div>  
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" formControlName="phone1" placeholder="Enter sender phoneNumber">
+      <label>Sender phone number</label>
+    </div>
+    <div class="form-floating mb-3" >
+      <select id="deliveryTypeId" (change)="getListDistrict($event)" class="form-control"   required>
+          <option value="0" selected>Please choose an option</option>
+          <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+        </select>
+        <label for="deliveryTypeId">City/Province</label>
+    </div>
+    <div class="form-floating mb-3" >
+      <select id="deliveryTypeId"  class="form-control" (change)="getListWard($event)"   required>
+          <option value="0" selected>Please choose an option</option>
+          <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict">{{ district.name }}</option>
+        </select>
+        <label for="deliveryTypeId">District</label>
+    </div>
+    <div class="form-floating mb-3" >
+      <select id="deliveryTypeId" (change)="getChosenWard($event)"  class="form-control"   required>
+          <option value="0" selected>Please choose an option</option>
+          <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard">{{ ward.name }}</option>
+        </select>
+        <label for="deliveryTypeId">Ward</label>
+    </div>
+    <hr>
+    <hr>
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" formControlName="name2" placeholder="Enter recipient name">
+      <label>Recipient Name:</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
+      <label>Where do you want recipient recieve the package?</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" formControlName="phone2" placeholder="Enter recipient phoneNumber">
+      <label>Recipient phone number</label>
+    </div>
+    <div class="form-floating mb-3" >
+      <select id="deliveryTypeId" (change)="getListDistrict2($event)" class="form-control"   required>
+          <option value="0" selected>Please choose an option</option>
+          <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+        </select>
+        <label for="deliveryTypeId">City/Province</label>
+    </div>
+    <div class="form-floating mb-3" >
+      <select id="deliveryTypeId"  class="form-control" (change)="getListWard2($event)"   required>
+          <option value="0" selected>Please choose an option</option>
+          <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict2">{{ district.name }}</option>
+        </select>
+        <label for="deliveryTypeId">District</label>
+    </div>
+    <div class="form-floating mb-3" >
+      <select id="deliveryTypeId" (change)="getChosenWard2($event)"  class="form-control"required>
+          <option value="0" selected>Please choose an option</option>
+          <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard2">{{ ward.name }}</option>
+        </select>
+        <label for="deliveryTypeId">Ward</label>
+    </div>
+    <div class=" mb-3" >
+      <label for="deliveryTypeId">Delivery Service:</label>
+      &nbsp;
+      {{ this.chooseDelivery }}&nbsp;<button class="btn btn-outline-success" (click)="changeDelivery()">Change Delivery Agent</button>
+        </div>
+        <div class="mb-3">
+          <div *ngIf="this.change==true" class="">
+            <select id="deliveryAgentId" (change)="getAgentChanged($event)"   class="form-control">
+              <option value="{{ agent.id }}"  *ngFor="let agent of this.storedExpress">{{ agent.agentName }}</option>
+            </select>
+          </div>
+          
+        
+        </div>
+    <button type="submit" class="btn btn-primary" >Add this delivery address to order</button>
+  
+   
+    </form>
+</div>
+
+  
+
+ 
+    
+

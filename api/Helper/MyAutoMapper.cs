@@ -17,10 +17,18 @@ namespace api.Helper{
             ;
             CreateMap<District,DistrictDTO>()
             .ForMember(d=>d.AllPlacesInCountryId,r=>r.MapFrom(o=>o.AllPlacesInCountry.Id));
+
             CreateMap<Ward,WardDTO>()
             .ForMember(e=>e.DistrictId,w=>w.MapFrom(q=>q.District.Id));
+
             CreateMap<OrderPayment,ReturnPayment>()
             .ForMember(d=>d.OrderPaymentStatus,f=>f.MapFrom(q=>q.OrderPaymentStatus.StatusName));
+
+            CreateMap<Delivery,ReturnDelivery>()
+            .ForMember(e=>e.DeliveryAgentName,w=>w.MapFrom(q=>q.DeliveryAgent.AgentName))
+            .ForMember(e=>e.OrderId,q=>q.MapFrom(t=>t.OrderId))
+            .ForMember(i=>i.OrderPaymentId,q=>q.MapFrom(g=>g.OrderPaymentId))
+            .ForMember(y=>y.DeliveryStatusName,n=>n.MapFrom(s=>s.DeliveryStatus.StatusName));
         }
     }
 }

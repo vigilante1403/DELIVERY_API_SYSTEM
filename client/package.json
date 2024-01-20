@@ -26,6 +26,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "bootstrap": "^5.2.3",
+    "bootstrap-select": "^1.13.18",
     "ngx-bootstrap": "^10.3.0",
     "ngx-google-places-autocomplete": "^2.0.5",
     "ngx-icon-picker": "^1.10.0",

@@ -1,0 +1,59 @@
+<div class="bg-image h-100" style="background-color:white; ">
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
+                  <table class="table table-striped mb-0">
+                    <thead style="background-color: #002d72;">
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Contact Address</th>
+                        <th scope="col">Sender Address</th>
+                        <th scope="col">Service</th>
+                        <th scope="col">Payment Status</th>
+                        <th scope="col">Created at</th>
+                        <th scope="col">Delivery Agent</th>
+                        <th scope="col">Edit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let piece of this.data">
+                        <td>{{ piece.id }}</td>
+                        <td>{{ piece.contactAddress!="Not update"?piece.contactAddress.substring(0,7):"Not update" }}</td>
+                        <td>{{ piece.senderInfo==null?"Not establish":piece.senderInfo.substring(0,7) }}</td>
+                        <td>{{ piece.service }}</td>
+                        <td>{{ piece.orderPaymentId?.valueOf()==null?"Not establish":piece.orderPaymentId }}</td>
+                        <td>{{ piece.orderDate }}</td>
+                        <td>{{ piece.deliveryAgentId }}</td>
+                        <td><button class="btn btn-warning text-white" (click)="openModal(template)" >Edit</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Modal</h4>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p *ngFor="let item of items1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque delectus enim esse excepturi, impedit,
+        iste magnam officia optio, quam quis quisquam saepe sint unde velit vitae! Animi in iusto ut?</p>
+    </div>
+  </ng-template>
+
+
+
+
+

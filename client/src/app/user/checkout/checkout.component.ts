@@ -3,6 +3,7 @@ import { CheckoutService } from './checkout.service';
 import { IOrderShow, IPayment, IReturnParcel } from 'src/app/interface/delivery/IDelivery';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { ActivatedRoute } from '@angular/router';
+import { delay } from 'rxjs';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
@@ -37,6 +38,7 @@ export class CheckoutComponent {
 
   }
   ngOnInit(){
+    
     this.orderShow=this.service.convertStringToData()
     this.ConvertContactData(this.orderShow.contactAddress)
     this.arrayParcels=this.service.convertStringToArray()

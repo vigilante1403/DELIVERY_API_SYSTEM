@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IOrderShow, IPayment, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
+import { IDelivery, IOrderShow, IPayment, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
 import { ICustomer } from '../interface/account/IUser';
 
@@ -37,11 +37,27 @@ export class DeliveryService {
   }
   checkout(customerId:any,orderId:any){
       return this.http.get<IOrderShow>(env+'/Order/order/'+customerId+'/'+orderId)
-  }
+  }//address
   parcelInfo(orderId:any){
     return this.http.get<any>(env+'/Order/parcel/'+orderId)
-  }
+  }//parcel
   paymentInfo(orderId:any){
     return this.http.get<IPayment>(env+'/Payment/order-payment/'+orderId)
+  }///payment
+  getLatestOrder(customerId:any){
+    return this.http.get<IOrderShow>(env+'/Order/order/'+customerId)
+  }
+  fetchAllDeliveriesOfSpecificCustomer(customerId:any){
+    return this.http.get<IDelivery[]>(env+'/Delivery/delivery-created/'+customerId)
+  }
+  fetchAllUnFinishedOrders(customerId:any){
+    return this.http.get<IOrderShow[]>(env+'/Delivery/temp/'+customerId)
+  }
+  updateStatusDeliveries(customerId:any){
+    return this.http.get(env+'/Delivery/update-delivery-status/'+customerId)
+
+  }
+  fetchAllDetailsRequired(arrayOrderIds:any){
+    return this.http.post<any>(env+'/Order/required-list',arrayOrderIds)
   }
 }

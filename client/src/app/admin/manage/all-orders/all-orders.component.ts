@@ -44,7 +44,7 @@ splitAddressToRoute(res:IOrderShow[],res2:IDeliveryAgent[],res3:IPayment[]){
       address1='Unknown'
     }else{
       address1= element.senderInfo?.substring(sender+9)!;
-      sendAddress2 = element.senderInfo?.substring(sender+9,sender2-3)!;
+      sendAddress2 = element.senderInfo?.substring(sender+9,sender2-7)!;
     }
     var address2 = ''
     var sendAddress3=''
@@ -54,12 +54,12 @@ splitAddressToRoute(res:IOrderShow[],res2:IDeliveryAgent[],res3:IPayment[]){
       address2='Unknown'
     }else{
       address2= element.contactAddress.substring(contact+9)!;
-      sendAddress3 = element.contactAddress?.substring(contact+9,contact2-3)!;
+      sendAddress3 = element.contactAddress?.substring(contact+9,contact2-7)!;
     }
     console.log("send2 la: ",sendAddress2,"-",sendAddress3)
-    var addressNew = sendAddress2+"-"+sendAddress3
-    if(addressNew.length<10){
-      addressNew="not update"
+    var addressNew = sendAddress2+"- "+sendAddress3
+    if(addressNew.length<11){
+      addressNew="Not Update"
     }
     var tempExpress = res2
     var agentName=''
@@ -69,8 +69,14 @@ splitAddressToRoute(res:IOrderShow[],res2:IDeliveryAgent[],res3:IPayment[]){
       agentName = tempExpress.filter(r=>r.id==element.deliveryAgentId)[0].agentName
     }
     var tempPayment = res3
-    var paymentStatus = tempPayment.filter(x=>x.id==element.orderPaymentId)[0]
-    console.log(paymentStatus)
+    var paymentStatus:IPayment
+    var status=''
+    if(element.orderPaymentId==null){
+      status="Not establish"
+    }else{
+      status = tempPayment.filter(x=>x.id==element.orderPaymentId)[0].orderPaymentStatus
+    }
+
     var newOrder:IOrderShow2=({
       id:element.id,
     service:element.service,
@@ -78,7 +84,7 @@ splitAddressToRoute(res:IOrderShow[],res2:IDeliveryAgent[],res3:IPayment[]){
     prePaid:element.prePaid,
     orderDate:element.orderDate,
     orderStatus:element.orderStatus,
-    orderPaymentStatus:paymentStatus.orderPaymentStatus,
+    orderPaymentStatus:status,
     deliveryAgent:agentName,
     route:addressNew
     })

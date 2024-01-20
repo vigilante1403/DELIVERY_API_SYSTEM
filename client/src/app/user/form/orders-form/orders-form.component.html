@@ -1,53 +1,62 @@
-<div class="container d-flex flex-column  mt-4 justify-content-lg-center">
-  <div class="row justify-content-center"><div class="col-lg-6"><h4>YOUR NEW ORDER</h4></div></div>
-  <div class="row justify-content-center">
-    <div class="col-lg-6 ">
-      <form [formGroup]="ordersForm" class="form-control mt-4" (ngSubmit)="onSubmit()">
 
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="customerId" value="{{ this.service.customer.id }}" disabled>
-          <label for="customerId">Your ID:</label>
-        </div>
-      
-        <!-- <div class="form-floating mb-3">
-          <textarea id="contactAddress" class="form-control" formControlName="contactAddress" required></textarea>
-          <label for="contactAddress">Contact Address:(recipientName-address-phoneNumber)</label>
-          <div class="text-danger error" *ngIf="this.error.length>0">{{ error }}</div>
-        </div> -->
-      
-        <div class="form-floating mb-3" *ngIf="this.service.services.length>0">
-          <select id="deliveryTypeId" class="form-control" (change)="getPrepaidLimit($event)"  required>
-              <option value="0" selected>Please choose a service</option>
-              <option *ngFor="let service of this.service.services"  value="{{ service.id }}">{{ service.serviceName.toUpperCase() }}</option>
-            </select>
-            <label for="deliveryTypeId">Delivery Type:</label>
-            <div class="text-danger error" *ngIf="this.selectedError.length>0">{{ selectedError }}</div>
-        </div>
-        <div class="form-floating mb-3" *ngIf="this.service.services.length==0">
-          <select id="deliveryTypeId" class="form-control"  required>
-            <option value="default">No service</option>
-            </select>
-            <label for="deliveryTypeId">Delivery Type:</label>
-        </div>
-      
-        
-          <div *ngIf="!this.disable" class="form-floating mb-3">
-            <input type="number" class="form-control" (change)="updatePrePaid()" #paid id="prePaid"  >
-            <label for="prePaid">Pre-Paid:</label>
-          </div>
-          <div *ngIf="this.disable" class="form-floating mb-3">
-            <input type="number"  class="form-control" id="prePaid" value="0"  disabled>
-            <label for="prePaid">Pre-Paid:</label>
-        </div>
-      <div class="d-flex flex-row justify-content-center">
-        <button type="submit" class="btn btn-outline-primary " >Submit</button>
-      </div>
-        
-      </form>
+<div class="container " [class.zero]="isClass1" [class.full]="isClass3" [class.center]="showClass2" [class.slider-one-active]="isClass1" [class.silder-two-active]="isClass2" [class.slider-three-active]="isClass3">
+  <div class="steps">
+    <div class="step step-one">
+      <div class="liner"></div>
+      <span>Service</span>
+    </div>
+    <div class="step step-two">
+      <div class="liner"></div>
+      <span>Package</span>
+    </div>
+    <div class="step step-three">
+      <div class="liner"></div>
+      <span>Address</span>
     </div>
   </div>
-  
-  
+  <div class="line">
+    <div class="dot-move"></div>
+    <div class="dot zero"></div>
+    <div class="dot center"></div>
+    <div class="dot full"></div>
+  </div>
+  <div class="slider-ctr">
+    <div class="slider">
+      
+      <form class="slider-form slider-one  justify-content-center" >
+        <h2>Choose A Service</h2>
+        <label class="input">
+        <select #selectPicker class=" selectpicker" (change)="getPrepaidLimit($event)"  required>
+          <option value="0" selected>Please choose a service</option>
+          <option *ngFor="let service of this.service.services"  value="{{ service.id }}">{{ service.serviceName.toUpperCase() }}</option>
+        </select>
+        </label>
+        <label class="input">
+          <div *ngIf="!this.disable" class="form-floating mb-3">
+            <input type="number" class="form-control" (change)="updatePrePaid()" #paid id="prePaid">
+            <label>Pre-Paid:</label>
+          </div>
+        </label>
+        <button  class="mt-4 first next" (click)="onSubmit()">Next Step</button>
+      </form>
+      <div class="slider-two slider-form" *ngIf="this.isClass2&&this.allowPackage==true">
+        <label for="" class="input">
+         <app-new-package-form (dataToParent)="receiveDataFromChild($event)" [customerIdMain]="this.Input.customerId" [orderIdMain]="this.Input.id.toString()"></app-new-package-form>
+        </label>
+      </div>
+      <div class="slider-two slider-form" *ngIf="this.isClass2&&this.allowPackage==false">
+        <label for="" class="input">
+         <h4>You can skip this step</h4>
+        </label>
+        <button  class="mt-4 second next" (click)="moveNextForm()">Next Step</button>
+      </div>
+      
+      <div class="slider-form slider-three" *ngIf="this.isClass3">
+        <label for="" class="input">
+          <app-new-address [customerIdMain]="this.Input.customerId" [orderIdMain]="this.Input.id.toString()"></app-new-address>
+        </label>
+    </div>
+  </div>
 </div>
 
   

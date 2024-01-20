@@ -123,3 +123,48 @@ export interface IUser{
     displayName:string,
     roleName:string
 }
+export interface IDelivery{
+    id:number,
+    orderId:number,
+    deliveryAgentName:string,
+    orderPaymentId:number,
+    pickUpDateTime:Date,
+    deliveryDate:Date,
+    deliveryStatusName:string
+}
+export interface IReturnPayInfoParcel{
+    orderId:number,
+    orderDTO:IOrderShow,
+    returnParcels:IReturnParcel[],
+    returnPayment:IPayment
+}
+export class Show implements IOrderShow{
+    id= 0
+    contactAddress= ''
+    senderInfo=''
+    service=''
+    customerId=''
+    prePaid=0
+    orderDate=new Date()
+    orderStatus=''
+    orderPaymentId=0
+    deliveryAgentId=0
+    pricePerDistanceId=0
+}
+export class Payment implements IPayment{
+    id=0
+    subTotal=0
+    prePaid=0
+    servicePrice=0
+    distanceCharges=0
+    totalCharges=0
+    orderPaymentStatus=''
+    
+}
+export class ReturnParcel implements IReturnParcel{
+    id=0
+    parcelName=''
+    weight=0
+    imageUrl=''
+    
+}

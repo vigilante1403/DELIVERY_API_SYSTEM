@@ -3,6 +3,7 @@ using api.DAl;
 using api.DTO;
 using api.Exceptions;
 using api.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -15,10 +16,12 @@ namespace api.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
       
-        public DeliveryController(IUnitOfWork unitOfWork)
+        public DeliveryController(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper=mapper;
         
         }
 
@@ -292,6 +295,8 @@ namespace api.Controllers
             if(paymentId==null){
                 return BadRequest(new ErrorResponse(500));
             }
+            var orderPayments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(w=>w.Id==paymentId,null,"OrderPaymentStatus");
+            var orderPayment = orderPayments.FirstOrDefault();
             //double check
             var deliveryExisted = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.OrderId==delivery.OrderId,null,null);
             if(deliveryExisted.Any()){
@@ -369,10 +374,20 @@ namespace api.Controllers
                 
                 return BadRequest(new ErrorResponse(500));
             }
+            try
+            {
+                orderPayment.OrderPaymentStatusId=1;
+                _unitOfWork.Save();
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500,"Can't save status of orderpayment"));
+            }
             return Ok("New delivery ready!");
         }
         [HttpGet("update-delivery-status/{customerId}")]
-        public async Task UpdateStatusOfDelivery([FromRoute] string customerId)
+        public async Task<ActionResult> UpdateStatusOfDelivery([FromRoute] string customerId)
         {
             var processingList = await _unitOfWork.OrderRepository.GetEntityByExpression(
                 e=>e.CustomerId==customerId&&(e.OrderStatusId==1||e.OrderStatusId==2)&&e.OrderPayment.OrderPaymentStatusId==1,null,"OrderPayment,Service,Customer,PricePerDistance,DeliveryAgent"
@@ -385,18 +400,56 @@ namespace api.Controllers
             processDeliveryList.Add(delivery);
            }
            var now = DateTime.Now;
+           Console.WriteLine(now);
            foreach(var process in processDeliveryList){
             var order = processingList.Where(x=>x.Id==process.OrderId).FirstOrDefault();
                 if(now>=process.PickUpDateTime&&now<process.DeliveryDate){
-                    process.DeliveryStatusId=2;
+                    Console.WriteLine("true");
+                    try
+                    {
+                        var temp = deliveryList.Where(e=>e.Id==process.Id).FirstOrDefault();
+                         temp.DeliveryStatusId=2;
                     order.OrderStatusId=2;
+                    _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                       return BadRequest(new ErrorResponse(500));
+                    }
+                   
                 }else if(now>process.DeliveryDate){
-                    process.DeliveryStatusId=3;
+                    try
+                    {
+                        var temp = deliveryList.Where(e=>e.Id==process.Id).FirstOrDefault();
+                         temp.DeliveryStatusId=3;
                     order.OrderStatusId=3;
+                    _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500));
+                    }
+                   
                 }
            }
-           _unitOfWork.Save();
+          return Ok();
 
+        }
+        [HttpGet("delivery-created/{customerId}")]
+        public async Task<ActionResult<IEnumerable<ReturnDelivery>>> RetrueveAllCreatedDeliveryOfCustomer([FromRoute] string customerId){
+            IEnumerable<Order> ordersList = await _unitOfWork.OrderRepository.GetEntityByExpression(p=>p.CustomerId==customerId,q=>q.OrderByDescending(w=>w.OrderDate),"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            var orderIdList = ordersList.Select(w=>w.Id);
+            IEnumerable<Delivery> deliveryList = await _unitOfWork.DeliveryRepository.GetEntityByExpression(q=>orderIdList.Contains(q.OrderId),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            return Ok(_mapper.Map<IEnumerable<Delivery>,IEnumerable<ReturnDelivery>>(deliveryList));
+        }
+        [HttpGet("temp/{customerId}")]
+        public async Task<ActionResult<List<OrderDTO>>> RetrieveAllUnFinishedOrders([FromRoute] string customerId){
+             IEnumerable<Order> ordersList = await _unitOfWork.OrderRepository.GetEntityByExpression(p=>p.CustomerId==customerId,q=>q.OrderByDescending(w=>w.OrderDate),"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+             var unfinished = ordersList.Where(r=>r.OrderPaymentId==null||r.SenderInfo==null||r.PricePerDistanceId==null||r.OrderPayment.OrderPaymentStatusId==2).ToList();
+
+             return Ok(_mapper.Map<List<Order>,List<OrderDTO>>(unfinished));
         }
     }
     

@@ -10,6 +10,13 @@ import { AddressFormComponent } from './form/address-form/address-form.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrdersFormComponent } from './form/orders-form/orders-form.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { NewPackageFormComponent } from './form/new-package-form/new-package-form.component';
+import { NewAddressComponent } from './form/new-address/new-address.component';
+import { NewCartComponent } from './new-cart/new-cart.component';
+import { DeliveringTableComponent } from './new-cart/delivering-table/delivering-table.component';
+import { DeliveredTableComponent } from './new-cart/delivered-table/delivered-table.component';
+import { ProcessingTableComponent } from './new-cart/processing-table/processing-table.component';
+import { TempTableComponent } from './new-cart/temp-table/temp-table.component';
 
 
 
@@ -19,13 +26,21 @@ import { CheckoutComponent } from './checkout/checkout.component';
     OrdersFormComponent,
     CartComponent,
     AddPackageFormComponent,
+    NewPackageFormComponent,
+    NewAddressComponent,
+    NewCartComponent,
+    DeliveringTableComponent,
+    DeliveredTableComponent,
+    ProcessingTableComponent,
+    TempTableComponent,
 
     
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(UserRoute),
-    ReactiveFormsModule,FormsModule
+    ReactiveFormsModule,FormsModule,
+    
   ],
   exports:[
     UserComponent

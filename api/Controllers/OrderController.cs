@@ -268,7 +268,7 @@ namespace api.Controllers{
                 
                 return BadRequest(new ErrorResponse(400));
             }
-            var expectedList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==OrderId,null,"Service,Customer,OrderStatus,OrderPayment");
+            var expectedList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==OrderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
             if(!expectedList.Any()){
                 return BadRequest(new ErrorResponse(404));
             }
@@ -320,7 +320,7 @@ namespace api.Controllers{
         }
         [HttpPost("order/edit")]
         public async Task<ActionResult> UpdateOrderInfo(SubmitEditOrder submit){
-            var expectedList = await _unitOfWork.OrderRepository.GetEntityByExpression(t=>t.Id==submit.Id,null,"Service,Customer,OrderStatus,OrderPayment");
+            var expectedList = await _unitOfWork.OrderRepository.GetEntityByExpression(t=>t.Id==submit.Id,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
             if(!expectedList.Any()){
                 return BadRequest(new ErrorResponse(404));
             }
@@ -354,7 +354,7 @@ namespace api.Controllers{
                 
                 return BadRequest(new ErrorResponse(400,"Error orderId"));
             }
-            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==Id&&d.CustomerId==customerId,null,"Service,Customer,OrderStatus,OrderPayment");
+            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==Id&&d.CustomerId==customerId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
             if(!orderList.Any()){
                 return BadRequest(new ErrorResponse(404,"Khong tim thay order yeu cau"));
             }
@@ -374,7 +374,68 @@ namespace api.Controllers{
             };
             return Ok(o);
         }
+        [HttpGet("order/{customerId}")]
+        public async Task<ActionResult<OrderDTO>> ReturnOrderInfoLatest([FromRoute] string customerId){
+          
+            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.CustomerId==customerId,w=>w.OrderByDescending(q=>q.Id),"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            if(!orderList.Any()){
+                return BadRequest(new ErrorResponse(404,"Khong tim thay order yeu cau"));
+            }
+            var order = orderList.FirstOrDefault();
+            OrderDTO o = new OrderDTO{
+                Id=order.Id,
+                ContactAddress=order.ContactAddress,
+                Service=order.Service.ServiceName,
+                CustomerId=order.CustomerId,
+                PrePaid=order.PrePaid,
+                OrderDate=order.OrderDate,
+                OrderPaymentId=order.OrderPaymentId,
+                OrderStatus=order.OrderStatus.StatusName,
+                SenderInfo=order.SenderInfo,
+                DeliveryAgentId=order.DeliveryAgentId,
+                PricePerDistanceId=order.PricePerDistanceId
+            };
+            return Ok(o);
+        }
+        [HttpPost("required-list")]
+        public async Task<ActionResult<List<ReturnPayInfoParcel>>> ReturnsWithRequiredOrderIdList(int[] orderIds){
+            var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(e=>orderIds.Contains(e.Id),null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            var orderDTOs = _mapper.Map<IEnumerable<Order>,IEnumerable<OrderDTO>>(orders);
+            var paymentIds =orders.Where(x=>x.OrderPaymentId.HasValue).Select(x=>x.OrderPaymentId);
+            var payments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(e=>paymentIds.Contains(e.Id),null,"OrderPaymentStatus");
+            var paymentDTOs = _mapper.Map<IEnumerable<OrderPayment>,IEnumerable<ReturnPayment>>(payments);
+            var result = new List<ReturnPayInfoParcel>();
+            foreach(var id in orderIds){
+                var orderDTO = orderDTOs.Where(x=>x.Id==id).FirstOrDefault();
+                var paymentId = orderDTO.OrderPaymentId;
+                var payment = paymentDTOs.Where(d=>d.Id==paymentId).FirstOrDefault();
+                IEnumerable<OrderDetail> list = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(r=>r.OrderId==id,null,"Order,Parcel");
+                IEnumerable<int> parcelList = list.Where(x=>x.ParcelId.HasValue).Select(x=>x.ParcelId.Value).ToList();
+                List<ReturnParcel> returnParcel = new List<ReturnParcel>();
+                string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
+            //list of Ids
+                foreach(var id1 in parcelList){
+                var parcel1 = await _unitOfWork.ParcelRepository.GetEntityByExpression(w=>w.Id==id1,null,null);
+                var parcel = parcel1.FirstOrDefault();
+                ReturnParcel rp = new ReturnParcel{
+                    Id=parcel.Id,
+                    ParcelName=parcel.ParcelName,
+                    Weight=parcel.Weight,
+                    ImageUrl=baseUrl+'/'+parcel.ImageUrl
+                };
+                returnParcel.Add(rp);
+            }
+            ReturnPayInfoParcel r = new ReturnPayInfoParcel{
+                OrderId=id,
+                OrderDTO=orderDTO,
+                ReturnParcels=returnParcel,
+                ReturnPayment=payment
+            };
+            result.Add(r);
+            }
+            return Ok(result);
 
+        }
 
 
     }
