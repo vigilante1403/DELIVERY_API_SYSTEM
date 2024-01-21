@@ -22,8 +22,14 @@ import { AddressFormComponent } from './user/form/address-form/address-form.comp
 import { NgxPayPalModule } from 'ngx-paypal';
 import { CheckoutComponent } from './user/checkout/checkout.component';
 import { IconPickerModule } from 'ngx-icon-picker';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
-
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   declarations: [
@@ -33,7 +39,8 @@ import { IconPickerModule } from 'ngx-icon-picker';
     ModalComponent,
     LoginComponent,SignupComponent,
     AddressFormComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    SidebarComponent
   ],
   imports: [
    AgmCoreModule.forRoot({
@@ -52,6 +59,7 @@ import { IconPickerModule } from 'ngx-icon-picker';
     ReactiveFormsModule,
     NgxPayPalModule,
     ReactiveFormsModule,
+ 
     JwtModule.forRoot({
       config: {
         tokenGetter: () => {
@@ -64,7 +72,10 @@ import { IconPickerModule } from 'ngx-icon-picker';
    
     
   ],
-  providers: [{provide:HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},BsModalService,],
+  providers: [{provide:HTTP_INTERCEPTORS,useClass:JwtInterceptor,multi:true},BsModalService,{
+    provide: PERFECT_SCROLLBAR_CONFIG,
+    useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+  }],
   bootstrap: [AppComponent],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

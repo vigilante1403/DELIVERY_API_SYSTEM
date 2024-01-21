@@ -68,6 +68,7 @@ builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.AddScoped<IHandleRoute,HandleRoute>();
+builder.Services.AddScoped<IHelper,Helper>();
 // builder.Services.AddScoped<IBasketRepo,BasketRepo>();
 // builder.Services.AddSingleton<IConnectionMultiplexer>(_=>{
 //    var connectionRedisurl= ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"),true);

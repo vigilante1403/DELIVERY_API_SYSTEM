@@ -12,5 +12,6 @@ namespace api.Models{
         [Required]
         public int OrderPaymentStatusId { get; set; }
         public OrderPaymentStatus OrderPaymentStatus { get; set; }
+        public string? GenrateStringAuthenticate { get; set; }
     }
 }

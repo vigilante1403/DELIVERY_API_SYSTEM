@@ -438,7 +438,7 @@ namespace api.Controllers
 
         }
         [HttpGet("delivery-created/{customerId}")]
-        public async Task<ActionResult<IEnumerable<ReturnDelivery>>> RetrueveAllCreatedDeliveryOfCustomer([FromRoute] string customerId){
+        public async Task<ActionResult<IEnumerable<ReturnDelivery>>> RetrieveAllCreatedDeliveryOfCustomer([FromRoute] string customerId){
             IEnumerable<Order> ordersList = await _unitOfWork.OrderRepository.GetEntityByExpression(p=>p.CustomerId==customerId,q=>q.OrderByDescending(w=>w.OrderDate),"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
             var orderIdList = ordersList.Select(w=>w.Id);
             IEnumerable<Delivery> deliveryList = await _unitOfWork.DeliveryRepository.GetEntityByExpression(q=>orderIdList.Contains(q.OrderId),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");

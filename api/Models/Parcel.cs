@@ -10,5 +10,6 @@ namespace api.Models{
         [Required]
         public string CustomerId { get; set; }
         public Customer Customer { get; set; }
+        public string? GenerateAuthentication { get; set; }
     }
 }

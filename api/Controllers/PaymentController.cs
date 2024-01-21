@@ -25,11 +25,13 @@ namespace api.Controllers{
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHandleRoute _handleRoute;
         private readonly IMapper _mapper;
+        private readonly IHelper _helper;
       
-        public PaymentController(IUnitOfWork unitOfWork, IHandleRoute handleRoute,IMapper mapper){
+        public PaymentController(IHelper helper, IUnitOfWork unitOfWork, IHandleRoute handleRoute,IMapper mapper){
             _unitOfWork=unitOfWork;
             _handleRoute=handleRoute;
             _mapper=mapper;
+            _helper=helper;
         }
         [HttpGet("order-payment-status")]
         public async Task<ActionResult<IEnumerable<OrderPaymentStatus>>> GetAllOrderPaymentStatus(){
@@ -286,14 +288,17 @@ namespace api.Controllers{
                     var distancePrice =(decimal) combo.PriceRoute/23;
                     
                     var paymentList = await _unitOfWork.OrderPaymentRepository.GetAll();
-                    var paymentId = paymentList.Count()+1;
+                    
+                    string random = _helper.GenerateRandomString(8);
                     OrderPayment o = new OrderPayment{
                         SubTotal=weightPlus,
                         PrePaid=order.PrePaid,
                         ServicePrice=ServicePrice,
                         DistanceCharges=distancePrice+charges,
                         TotalCharges=weightPlus+order.PrePaid+ServicePrice+distancePrice,
-                        OrderPaymentStatusId=2
+                        OrderPaymentStatusId=2,
+                        GenrateStringAuthenticate=random
+                        
                     };
                     try
                     {
@@ -329,9 +334,14 @@ namespace api.Controllers{
                     };
                     var contactString = System.Text.Json.JsonSerializer.Serialize(contact);
                     var senderString = System.Text.Json.JsonSerializer.Serialize(sender);
+                    var paymentsList = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(e=>e.GenrateStringAuthenticate==random,null,"OrderPaymentStatus");
+                    var expectPayment = paymentsList.FirstOrDefault();
+                    if(expectPayment==null){
+                        return BadRequest( new ErrorResponse(500,"Can't match payment with order") );
+                    }
                     try
                     {
-                        order.OrderPaymentId=paymentId;
+                        order.OrderPaymentId=expectPayment.Id;
                         order.ContactAddress=contactString;
                         order.SenderInfo=senderString;
                         order.PricePerDistanceId=combo.Id;
@@ -347,7 +357,7 @@ namespace api.Controllers{
             }else{
                 return BadRequest(new ErrorResponse(401,"something is wrong"));
             }
-            return Ok("Update data");
+            return Ok();
         }
         
          public static async Task<int> CalculateTotalDistanceAsync(string origin, string destination)
