@@ -21,6 +21,8 @@ export const UserRoute: Routes = [
     {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent,canActivate:[AuthenticationGuard]},
     {path:'new-cart',component:NewCartComponent,canActivate:[AuthenticationGuard]},
     {path: 'forgot-password', component: ForgotPasswordComponent},
-    {path: 'change-password', component: ChangePasswordComponent}
+    {path: 'change-password', component: ChangePasswordComponent},
+    {path:"checkout",component:NewCheckoutComponent,canActivate:[AuthenticationGuard]},
+    {path: '1/reset/:token', component: VerifySendToComponent},
     
 ];
