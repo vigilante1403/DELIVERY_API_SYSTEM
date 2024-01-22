@@ -327,12 +327,12 @@ namespace api.Controllers
                 EnableSsl = true,
                 
             };
-
+    var token = await GenerateJwtToken(userEmail);
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("new.vytruong.1812@gmail.com"),
                 Subject = "Password Forgot Token",
-                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/user/1/reset",
+                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/user/1/reset/{token}",
                 IsBodyHtml = false,
             };
 
@@ -349,7 +349,7 @@ namespace api.Controllers
     }
 
      [HttpGet("forgot-generate-otp")]
-        public async Task<ActionResult> UserAskToOTPPasswordGenerate( string userEmail){
+        public async Task<ActionResult> UserAskToOTPPasswordGenerate(string userEmail){
          var otp= GenerateOTP();
         var sendResult= await SendEmailForgotPasswordAsync(otp,userEmail);
          //user get otp then pass to form otp submit on client, if matchs proceed to url change-password
@@ -384,9 +384,18 @@ namespace api.Controllers
             DateTime current = DateTime.Now;
             var deltaTime = current-latest.CreatedAt;
             int minuses = deltaTime.Minutes;
+            if(latest.used==true){
+                return BadRequest(new ErrorResponse(401,"OTP used!"));
+
+            }
+           
             if(minuses>5){
                 return BadRequest(new ErrorResponse(401,"OTP expired!"));
             }
+            latest.used=true;
+            _unitOfWork.ResetPasswordRepository.Update(latest);
+            _unitOfWork.Save();
+
             return Ok();
         }
 
