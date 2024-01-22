@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "fEUKGUKipYpztyOWBmwnSEj1iGdgd5SN5pBbBn/T5W4=",
+  "Hash": "ekYb5cm9ppYOWdfAPsxD4ClEfSoGVVErD+dDtPaT//Y=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "api\\wwwroot",
       "Source": "api",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\02hpv-superJumbo.jpg",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\02hpv-superJumbo.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/02hpv-superJumbo.jpg",
       "AssetKind": "All",
@@ -34,10 +34,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\02hpv-superJumbo.jpg"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\358542514_264018662995250_7483664225137075538_n.jpg",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\358542514_264018662995250_7483664225137075538_n.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/358542514_264018662995250_7483664225137075538_n.jpg",
       "AssetKind": "All",
@@ -51,10 +51,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\358542514_264018662995250_7483664225137075538_n.jpg"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\abc.png",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\abc.png",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/abc.png",
       "AssetKind": "All",
@@ -68,10 +68,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\abc.png"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg",
       "AssetKind": "All",
@@ -85,10 +85,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\istockphoto-621481132-1024x1024.jpg",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\istockphoto-621481132-1024x1024.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/istockphoto-621481132-1024x1024.jpg",
       "AssetKind": "All",
@@ -102,10 +102,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\istockphoto-621481132-1024x1024.jpg"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\rubella-MMR.png",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\rubella-MMR.png",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/rubella-MMR.png",
       "AssetKind": "All",
@@ -119,10 +119,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\rubella-MMR.png"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\shutterstock_682265785_4.2e16d0ba.fill-1600x775.jpg",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\shutterstock_682265785_4.2e16d0ba.fill-1600x775.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/shutterstock_682265785_4.2e16d0ba.fill-1600x775.jpg",
       "AssetKind": "All",
@@ -136,10 +136,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\shutterstock_682265785_4.2e16d0ba.fill-1600x775.jpg"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\theracy_fotto.jpg",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\theracy_fotto.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/theracy_fotto.jpg",
       "AssetKind": "All",
@@ -153,10 +153,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\theracy_fotto.jpg"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\ultravac-5-in-1.jpg",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\ultravac-5-in-1.jpg",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/ultravac-5-in-1.jpg",
       "AssetKind": "All",
@@ -170,10 +170,10 @@
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\ultravac-5-in-1.jpg"
     },
     {
-      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\null\\rubella-MMR.png",
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\null\\rubella-MMR.png",
       "SourceId": "api",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
       "BasePath": "_content/api",
       "RelativePath": "images/customer/null/rubella-MMR.png",
       "AssetKind": "All",

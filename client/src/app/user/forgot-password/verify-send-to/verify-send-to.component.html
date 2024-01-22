@@ -1,0 +1,60 @@
+<form *ngIf="isVerify" (ngSubmit)="onSubmit()">
+    <h2 class="card-title">Find Your Account?</h2>
+    <hr style="border: 1px solid red" />
+    <label class="form-label" for="email"
+      >We can send login codes to:
+    </label>
+    <div class="d-flex justify-content-between">
+    <input class="form-control" style="width: 60%;" type="text" value="{{email}}" readonly/></div>
+    <hr style="border: 1px solid red" />
+
+    <div class="d-flex justify-content-between">
+      <div class="d-flex align-items-center">
+        <a style="cursor: pointer;"  >Find By Phone Number</a>
+      </div>
+      <div class="d-flex">
+        <a href="#" class="btn btn-secondary" style="width: 5vw">Cancel</a>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="width: 5vw; margin-left: 5px"
+          >Send</button>
+      </div>
+    </div>
+  </form>
+  <form *ngIf="isInsertCode" [formGroup]="insertCodeForm" (ngSubmit)="onSubmit2()">
+    <h2 class="card-title">Find Your Account?</h2>
+    <hr style="border: 1px solid red" />
+    <label class="form-label" for="OTP"
+      >Please check the code in your email. This code includes 6 numbers.
+    </label>
+    <div class="d-flex justify-content-between"><input
+      type="text"
+      class="form-control"
+      id="OTP"
+      formControlName="OTP"
+      placeholder="Insert Code"
+      style="margin-bottom: 10px;width: 30%;"
+    />
+    <div>
+      <h5>We sent a code to:</h5>
+      <input formControlName="CustomerEmail" class="form-control" style="width: 100%;" type="text" value="{{email}}" readonly/></div>
+
+    </div>
+    <hr style="border: 1px solid red" />
+
+    <div class="d-flex justify-content-between">
+      <div class="d-flex align-items-center">
+        <a style="cursor: pointer;"  >Don't have yet a code</a>
+      </div>
+      <div class="d-flex">
+        <a href="#" class="btn btn-secondary" style="width: 5vw">Cancel</a>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          style="width: 5vw; margin-left: 5px"
+          >Continue</button>
+      </div>
+    </div>
+  </form>
+  <app-new-password *ngIf="isNewPassword" [token]="this.token.token"></app-new-password>

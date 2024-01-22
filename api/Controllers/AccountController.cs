@@ -269,11 +269,144 @@ namespace api.Controllers
        var rsToken = await _userManager.GeneratePasswordResetTokenAsync(user);
       var result= await _userManager.ResetPasswordAsync(user,rsToken,newpassword.newPassword);
       if(result.Succeeded){
-        return Ok("Password changed");
+        return Ok();
+    }else{
+        return BadRequest(new ErrorResponse(500));
+    }
+      }
+
+
+
+
+    [HttpGet("token")]
+    public async Task<ActionResult<TokenDTO>> GenerateJwtTokenP([FromQuery]string userEmail)
+    {
+        string secretKey = "CqqXj0t7O2EziQwB16AYFyABPTvsZ9xzf8tWJdc2gwchqwb6gRR7BGZ3PMf5Jt7j5TbqZalHqsYpUiIwW7A380sDIpdUg2FzGFSBuX8z9";
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(secretKey);
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] { new Claim("email", userEmail) }),
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        Console.WriteLine(tokenHandler.WriteToken(token));
+         TokenDTO Token = new TokenDTO
+            {
+               
+                token =tokenHandler.WriteToken(token),
+            };
+       
+        return Ok(Token);
+    }
+
+
+
+    //forgot password
+    [HttpGet("3/r/forgot-password/findemail")]
+    public async Task<ActionResult> FindAccountByEmail(string email){
+        var user = await _userManager.FindByEmailAsync(email);
+        if(user==null){
+        return BadRequest(new ErrorResponse(404,"User not found"));
+       }
+        return Ok(user);
+    }
+    [HttpPost("sendMail-forgot")]
+     public static  async Task<bool> SendEmailForgotPasswordAsync(string otp,string userEmail)
+    {
+        
+        try
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("new.vytruong.1812@gmail.com", "erya gvus chag rvok"),
+                EnableSsl = true,
+                
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("new.vytruong.1812@gmail.com"),
+                Subject = "Password Forgot Token",
+                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/user/1/reset",
+                IsBodyHtml = false,
+            };
+
+            mailMessage.To.Add(new MailAddress(userEmail));
+
+            await smtpClient.SendMailAsync(mailMessage);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending email: {ex.Message}");
+            return false;
+        }
+    }
+
+     [HttpGet("forgot-generate-otp")]
+        public async Task<ActionResult> UserAskToOTPPasswordGenerate( string userEmail){
+         var otp= GenerateOTP();
+        var sendResult= await SendEmailForgotPasswordAsync(otp,userEmail);
+         //user get otp then pass to form otp submit on client, if matchs proceed to url change-password
+         if(sendResult==true){
+            ResetPassword otpCode = new ResetPassword{
+                CustomerEmail=userEmail,
+                OTP=otp,
+            };
+            try
+            {
+                _unitOfWork.ResetPasswordRepository.Add(otpCode);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500));
+            }
+             return Ok();
+         }else{
+            return BadRequest(new ErrorResponse(500));
+         }
+           
+        }
+
+         [HttpPost("verification-otp-f")]
+        public async Task<ActionResult> ProceedToForgotPassword([FromBody] SubmitReset otpSubmit){
+            var latestotpList = await _unitOfWork.ResetPasswordRepository.GetEntityByExpression(d=>(d.OTP==otpSubmit.OTP)&&(d.CustomerEmail==otpSubmit.CustomerEmail),r=>r.OrderByDescending(q=>q.Id),null);
+            var latest = latestotpList.FirstOrDefault();
+            if(!latestotpList.Any()){
+                return BadRequest(new ErrorResponse(404));
+            }
+            DateTime current = DateTime.Now;
+            var deltaTime = current-latest.CreatedAt;
+            int minuses = deltaTime.Minutes;
+            if(minuses>5){
+                return BadRequest(new ErrorResponse(401,"OTP expired!"));
+            }
+            return Ok();
+        }
+
+        [HttpPost("3/r/change-password")]
+    public async Task<ActionResult> UserNewPassword([FromBody] SubmitNewPassword newpassword){
+    //    var email= ReadJwtToken(token);
+       var user = await _userManager.FindByEmailAsync(newpassword.email);
+       if(user==null){
+        return BadRequest(new ErrorResponse(404,"User not found"));
+       }
+       
+    //    var rsToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+      var result= await _userManager.ChangePasswordAsync(user,newpassword.oldPassword,newpassword.newPassword);
+      if(result.Succeeded){
+        return Ok();
     }else{
         return BadRequest(new ErrorResponse(500));
     }
       }
        
     }
+
 }
