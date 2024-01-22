@@ -6,11 +6,11 @@
         <app-nav-bar></app-nav-bar>
         <router-outlet></router-outlet>
       </div>
-      <div *ngIf="isAdminRoute()">
+      <div class="bg-image" *ngIf="isAdminRoute()">
         <!-- Home Component with Top Nav Bar -->
-        <div class="page-wrapper" [ngClass]="{'toggled' : getSideBarState()}">
+        <div class="page-wrapper bg-image" [ngClass]="{'toggled' : getSideBarState()}">
           <app-admin-sidebar></app-admin-sidebar>
-          <main class="page-content">
+          <main class="page-content bg-image">
               <div class="container-fluid">
                   
                       <router-outlet></router-outlet>
@@ -23,11 +23,11 @@
           <!-- <a href="https://github.com/azouaoui-med/angular-pro-sidebar"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a> -->
         </div>
       </div>
-      <div *ngIf="!isHomeRoute()&&!isAdminRoute()" #otherRoute>
+      <div  *ngIf="!isHomeRoute()&&!isAdminRoute()" #otherRoute>
         <!-- Other Component with Sidebar -->
-        <div class="page-wrapper" [ngClass]="{'toggled' : getSideBarState()}">
+        <div class="page-wrapper bg-image" [ngClass]="{'toggled' : getSideBarState()}">
             <app-sidebar></app-sidebar>
-            <main class="page-content">
+            <main class="page-content bg-image">
                 <div class="container-fluid">
                     
                         <router-outlet></router-outlet>

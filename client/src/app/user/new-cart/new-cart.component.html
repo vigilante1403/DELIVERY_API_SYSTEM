@@ -14,10 +14,10 @@
             <a class="nav-link"  href="#results" [ngClass]="{ 'active':activeTab==='processing'}" data-toggle="tab"
                (click)="result('processing', $event)">Processing</a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link"  href="#results" [ngClass]="{ 'active':activeTab==='temp'}" data-toggle="tab"
                (click)="result('temp', $event)">Temp</a>
-          </li>
+          </li> -->
           
         </ul>
     
@@ -34,9 +34,9 @@
             <app-processing-table [items]="transitDeliveries" [details]="inDetails"></app-processing-table>
             
           </div>
-          <div class="tab-pane" id="results" [ngClass]="{ 'active':activeTab==='temp'}">
+          <!-- <div class="tab-pane" id="results" [ngClass]="{ 'active':activeTab==='temp'}">
             <app-temp-table [data]="unfinished"></app-temp-table>
-          </div>
+          </div> -->
         </div>
     
       </div>

@@ -216,24 +216,24 @@
         }
   
         .sidebar-dropdown {
-          >a:after {
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            content: "\f105";
-            display: inline-block;
-            font-style: normal;
-            font-variant: normal;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-align: center;
-            background: 0 0;
-            position: absolute;
-            right: 15px;
-            top: 14px;
-            transition: transform .3s ease;
+          // >a:after {
+          //   font-family: "Font Awesome 5 Free";
+          //   font-weight: 900;
+          //   content: "\f105";
+          //   display: inline-block;
+          //   font-style: normal;
+          //   font-variant: normal;
+          //   text-rendering: auto;
+          //   -webkit-font-smoothing: antialiased;
+          //   -moz-osx-font-smoothing: grayscale;
+          //   text-align: center;
+          //   background: 0 0;
+          //   position: absolute;
+          //   right: 15px;
+          //   top: 14px;
+          //   transition: transform .3s ease;
   
-          }
+          // }
   
           .sidebar-submenu {
             // display: none;
@@ -248,19 +248,19 @@
               font-size: 13px;
   
               a {
-                &:before {
-                  content: "\f111";
-                  font-family: "Font Awesome 5 Free";
-                  font-weight: 400;
-                  font-style: normal;
-                  display: inline-block;
-                  text-align: center;
-                  text-decoration: none;
-                  -webkit-font-smoothing: antialiased;
-                  -moz-osx-font-smoothing: grayscale;
-                  margin-right: 10px;
-                  font-size: 8px;
-                }
+                // &:before {
+                //   content: "\f111";
+                //   font-family: "Font Awesome 5 Free";
+                //   font-weight: 400;
+                //   font-style: normal;
+                //   display: inline-block;
+                //   text-align: center;
+                //   text-decoration: none;
+                //   -webkit-font-smoothing: antialiased;
+                //   -moz-osx-font-smoothing: grayscale;
+                //   margin-right: 10px;
+                //   font-size: 8px;
+                // }
   
                 .badge,
                 .label {

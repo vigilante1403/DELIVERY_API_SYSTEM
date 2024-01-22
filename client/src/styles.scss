@@ -8,4 +8,14 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.bg-image{
+    background-image: url("https://pub-static.fotor.com/assets/bg/49048260-583c-4945-a120-1df8c88e28ed.jpg");
+}
+::-webkit-scrollbar {
+    width: 5px; /* Set your desired scrollbar width */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Set your desired thumb color */
+  }
 
