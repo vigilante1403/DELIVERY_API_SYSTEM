@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class SidebarService {
+export class AdminSidebarService {
+
+  constructor() { }
   toggled = false;
   _hasBackgroundImage = true;
   menus = [
     {
-      title: 'general',
+      title: 'Manage',
       type: 'header'
     },
     {
@@ -22,23 +24,42 @@ export class SidebarService {
       },
       submenus: [
         {
-          title: 'Manage information',
+          title: 'Users Management',
           badge: {
             text: 'Pro ',
             class: 'badge-success'
           },
-          url:"/user"
+          url:'/admin/manage/all'
+          
         },
         {
-          title: 'Change password'
+          title: 'Orders Management',
+          url:'/admin/manage/all'
         },
         {
-          title: 'Dashboard 3'
+          title: 'Delivery Agents Management',
+          url:'/admin/manage/all'
+        },
+        {
+          title: 'Location Management',
+          url:'/admin/manage/all'
+        },
+        {
+          title: 'Order Payment Status Management',
+          url:'/admin/manage/all'
+        },
+        {
+          title: 'Order Status Management',
+          url:'/admin/manage/all'
+        },
+        {
+          title: 'Service Management',
+          url:'/admin/manage/all'
         }
       ]
     },
     {
-      title: 'Services',
+      title: 'Admin',
       icon: 'fa fa-shopping-cart',
       active: false,
       type: 'dropdown',
@@ -48,8 +69,8 @@ export class SidebarService {
       },
       submenus: [
         {
-          title: 'Make orders',
-          url:"/user/order/new"
+          title: 'Make roles',
+         
         },
         
       ]
@@ -62,7 +83,7 @@ export class SidebarService {
       submenus: [
         {
           title: 'Orders',
-          url:"/user/new-cart"
+         
         },
         {
           title: 'Waiting payment orders'
@@ -131,8 +152,11 @@ export class SidebarService {
     //   type: 'simple'
     // }
   ];
-  constructor() { }
-
+choose:string="Users Management"
+ChooseEvent(table:string){
+  this.choose=table
+  console.log("switching table")
+}
   toggle() {
     this.toggled = ! this.toggled;
   }
@@ -140,7 +164,9 @@ export class SidebarService {
   getSidebarState() {
     return this.toggled;
   }
-
+  getTable(){
+    return this.choose
+  }
   setSidebarState(state: boolean) {
     this.toggled = state;
   }

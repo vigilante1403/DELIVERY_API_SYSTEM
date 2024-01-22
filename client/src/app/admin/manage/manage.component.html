@@ -1,6 +1,6 @@
 <div class="">
     <div class="row">
-      <section class="col-3">
+      <!-- <section class="col-3">
         <h5 class="text-warning ml-3">Search</h5>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -38,32 +38,29 @@
           
           
         </ul>
-      </section>
-      <section class="intro col-9">
-        <div *ngIf="this.options.indexOf(this.choose)==0">
+      </section> -->
+      <section class="intro col-12">
+        <div  *ngIf="this.options.indexOf(this.service.getTable())==0">
           <app-all-users></app-all-users>
         </div>
-        <div *ngIf="this.options.indexOf(this.choose)==1">
+        <div  *ngIf="this.options.indexOf(this.service.getTable())==1">
            <app-all-orders></app-all-orders>
         </div>
-        <div *ngIf="this.options.indexOf(this.choose)==2">
+        <div *ngIf="this.options.indexOf(this.service.getTable())==2">
           <app-all-agents></app-all-agents>
         </div>
-        <div *ngIf="this.options.indexOf(this.choose)==3">
+        <div  *ngIf="this.options.indexOf(this.service.getTable())==3">
           <app-location></app-location>
         </div>
-        <div *ngIf="this.options.indexOf(this.choose)==4">
+        <div  *ngIf="this.options.indexOf(this.service.getTable())==4">
           <app-payment-status></app-payment-status>
         </div>
-        <div *ngIf="this.options.indexOf(this.choose)==5">
+        <div *ngIf="this.options.indexOf(this.service.getTable())==5">
           <app-order-status></app-order-status>
         </div>
-        <div *ngIf="this.options.indexOf(this.choose)==6">
+        <div *ngIf="this.options.indexOf(this.service.getTable())==6">
           <app-service></app-service>
         </div>
-
-       
-        
       </section>
       
     </div>

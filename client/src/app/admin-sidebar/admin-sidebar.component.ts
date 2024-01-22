@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { SidebarService } from './sidebar.service';
+import { AdminSidebarService } from './admin-sidebar.service';
 import { ModalService } from '../nav-bar/modal/modal.service';
-// import { MenusService } from './menus.service';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
+  selector: 'app-admin-sidebar',
+  templateUrl: './admin-sidebar.component.html',
+  styleUrls: ['./admin-sidebar.component.scss'],
   animations: [
     trigger('slide', [
       state('up', style({ height: 0 })),
@@ -16,10 +15,10 @@ import { ModalService } from '../nav-bar/modal/modal.service';
     ])
   ]
 })
-export class SidebarComponent implements OnInit {
+export class AdminSidebarComponent {
   menus:any = [];
   login!:boolean
-  constructor(public sidebarservice: SidebarService,public service:ModalService) {
+  constructor(public sidebarservice: AdminSidebarService,public service:ModalService) {
     this.menus = sidebarservice.getMenuList();
    }
 
