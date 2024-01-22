@@ -26,12 +26,14 @@ namespace api.Controllers{
         private readonly IHandleRoute _handleRoute;
         private readonly IMapper _mapper;
         private readonly IHelper _helper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
       
-        public PaymentController(IHelper helper, IUnitOfWork unitOfWork, IHandleRoute handleRoute,IMapper mapper){
+        public PaymentController(IHttpContextAccessor httpContextAccessor, IHelper helper, IUnitOfWork unitOfWork, IHandleRoute handleRoute,IMapper mapper){
             _unitOfWork=unitOfWork;
             _handleRoute=handleRoute;
             _mapper=mapper;
             _helper=helper;
+            _httpContextAccessor=httpContextAccessor;
         }
         [HttpGet("order-payment-status")]
         public async Task<ActionResult<IEnumerable<OrderPaymentStatus>>> GetAllOrderPaymentStatus(){
@@ -198,6 +200,47 @@ namespace api.Controllers{
             var payments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(null,null,"OrderPaymentStatus");
             return Ok(_mapper.Map<IEnumerable<OrderPayment>,IEnumerable<ReturnPayment>>(payments));
         }
+        [HttpGet("order-payments/{customerId}")]
+        public async Task<ActionResult<List<ReturnPayInfoParcel>>> RetrieveALLPaymentsOfCustomer([FromRoute] string customerId){
+            var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(w=>w.CustomerId==customerId,q=>q.OrderByDescending(r=>r.OrderDate),"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            var ordersId = orders.Where(i=>i.OrderPaymentId.HasValue).Select(x=>x.Id);
+            var ordersIdList = orders.Where(e=>e.OrderPaymentId.HasValue).Select(t=>t.OrderPaymentId.Value);
+            var orderDTOs = _mapper.Map<IEnumerable<Order>,IEnumerable<OrderDTO>>(orders);
+            var payments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(w=>ordersIdList.Contains(w.Id),null,"OrderPaymentStatus");
+             var paymentDTOs = _mapper.Map<IEnumerable<OrderPayment>,IEnumerable<ReturnPayment>>(payments);
+            var result = new List<ReturnPayInfoParcel>();
+            foreach(var id in ordersId){
+                var orderDTO = orderDTOs.Where(x=>x.Id==id).FirstOrDefault();
+                var paymentId = orderDTO.OrderPaymentId;
+                var payment = paymentDTOs.Where(d=>d.Id==paymentId).FirstOrDefault();
+                IEnumerable<OrderDetail> list = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(r=>r.OrderId==id,null,"Order,Parcel");
+                IEnumerable<int> parcelList = list.Where(x=>x.ParcelId.HasValue).Select(x=>x.ParcelId.Value).ToList();
+                List<ReturnParcel> returnParcel = new List<ReturnParcel>();
+                string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
+            //list of Ids
+                foreach(var id1 in parcelList){
+                var parcel1 = await _unitOfWork.ParcelRepository.GetEntityByExpression(w=>w.Id==id1,null,null);
+                var parcel = parcel1.FirstOrDefault();
+                ReturnParcel rp = new ReturnParcel{
+                    Id=parcel.Id,
+                    ParcelName=parcel.ParcelName,
+                    Weight=parcel.Weight,
+                    ImageUrl=baseUrl+'/'+parcel.ImageUrl,
+                    Quantity=parcel.Quantity
+                };
+                returnParcel.Add(rp);
+            }
+            ReturnPayInfoParcel r = new ReturnPayInfoParcel{
+                OrderId=id,
+                OrderDTO=orderDTO,
+                ReturnParcels=returnParcel,
+                ReturnPayment=payment
+            };
+            result.Add(r);
+            }
+            return Ok(result);
+
+        }
         [HttpGet("order-payment/{orderId}")]
         public async Task<ActionResult<ReturnPayment>> GetOrderPaymentRequired([FromRoute] string orderId){
             int Id = 0;
@@ -275,7 +318,7 @@ namespace api.Controllers{
                     
                     //get subtotal 
                     IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==Id,null,"Parcel");
-                    var weight = parcelList.Sum(x=>x.Parcel.Weight);
+                    var weight = parcelList.Sum(x=>x.Parcel.Weight*x.Parcel.Quantity);
                     decimal weightPlus =0;
                     var freeWeightUpTo = combo.PricePerKg+maxWeight;
                     if(weight>freeWeightUpTo){

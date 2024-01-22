@@ -26,6 +26,9 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { ToastrModule } from 'ngx-toastr';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -49,6 +52,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     libraries: ["places", "geometry"]
 }),
     // GoogleMapsModule,
+    ToastrModule.forRoot(),
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,

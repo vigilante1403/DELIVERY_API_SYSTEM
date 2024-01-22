@@ -22,7 +22,8 @@ export class CheckoutService {
       id:0,
       parcelName:'',
       weight:0,
-      imageUrl:''
+      imageUrl:'',
+      quantity:0
     });
     payment:IPayment=({
       id:0,

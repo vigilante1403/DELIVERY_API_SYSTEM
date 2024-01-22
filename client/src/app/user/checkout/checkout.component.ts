@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CheckoutService } from './checkout.service';
 import { IOrderShow, IPayment, IReturnParcel } from 'src/app/interface/delivery/IDelivery';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { delay } from 'rxjs';
 @Component({
   selector: 'app-checkout',
@@ -34,7 +34,7 @@ export class CheckoutComponent {
     public showCancel: boolean = false;
     public showError: boolean = false;
     public payPalConfig?: IPayPalConfig;
-  constructor(public service:CheckoutService,public routeActivate:ActivatedRoute){
+  constructor(public service:CheckoutService,public routeActivate:ActivatedRoute,private router:Router){
 
   }
   ngOnInit(){
@@ -97,7 +97,7 @@ export class CheckoutComponent {
         console.log('onApprove - you can get full order details inside onApprove: ', details);
         var submitDelivery=({orderId:Number(this.routeActivate.snapshot.paramMap.get('orderId'))})
           this.service.createNewDelivery(submitDelivery).subscribe({
-            next:(res)=>{console.log(res)},
+            next:(res)=>{console.log(res);this.router.navigateByUrl("/user/new-cart")},
             error:(err)=>{console.log(err)}
           })
       })

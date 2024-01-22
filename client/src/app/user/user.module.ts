@@ -23,6 +23,12 @@ import { NewPasswordComponent } from './forgot-password/new-password/new-passwor
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { NewCheckoutComponent } from './new-checkout/new-checkout.component';
+import { DonePaymentComponent } from './new-checkout/done-payment/done-payment.component';
+import { WaitingPaymentComponent } from './new-checkout/waiting-payment/waiting-payment.component';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { PaypalComponent } from './new-checkout/waiting-payment/paypal/paypal.component';
+import { PreCheckoutComponent } from './form/pre-checkout/pre-checkout.component';
 
 
 
@@ -43,6 +49,11 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     VerifySendToComponent,
     NewPasswordComponent,
     ChangePasswordComponent,
+    NewCheckoutComponent,
+    DonePaymentComponent,
+    WaitingPaymentComponent,
+    PaypalComponent,
+    PreCheckoutComponent,
 
     
   ],
@@ -51,7 +62,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
     RouterModule.forChild(UserRoute),
     ReactiveFormsModule,FormsModule,
     FontAwesomeModule,
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    NgxPayPalModule
     
   ],
   exports:[

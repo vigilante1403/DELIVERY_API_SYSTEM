@@ -144,10 +144,13 @@ namespace api.Controllers{
                 Directory.CreateDirectory(uploadsFolder);
             }
             foreach(var parcel in parcelList.List){
+                var random1 = _helper.GenerateRandomString(16);
                 Parcel p = new Parcel{
                 ParcelName = parcel.ParcelName,
                 Weight = parcel.Weight ,
-                CustomerId=customerId
+                CustomerId=customerId,
+                Quantity=parcel.Quantity,
+                GenerateAuthentication=random1
                 };
                 if(parcel.Image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
@@ -170,7 +173,7 @@ namespace api.Controllers{
                 return BadRequest(new ErrorResponse(500,"Error in parcel table"));
             }
                 _ = Task.Delay(1000);
-            var latestList = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.CustomerId==customerId,r=>r.OrderByDescending(e=>e.Id),"Customer");
+            var latestList = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.CustomerId==customerId&&d.GenerateAuthentication==random1,null,"Customer");
             var parcelId= latestList.FirstOrDefault().Id;
             OrderDetail detail = new OrderDetail{
                 ParcelId=parcelId,
@@ -214,7 +217,8 @@ namespace api.Controllers{
                     Id=parcel.Id,
                     ParcelName=parcel.ParcelName,
                     Weight=parcel.Weight,
-                    ImageUrl=baseUrl+'/'+parcel.ImageUrl
+                    ImageUrl=baseUrl+'/'+parcel.ImageUrl,
+                    Quantity=parcel.Quantity
                 };
                 returnParcel.Add(rp);
             }
@@ -237,6 +241,7 @@ namespace api.Controllers{
                 Parcel p = existedParcel.FirstOrDefault();
                 p.ParcelName=parcel.ParcelName;
                 p.Weight=parcel.Weight ;
+                p.Quantity=parcel.Quantity;
                 if(parcel.Image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
                 
@@ -426,7 +431,8 @@ namespace api.Controllers{
                     Id=parcel.Id,
                     ParcelName=parcel.ParcelName,
                     Weight=parcel.Weight,
-                    ImageUrl=baseUrl+'/'+parcel.ImageUrl
+                    ImageUrl=baseUrl+'/'+parcel.ImageUrl,
+                    Quantity=parcel.Quantity
                 };
                 returnParcel.Add(rp);
             }
@@ -493,7 +499,8 @@ namespace api.Controllers{
                 ParcelName = parcel.ParcelName,
                 Weight = parcel.Weight ,
                 CustomerId=customerId,
-                GenerateAuthentication=random1
+                GenerateAuthentication=random1,
+                Quantity=parcel.Quantity
                 };
                 if(parcel.Image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
@@ -561,7 +568,7 @@ namespace api.Controllers{
                     var ServicePrice = newServiceChosen.Price;
                     //get subtotal 
                     IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==submit.OrderId,null,"Parcel");
-                    var weight = parcelList.Sum(x=>x.Parcel.Weight);
+                    var weight = parcelList.Sum(x=>x.Parcel.Weight*x.Parcel.Quantity);
                     decimal weightPlus =0;
                     var freeWeightUpTo = combo.PricePerKg+maxWeight;
                     if(weight>freeWeightUpTo){
@@ -643,7 +650,7 @@ namespace api.Controllers{
 
         }
         [HttpGet("edit/order-and-other-forms/{orderId}")]
-        public async Task<ActionResult> GetDataToEdit([FromRoute] string orderId){
+        public async Task<ActionResult<ReturnPayInfoParcel>> GetDataToEdit([FromRoute] string orderId){
             int Id=0;
             try
             {
@@ -679,7 +686,8 @@ namespace api.Controllers{
                             Id=parcel.Id,
                             ParcelName=parcel.ParcelName,
                             Weight=parcel.Weight,
-                            ImageUrl=parcel.ImageUrl
+                            ImageUrl=parcel.ImageUrl,
+                            Quantity=parcel.Quantity
                 };
                 p.Add(c);
                     }

@@ -57,11 +57,7 @@
                   <h5>Services</h5>
                 </a>
               </li>
-              <li class="nav-list mx-3">
-                <a href="#articles" class="nav-link px-2">
-                  <h5>Blog</h5>
-                </a>
-              </li>
+              
               <li class="nav-list mx-3">
                 <a href="#contact" class="nav-link px-2">
                   <h5>Contact</h5>
@@ -76,7 +72,7 @@
                   aria-expanded="false"
                 >
                   <h5>
-                    Pages
+                    Users
                     <iconify-icon
                       icon="ic:outline-arrow-drop-down"
                     ></iconify-icon>
@@ -85,22 +81,10 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a routerLink="/user" class="dropdown-item text-uppercase"
-                      >User</a
+                      >Dashboard</a
                     >
                   </li>
-                  <li>
-                    <a routerLink="/user/order/new" class="dropdown-item text-uppercase"
-                      >Make new Order</a
-                    >
-                  </li>
-                  <li>
-                    <a
-                      routerLink="/user/order/cart/{{ this.service.customer.id }}"
-                      class="dropdown-item text-uppercase"
-                      >Cart
-                      </a
-                    >
-                  </li>
+                  
                   
                 </ul>
               </li>

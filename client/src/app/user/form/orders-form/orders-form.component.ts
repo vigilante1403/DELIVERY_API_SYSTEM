@@ -4,6 +4,8 @@ import { delay } from 'rxjs';
 
 import { IOrderShow, IService, ISubmitOrder } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
+import { CheckoutService } from '../../checkout/checkout.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders-form',
@@ -20,7 +22,7 @@ export class OrdersFormComponent implements OnInit {
   contact:string=''
   prePaid:number=0;
   selectedError:string=''
-  constructor(private formBuilder: FormBuilder,public service:DeliveryService) {}
+  constructor(private formBuilder: FormBuilder,public service:DeliveryService,public checkout:CheckoutService,private router:Router) {}
 
   ngOnInit() {
     this.ordersForm = this.formBuilder.group({
@@ -151,9 +153,24 @@ export class OrdersFormComponent implements OnInit {
       this.isClass3=true
     }
   }
+  receiveFromAddressChild(data:any){
+    this.closeForm=data
+    this.getOrder(this.Input.customerId,this.Input.id);
+  }
+  navigateCheckoutPage(){
+    var url ="/user/order/cart/"+this.Input.customerId+"/"+this.Input.id+"/checkout"
+    this.router.navigateByUrl(url);
+  }
+  returnOrderPage(){
+    this.router.navigateByUrl("/user/new-cart")
+  }
+  getOrder(customerId:any,orderId:any){
+    this.checkout.fetchOrder(customerId,orderId)
+  }
   allowPackage:boolean=false;
   showClass2:boolean=false;
   isClass1:boolean=true;
   isClass2:boolean=false;
   isClass3:boolean=false;
+  closeForm:boolean=false;
 }

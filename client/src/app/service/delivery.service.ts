@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IDelivery, IOrderShow, IPayment, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
+import { IDelivery, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
 import { ICustomer } from '../interface/account/IUser';
 
@@ -59,5 +59,8 @@ export class DeliveryService {
   }
   fetchAllDetailsRequired(arrayOrderIds:any){
     return this.http.post<any>(env+'/Order/required-list',arrayOrderIds)
+  }
+  fetchAllPayments(customerId:any){
+    return this.http.get<IReturnPayInfoParcel[]>(env+'/Payment/order-payments/'+customerId)
   }
 }

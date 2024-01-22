@@ -1,0 +1,31 @@
+<div class="container">
+    <div id="tabs" class=" custom" #tabs>
+
+        <ul class="nav nav-pills d-flex justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active" href="#search" [ngClass]="{ 'active':activeTab==='waiting'}" (click)="search('waiting', $event)"
+               data-toggle="tab">Wating payment</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="#results" [ngClass]="{ 'active':activeTab==='done'}" data-toggle="tab"
+               (click)="result('done', $event)">Done payment</a>
+          </li>
+          
+          
+        </ul>
+    
+        <div class="tab-content d-flex justify-content-center">
+          <div class="tab-pane" id="search" [ngClass]="{ 'active':activeTab==='waiting'}">
+           <app-waiting-payment [details]="this.waitingPayments"></app-waiting-payment>
+            
+          </div>
+          <div class="tab-pane" id="search" [ngClass]="{ 'active':activeTab==='done'}">
+            <app-done-payment [details]="this.donePayments"></app-done-payment>
+            
+          </div>
+          
+        </div>
+    
+      </div>
+</div>
+
