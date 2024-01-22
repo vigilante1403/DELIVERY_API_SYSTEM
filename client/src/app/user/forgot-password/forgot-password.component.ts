@@ -14,6 +14,7 @@ export class ForgotPasswordComponent implements OnInit {
 
 
   emailForm!: FormGroup;
+  emailSend: string='';
   emailFind: string ='';
   isFindByEmail = true;
   isFindByPhone = false;
@@ -53,11 +54,28 @@ export class ForgotPasswordComponent implements OnInit {
        this.isVerify=true;
        this.isFindByEmail=false;
        this.isFindByPhone=false;
+       this.emailSend = this.emailForm.get('email')?.value;
       },
       error: (err) => {console.log(err);
       }
     })
    
+  }
+  onSubmit2() {
+    let params = new HttpParams();
+    // this.emailSend = this.emailForm.get('email')?.value;
+    if(this.emailSend){
+      params = params.append('userEmail', this.emailSend);
+    }
+  
+    this.http.get(env + '/account/forgot-generate-otp', {params}).subscribe({
+      next: (res) => {console.log(res);
+        
+        this.isVerify=false
+      },
+      error: (err) => {console.log(err);
+      }
+    })
   }
 
 }

@@ -8,5 +8,7 @@ namespace api.Models{
         public string OTP { get; set; }
         public DateTime CreatedAt { get; set; }=DateTime.Now;
 
+        public bool used {get; set;}
+
     }
 }

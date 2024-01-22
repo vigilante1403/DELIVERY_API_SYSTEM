@@ -3,6 +3,7 @@ import { CartComponent } from './cart/cart.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { VerifySendToComponent } from './forgot-password/verify-send-to/verify-send-to.component';
 import { AddPackageFormComponent } from './form/add-package-form/add-package-form.component';
 import { AddressFormComponent } from './form/address-form/address-form.component';
 import { OrdersFormComponent } from './form/orders-form/orders-form.component';
@@ -19,6 +20,7 @@ export const UserRoute: Routes = [
     {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent,canActivate:[AuthenticationGuard]},
     {path:'new-cart',component:NewCartComponent,canActivate:[AuthenticationGuard]},
     {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path: '1/reset/:token', component: VerifySendToComponent},
     {path: 'change-password', component: ChangePasswordComponent}
     
 ];
