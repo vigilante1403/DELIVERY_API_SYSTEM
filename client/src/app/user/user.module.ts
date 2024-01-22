@@ -17,6 +17,12 @@ import { DeliveringTableComponent } from './new-cart/delivering-table/delivering
 import { DeliveredTableComponent } from './new-cart/delivered-table/delivered-table.component';
 import { ProcessingTableComponent } from './new-cart/processing-table/processing-table.component';
 import { TempTableComponent } from './new-cart/temp-table/temp-table.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { VerifySendToComponent } from './forgot-password/verify-send-to/verify-send-to.component';
+import { NewPasswordComponent } from './forgot-password/new-password/new-password.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 
 
@@ -33,6 +39,10 @@ import { TempTableComponent } from './new-cart/temp-table/temp-table.component';
     DeliveredTableComponent,
     ProcessingTableComponent,
     TempTableComponent,
+    ForgotPasswordComponent,
+    VerifySendToComponent,
+    NewPasswordComponent,
+    ChangePasswordComponent,
 
     
   ],
@@ -40,6 +50,8 @@ import { TempTableComponent } from './new-cart/temp-table/temp-table.component';
     CommonModule,
     RouterModule.forChild(UserRoute),
     ReactiveFormsModule,FormsModule,
+    FontAwesomeModule,
+    AlertModule.forRoot()
     
   ],
   exports:[

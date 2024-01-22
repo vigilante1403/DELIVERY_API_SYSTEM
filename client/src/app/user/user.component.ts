@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { DeliveryService } from '../service/delivery.service';
 import { ModalService } from '../nav-bar/modal/modal.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -9,8 +10,12 @@ import { ModalService } from '../nav-bar/modal/modal.service';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent {
-  constructor(public service:ModalService){
+  modalRef?: BsModalRef;
+  constructor(public service:ModalService,private bsModalService: BsModalService){
 
+  }
+  openModal(template: TemplateRef<void>) {
+    this.modalRef = this.bsModalService.show(template);
   }
 
 }
