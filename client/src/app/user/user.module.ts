@@ -29,6 +29,7 @@ import { WaitingPaymentComponent } from './new-checkout/waiting-payment/waiting-
 import { NgxPayPalModule } from 'ngx-paypal';
 import { PaypalComponent } from './new-checkout/waiting-payment/paypal/paypal.component';
 import { PreCheckoutComponent } from './form/pre-checkout/pre-checkout.component';
+import { UpdateUnpaidFormsComponent } from './update-unpaid-forms/update-unpaid-forms.component';
 
 
 
@@ -54,6 +55,7 @@ import { PreCheckoutComponent } from './form/pre-checkout/pre-checkout.component
     WaitingPaymentComponent,
     PaypalComponent,
     PreCheckoutComponent,
+    UpdateUnpaidFormsComponent,
 
     
   ],

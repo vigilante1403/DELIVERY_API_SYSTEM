@@ -29,6 +29,7 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ToastrModule } from 'ngx-toastr';
+import { EmployeeSidebarComponent } from './employee-sidebar/employee-sidebar.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -44,7 +45,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AddressFormComponent,
     CheckoutComponent,
     SidebarComponent,
-    AdminSidebarComponent
+    AdminSidebarComponent,
+    EmployeeSidebarComponent
   ],
   imports: [
    AgmCoreModule.forRoot({

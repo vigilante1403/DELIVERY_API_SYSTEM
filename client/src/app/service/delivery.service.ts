@@ -63,4 +63,13 @@ export class DeliveryService {
   fetchAllPayments(customerId:any){
     return this.http.get<IReturnPayInfoParcel[]>(env+'/Payment/order-payments/'+customerId)
   }
+  fetchEditData(orderId:any){
+    return this.http.get<IReturnPayInfoParcel>(env+"/Order/edit/order-and-other-forms/"+orderId)
+  }
+  editUnfinishedOrder(data:any) {
+    // Create a FormData object to send the form data
+    
+    // Make the POST request
+    return this.http.post<any>(env+'/Order/edit/order-and-other-forms', data);
+  }
 }

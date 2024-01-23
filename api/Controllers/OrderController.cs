@@ -1,3 +1,4 @@
+using System.Text.Json;
 using api.DAl;
 using api.DTO;
 using api.Exceptions;
@@ -448,20 +449,35 @@ namespace api.Controllers{
 
         }
         [HttpPost("edit/order-and-other-forms")]
-        public async Task<ActionResult> EditUnfinishedOrder([FromForm] SubmitEditUnfinishedOrder submit,[FromForm] SubmitListParcel? listParcel){
+        public async Task<ActionResult> EditUnfinishedOrder([FromForm] SubmitListParcel? listParcel){
             //truong hop cho truoc orderId
             //allow change service,packages and locations
             //check prev service
+            Console.WriteLine(listParcel.Submit1);
+            Console.WriteLine("Submit1 la: ",listParcel.Submit1);
+            SubmitEditUnfinishedOrder submit = JsonSerializer.Deserialize<SubmitEditUnfinishedOrder>(listParcel.Submit1);
+            Console.WriteLine("Submit la: "+submit);
+            Console.WriteLine(submit.SubmitOrder.OrderDate);
+
             var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(e=>e.Id==submit.OrderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
             var expect = orderList.FirstOrDefault();
+            Console.WriteLine("expect la",expect);
             var paid = expect.OrderPayment.OrderPaymentStatusId==1;
             if(paid){
                 return BadRequest(new ErrorResponse(401,"Can't change paid orders"));
             }
-            expect.ServiceId=submit.SubmitOrder.ServiceId;
-            expect.PrePaid=submit.SubmitOrder.PrePaid;
-            expect.OrderDate=DateTime.Now;
+            if(expect.ServiceId!=submit.SubmitOrder.ServiceId){
+                Console.WriteLine("Expect ServiceId : "+expect.ServiceId);
+                Console.WriteLine("Submit serviceId: "+submit.SubmitOrder.ServiceId);
+                expect.ServiceId=submit.SubmitOrder.ServiceId;
+                expect.PrePaid=submit.SubmitOrder.PrePaid;
+                expect.OrderDate=DateTime.Now;
             _unitOfWork.Save();
+            }else{
+                expect.OrderDate=DateTime.Now;
+                _unitOfWork.Save();
+            }
+            
             //changed service and prepaid
             //unlink prev packages and add new ones
             //order money -- no package
@@ -568,7 +584,8 @@ namespace api.Controllers{
                     var ServicePrice = newServiceChosen.Price;
                     //get subtotal 
                     IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==submit.OrderId,null,"Parcel");
-                    var weight = parcelList.Sum(x=>x.Parcel.Weight*x.Parcel.Quantity);
+                    var filter=parcelList.Where(x=>x.ParcelId.HasValue);
+                    var weight = filter.Sum(x=>x.Parcel.Weight*x.Parcel.Quantity);
                     decimal weightPlus =0;
                     var freeWeightUpTo = combo.PricePerKg+maxWeight;
                     if(weight>freeWeightUpTo){
@@ -675,6 +692,7 @@ namespace api.Controllers{
             }
             var result = new ReturnPayInfoParcel();
             List<ReturnParcel> p = new List<ReturnParcel>();
+             string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
             //get list of parcels
             var orderDetails = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(w=>w.OrderId==Id,null,"Order,Parcel");
             if(orderDetails.Any()){
@@ -686,7 +704,7 @@ namespace api.Controllers{
                             Id=parcel.Id,
                             ParcelName=parcel.ParcelName,
                             Weight=parcel.Weight,
-                            ImageUrl=parcel.ImageUrl,
+                            ImageUrl=baseUrl+'/'+parcel.ImageUrl,
                             Quantity=parcel.Quantity
                 };
                 p.Add(c);
@@ -701,7 +719,220 @@ namespace api.Controllers{
             
             return Ok(result);
         }
+    [HttpPost("edit/paid-orders")]
+    public async Task<ActionResult> EditPaidOrder([FromForm] SubmitListParcel? listParcel){
+            //truong hop cho truoc orderId
+            //allow change service,packages and locations
+            //check prev service
 
+            SubmitEditUnfinishedOrder submit = JsonSerializer.Deserialize<SubmitEditUnfinishedOrder>(listParcel.Submit1);
+
+            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(e=>e.Id==submit.OrderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            var expect = orderList.FirstOrDefault();
+            var paid = expect.OrderPayment.OrderPaymentStatusId==1;
+            if(paid){
+                return BadRequest(new ErrorResponse(401,"Can't change paid orders"));
+            }
+            if(expect.ServiceId!=submit.SubmitOrder.ServiceId){
+                Console.WriteLine("Expect ServiceId : "+expect.ServiceId);
+                Console.WriteLine("Submit serviceId: "+submit.SubmitOrder.ServiceId);
+                expect.ServiceId=submit.SubmitOrder.ServiceId;
+                expect.PrePaid=submit.SubmitOrder.PrePaid;
+                expect.OrderDate=DateTime.Now;
+            _unitOfWork.Save();
+            }else{
+                expect.OrderDate=DateTime.Now;
+                _unitOfWork.Save();
+            }
+            
+            //changed service and prepaid
+            //unlink prev packages and add new ones
+            //order money -- no package
+            //other service-but keep old package
+            
+            if(submit.SubmitOrder.PrePaid>0){ //money order
+                var orderDetails = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(e=>e.OrderId==submit.OrderId,null,"Order,Parcel");
+            if(orderDetails.Any()){
+                foreach(var detail in orderDetails){
+                    detail.ParcelId=null;
+                }
+                _unitOfWork.Save();
+            }
+            }else{ //another case -- but keep stuff
+            //do nothing here
+            //another case - update stuff
+                if(listParcel!=null){
+                    //unlink prev stuffs
+                    var orderDetails = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(e=>e.OrderId==submit.OrderId,null,"Order,Parcel");
+            if(orderDetails.Any()){
+                foreach(var detail in orderDetails){
+                    detail.ParcelId=null;
+                }
+                _unitOfWork.Save();
+            }
+                var customerId = listParcel.CustomerId;
+            var folderName= "images/customer/"+customerId;
+            var uploadsFolder = Path.Combine(_environment.WebRootPath,folderName);
+            if(!Directory.Exists(uploadsFolder)){
+                Directory.CreateDirectory(uploadsFolder);
+            }
+            foreach(var parcel in listParcel.List){
+                var random1 = _helper.GenerateRandomString(16);
+                Parcel p = new Parcel{
+                ParcelName = parcel.ParcelName,
+                Weight = parcel.Weight ,
+                CustomerId=customerId,
+                GenerateAuthentication=random1,
+                Quantity=parcel.Quantity
+                };
+                if(parcel.Image.Length>0){
+                     var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
+                
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    parcel.Image.CopyTo(fileStream);
+                }
+                p.ImageUrl=folderName+"/"+parcel.Image.FileName;
+                }else{
+                    p.ImageUrl="empty";
+                }
+            try
+            {
+                _unitOfWork.ParcelRepository.Add(p);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500,"Error in parcel table"));
+            }
+                _ = Task.Delay(1000);
+            var latestList = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.GenerateAuthentication==random1&&d.CustomerId==customerId,null,"Customer");
+            var parcelId= latestList.FirstOrDefault().Id;
+            OrderDetail detail = new OrderDetail{
+                ParcelId=parcelId,
+                OrderId=submit.OrderId
+            };
+            try
+            {
+                _unitOfWork.OrderDetailRepository.Add(detail);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500,"Error in order detail table"));
+            }
+            }
+            }
+            }
+           
+            
+            
+            //change current order payment to status 4 if exist
+            var payment = expect.OrderPaymentId;
+            if(payment!=null){
+                expect.OrderPaymentId=null;
+            }
+            //create new order payment
+                    //xet diem dau va diem cuoi cua route //vi du 62-63
+                    var startPlaceId = submit.SubmitAddressNew.LocationStartPlaceId;
+                    var endPlaceId = submit.SubmitAddressNew.LocationEndPlaceId;
+                    var Places = await _unitOfWork.AllPlacesInCountryRepository.GetEntityByExpression(null,null,null);
+                    var startPlace = Places.Where(x=>x.Id==startPlaceId).FirstOrDefault();
+                    var endPlace = Places.Where(x=>x.Id==endPlaceId).FirstOrDefault();
+                    var routeChooseId = _handleRoute.ChooseRoute(startPlace,endPlace);
+                    var comboList = await _unitOfWork.PricePerDistanceRepository.GetEntityByExpression(d=>d.Id==routeChooseId,null,null);
+                    var combo = comboList.FirstOrDefault();
+                    var agentList = await _unitOfWork.DeliveryAgentRepository.GetEntityByExpression(null,null,null);
+                    var agent = agentList.Where(e=>e.Id==submit.SubmitAddressNew.DeliveryAgentId).FirstOrDefault();
+                    var charges = agent.Charges.Value;
+                    var maxWeight=agent.MaxFreeWeight;
+                    var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(null,null,"DeliveryAgent");
+                    var newServiceChosen = serviceList.Where(r=>r.Id==submit.SubmitOrder.ServiceId).FirstOrDefault();
+                    var ServicePrice = newServiceChosen.Price;
+                    //get subtotal 
+                    IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==submit.OrderId,null,"Parcel");
+                    var filter=parcelList.Where(x=>x.ParcelId.HasValue);
+                    var weight = filter.Sum(x=>x.Parcel.Weight*x.Parcel.Quantity);
+                    decimal weightPlus =0;
+                    var freeWeightUpTo = combo.PricePerKg+maxWeight;
+                    if(weight>freeWeightUpTo){
+                        var delta = weight -freeWeightUpTo;
+                        weightPlus = (decimal)(delta *combo.PriceAdd1Kg)/23;
+                    }
+                    if(weight<=maxWeight){
+                        weightPlus=0;
+                    }
+                    var distancePrice =(decimal) combo.PriceRoute/23;
+                    
+                    var paymentList = await _unitOfWork.OrderPaymentRepository.GetAll();
+                    string random = _helper.GenerateRandomString(8);
+                    OrderPayment o = new OrderPayment{
+                        SubTotal=weightPlus,
+                        PrePaid=submit.SubmitOrder.PrePaid,
+                        ServicePrice=ServicePrice,
+                        DistanceCharges=distancePrice+charges,
+                        TotalCharges=weightPlus+submit.SubmitOrder.PrePaid+ServicePrice+distancePrice,
+                        OrderPaymentStatusId=2,
+                        GenrateStringAuthenticate=random
+                    };
+                    try
+                    {
+                        _unitOfWork.OrderPaymentRepository.Add(o);
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500,"Error at order payment table"));
+                    }
+                   var WardList = await _unitOfWork.WardRepository.GetEntityByExpression(null,null,"District");
+                   var DistrictList = await _unitOfWork.DistrictRepository.GetEntityByExpression(null,null,"AllPlacesInCountry");
+                   var CountryList = await _unitOfWork.AllPlacesInCountryRepository.GetEntityByExpression(null,null,null);
+                   var contactWard = WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationEndWardId).FirstOrDefault().Name;
+                   var contactDistrict = DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationEndDistrictId).FirstOrDefault().Name;
+                   var contactCountry = CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Name;
+                   var contactCityMark =  CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   string ContactAddress = string.Concat(submit.SubmitAddressNew.LocationEndStreet,", ",contactWard," Ward ",contactDistrict," District ",contactCountry," ",contactCityMark);
+                    var senderWard = WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationStartWardId).FirstOrDefault().Name;
+                   var senderDistrict = DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationStartDistrictId).FirstOrDefault().Name;
+                   var senderCountry = CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Name;
+                   var senderCityMark =  CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   string SenderAddress = string.Concat(submit.SubmitAddressNew.LocationStartStreet,", ",senderWard," Ward ",senderDistrict," District ",senderCountry," ",senderCityMark);
+                    InfoCombine contact = new InfoCombine{
+                        FullName= submit.SubmitAddressNew.ContactName,
+                        PhoneNumber=submit.SubmitAddressNew.ContactPhoneNumber,
+                       Address=ContactAddress
+                    };
+                    InfoCombine sender = new InfoCombine{
+                        FullName = submit.SubmitAddressNew.SenderName,
+                        PhoneNumber = submit.SubmitAddressNew.SenderPhoneNumber,
+                        Address=SenderAddress
+                    };
+                    var contactString = System.Text.Json.JsonSerializer.Serialize(contact);
+                    var senderString = System.Text.Json.JsonSerializer.Serialize(sender);
+                     var paymentsList = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(e=>e.GenrateStringAuthenticate==random,null,"OrderPaymentStatus");
+                    var expectPayment = paymentsList.FirstOrDefault();
+                    if(expectPayment==null){
+                        return BadRequest( new ErrorResponse(500,"Can't match payment with order") );
+                    }
+                    try
+                    {
+                        expect.OrderPaymentId=expectPayment.Id;
+                        expect.ContactAddress=contactString;
+                        expect.SenderInfo=senderString;
+                        expect.PricePerDistanceId=combo.Id;
+                        expect.DeliveryAgentId=agent.Id;
+                        _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500,"Error at order table"));
+                    }
+
+            
+            return Ok();
+
+        }
 
     }
 }

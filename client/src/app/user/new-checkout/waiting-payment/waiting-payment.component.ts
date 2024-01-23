@@ -1,8 +1,11 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IReturnPayInfoParcel, Payment, ReturnParcel, Show } from 'src/app/interface/delivery/IDelivery';
 import { CheckoutService } from '../../checkout/checkout.service';
 import { ToastrService } from 'ngx-toastr';
+import { DeliveryService } from 'src/app/service/delivery.service';
+import { delay } from 'rxjs';
+import { NavigationExtras, Router } from '@angular/router';
 
 
 @Component({
@@ -27,7 +30,7 @@ export class WaitingPaymentComponent implements OnInit {
     ngOnInit(){
       this.toastr.success("Hi","Waiting")
     }
-  constructor(private modalService: BsModalService,private toastr:ToastrService) {
+  constructor(private modalService: BsModalService,private toastr:ToastrService,private service:DeliveryService,private router:Router) {
     this.items1 = Array(15).fill(0);
   }
   receiveFromChild(data:any){
@@ -42,12 +45,27 @@ export class WaitingPaymentComponent implements OnInit {
     console.log("Detail ",this.detail)
     this.ConvertContactData(this.detail.orderDTO.contactAddress)
   }
+ 
   ConvertContactData(contactAddress:any){
     var json = JSON.parse(contactAddress);
     var name = json["FullName"]
     var address= json["Address"]
     var phone = json["PhoneNumber"]
     this.contactAddress = name+', Address: '+address+', PhoneNumber: (+84)'+phone
+  }
+   
+  changeDetails(orderId:any){
+    var url = "/user/edit/"+orderId
+    this.service.fetchEditData(orderId).subscribe({
+      
+      next:(res)=>{console.log(res);
+        this.modalRef?.hide();delay(2000); this.router.navigate([url], {
+          state: {
+            data: JSON.stringify(res)
+          },
+        });},
+      error:(err)=>{console.log(err)}
+    })
   }
   
 }
