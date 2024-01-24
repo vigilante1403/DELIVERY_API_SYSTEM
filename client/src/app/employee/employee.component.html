@@ -1,1 +1,12 @@
-<p>employee works!</p>
+<div class="container">
+    <form (ngSubmit)="onSubmit()">
+      <input type="text" [(ngModel)]="query" name="query" placeholder="Type your search...">
+      <button type="submit">Search</button>
+    </form>
+  
+    <div class="search-results">
+      <ul>
+        <li *ngFor="let result of searchResults">{{ result }}</li>
+      </ul>
+    </div>
+  </div>

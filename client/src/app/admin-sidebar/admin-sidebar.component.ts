@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AdminSidebarService } from './admin-sidebar.service';
 import { ModalService } from '../nav-bar/modal/modal.service';
+import { faLaptop,faBookOpen } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -17,6 +18,8 @@ import { ModalService } from '../nav-bar/modal/modal.service';
 })
 export class AdminSidebarComponent {
   menus:any = [];
+  faLaptop=faLaptop
+  faBookOpen=faBookOpen
   login!:boolean
   constructor(public sidebarservice: AdminSidebarService,public service:ModalService) {
     this.menus = sidebarservice.getMenuList();

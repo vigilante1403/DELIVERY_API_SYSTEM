@@ -30,7 +30,8 @@ export class SidebarService {
           url:"/user"
         },
         {
-          title: 'Change password'
+          title: 'Change password',
+          url:"/user/change-password"
         },
         {
           title: 'Dashboard 3'
@@ -65,7 +66,8 @@ export class SidebarService {
           url:"/user/new-cart"
         },
         {
-          title: 'Waiting payment orders'
+          title: 'Billing information',
+          url:"/user/checkout"
         },
       
       ] 

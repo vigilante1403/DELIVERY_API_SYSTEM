@@ -29,12 +29,15 @@ export interface ISubmitParcel{
     id:number,
     parcelName:string,
     weight:number,
-    image:File
+    image:File,
+    quantity:number,
+    amountAssume:number
 }
 export interface ISubmitListParcel{
     list:ISubmitParcel[],
     orderId:number,
-    customerId:string
+    customerId:string,
+  
 }
 export interface ISubmitAddress{
     locationStartPlaceId:number,
@@ -55,7 +58,8 @@ export interface IReturnParcel{
     id:number,
     parcelName:string,
     weight:number,
-    imageUrl:string
+    imageUrl:string,
+    quantity:number
 }
 export interface IPayment{
     id:number,
@@ -166,5 +170,7 @@ export class ReturnParcel implements IReturnParcel{
     parcelName=''
     weight=0
     imageUrl=''
+    quantity=0
+
     
 }

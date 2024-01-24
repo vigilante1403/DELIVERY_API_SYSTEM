@@ -3,7 +3,7 @@
         
 <div class="container bootstrap snippets bootdey">
 <div class="row">
-  <div class="profile-nav col-md-3">
+  <!-- <div class="profile-nav col-md-3">
       <div class="panel">
           <div class="user-heading round">
               <a href="#">
@@ -18,38 +18,42 @@
               <li><a href="#"> <i class="fa fa-calendar"></i> Recent Activity <div class="text-white label label-warning pull-right r-activity">9</div></a></li>
               <li><a href="#"> <i class="fa fa-edit"></i> Edit profile</a></li>
               <li>
-                <a  (click)="openModal(template_2)"> <i class="fa fa-edit"></i> Change Password</a>
-                <ng-template #template_2>
-          
-                    <div class="modal-content">
-                        <div class="modal-header">
-                                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
-                                <span aria-hidden="true" class="visually-hidden">&times;</span>
-                                </button>
-                        </div>
-                        <div class="modal-body">
-                                   
-                            <app-change-password ></app-change-password>
-                        </div>
-                    </div>
-                  </ng-template>
+                
               </li>
           </ul>
       </div>
-  </div>
-  <div class="profile-info col-md-9">
-    <h1 class="">Your Activities</h1>
+  </div> -->
+  <div class="profile-info col-md-12">
+    <div class="d-flex flex-row justify-content-between" >
+        <div class="d-flex"><h1 class="d-flex align-items-start">Your Activities</h1></div>
+        <div class="d-flex align-items-end"><button (click)="openModal(template_2)" class="btn btn-outline-primary">Change password?</button></div>
+    
+    </div>
+    <ng-template #template_2>
+          
+        <div class="modal-content">
+            <div class="modal-header">
+                    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                    <span aria-hidden="true" class="visually-hidden">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                       
+                <app-change-password ></app-change-password>
+            </div>
+        </div>
+      </ng-template>
     <hr style="border: 1px solid red ;">
     <div class="d-flex justify-content-between flex-wrap">
-        <div style="width: 400px;height: 300px; background-color: rgb(225, 175, 117); margin-bottom: 20px;border-radius: 10px;">
+        <div class="col-md-5" style="height: 300px; background-color: rgb(225, 175, 117); margin-bottom: 20px;border-radius: 10px;">
             <h2>office history</h2>
         </div>
-        <div style="width: 400px;height: 300px; background-color: rgb(110, 110, 227);margin-bottom: 20px;border-radius: 10px;">
+        <div  class="col-md-5" style="height: 300px; background-color: rgb(110, 110, 227);margin-bottom: 20px;border-radius: 10px;">
         <h2>Recipient history</h2>
         </div>
-        <div style="width: 400px;height: 300px; background-color: rgb(127, 215, 127);margin-bottom: 20px;border-radius: 10px;">
+        <div  class="col-md-5" style="height: 300px; background-color: rgb(127, 215, 127);margin-bottom: 20px;border-radius: 10px;">
         <h2>Order Status</h2></div>
-        <div style="width: 400px;height: 300px; background-color: rgb(221, 221, 131);margin-bottom: 20px;border-radius: 10px;">
+        <div  class="col-md-5" style="height: 300px; background-color: rgb(221, 221, 131);margin-bottom: 20px;border-radius: 10px;">
         <h2>Billing Management</h2>
         </div>
     </div>

@@ -504,6 +504,12 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalPriceAmountAssume")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(18,2)");
 

@@ -19,6 +19,9 @@ export class AppComponent {
   isAdminRoute():boolean{
     return this.router.url.startsWith('/admin')
   }
+  isEmployeeRoute():boolean{
+    return this.router.url.startsWith('/employee')
+  }
   toggleSidebar() {
     this.sidebarservice.setSidebarState(!this.sidebarservice.getSidebarState());
   }

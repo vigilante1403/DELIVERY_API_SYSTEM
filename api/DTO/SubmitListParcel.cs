@@ -3,5 +3,6 @@ namespace api.DTO{
         public List<SubmitParcel> List { get; set; }
         public string OrderId { get; set; }
         public string CustomerId { get; set; }
+        public string? Submit1 { get; set; }
     }
 }

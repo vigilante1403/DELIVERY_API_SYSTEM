@@ -18,6 +18,10 @@
       <input type="number" min="0.1" id="weight" formControlName="weight">
     </div>
     <div>
+      <label>Quantity:</label>
+      <input type="number" min="1" id="weight" placeholder="1..." formControlName="quantity">
+    </div>
+    <div>
       <button type="button" (click)="removeFormDataEntry(formData.get('i')?.value)">Remove Entry</button>
     </div>
 

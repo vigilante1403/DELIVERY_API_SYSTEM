@@ -17,6 +17,7 @@ export class SignupComponent implements OnInit {
   constructor(public modalService:ModalService,private fb:FormBuilder){
 
   }
+
   //register
   tickRegister:boolean=false;
   email:FormControl= new FormControl('',[Validators.email,Validators.required])
@@ -124,5 +125,10 @@ export class SignupComponent implements OnInit {
   }
   sendData(){
     this.dataToParent.emit(this.closeForm)
+  }
+  currentTab='login';
+  switchTab(tab:any){
+    this.currentTab=tab
+    
   }
 }

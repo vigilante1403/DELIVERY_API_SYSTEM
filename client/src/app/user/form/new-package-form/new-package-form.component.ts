@@ -36,7 +36,9 @@ export class NewPackageFormComponent {
       i:this.index,
       file: [null, Validators.required],
       parcelName: ['',Validators.required],
-      weight:[0,Validators.required]
+      weight:[0,Validators.required],
+      quantity:[1,Validators.required],
+      amount:[0,Validators.required]
 
     });
  
@@ -86,6 +88,9 @@ export class NewPackageFormComponent {
     formSubmission.append('id',formData.get('i')?.value)
     formSubmission.append('parcelName',formData.get('parcelName')?.value)
     formSubmission.append('weight',formData.get('weight')?.value)
+    formSubmission.append('quantity',formData.get('quantity')?.value)
+    formSubmission.append('amountAssume',formData.get('amount')?.value)
+    
     this.files.push(formSubmission)
 
       }

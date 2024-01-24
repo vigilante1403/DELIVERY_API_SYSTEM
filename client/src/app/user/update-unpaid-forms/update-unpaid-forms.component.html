@@ -1,0 +1,183 @@
+
+<div class="container d-flex flex-column  justify-content-lg-center" >
+    <div class="row justify-content-center"><div class="col-lg-6"><h4><strong>EDIT YOUR FORM</strong></h4></div></div>
+    <div class="row justify-content-center">
+      <div class="col-lg-6 ">
+        <div>Sender Address:{{ this.ConvertContactData(this.value.orderDTO.senderInfo) }}</div>
+        <div class="mt-4">Contact Address:{{ this.ConvertContactData(this.value.orderDTO.contactAddress) }} </div>
+        <div><button (click)="changeAddress()">Change address</button></div>
+        <div *ngIf="this.addressAgree==true">
+            <form  class="form-control" [formGroup]="addressForm" (ngSubmit)="onSubmit2()" >  
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" formControlName="name1" placeholder="Enter sender name">
+              <label>Sender Name:</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" formControlName="address1" placeholder="Enter pick up location">
+              <label>Where do you want your package picked up?</label>
+            </div>  
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" formControlName="phone1" placeholder="Enter sender phoneNumber">
+              <label>Sender phone number</label>
+            </div>
+            <div class="form-floating mb-3" >
+              <select id="deliveryTypeId"  class="form-control" (change)="getListDistrict($event)"   required>
+                  <option value="0" selected>Please choose an option</option>
+                  <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+                </select>
+                <label for="deliveryTypeId">City/Province</label>
+            </div>
+            <div class="form-floating mb-3" >
+              <select id="deliveryTypeId"  class="form-control"  (change)="getListWard($event)"    required>
+                  <option value="0" selected>Please choose an option</option>
+                  <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict">{{ district.name }}</option>
+                </select>
+                <label for="deliveryTypeId">District</label>
+            </div>
+            <div class="form-floating mb-3" >
+              <select id="deliveryTypeId"  class="form-control" (change)="getChosenWard($event)"   required>
+                  <option value="0" selected>Please choose an option</option>
+                  <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard">{{ ward.name }}</option>
+                </select>
+                <label for="deliveryTypeId">Ward</label>
+            </div>
+            <hr>
+            <hr>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" formControlName="name2" placeholder="Enter recipient name">
+              <label>Recipient Name:</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
+              <label>Where do you want recipient recieve the package?</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" formControlName="phone2" placeholder="Enter recipient phoneNumber">
+              <label>Recipient phone number</label>
+            </div>
+            <div class="form-floating mb-3" >
+              <select id="deliveryTypeId"  class="form-control" (change)="getListDistrict2($event)"   required>
+                  <option value="0" selected>Please choose an option</option>
+                  <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+                </select>
+                <label for="deliveryTypeId">City/Province</label>
+            </div>
+            <div class="form-floating mb-3" >
+              <select id="deliveryTypeId"  class="form-control" (change)="getListWard2($event)"  required>
+                  <option value="0" selected>Please choose an option</option>
+                  <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict2">{{ district.name }}</option>
+                </select>
+                <label for="deliveryTypeId">District</label>
+            </div>
+            <div class="form-floating mb-3" >
+              <select id="deliveryTypeId" (change)="getChosenWard2($event)"  class="form-control"required>
+                  <option value="0" selected>Please choose an option</option>
+                  <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard2">{{ ward.name }}</option>
+                </select>
+                <label for="deliveryTypeId">Ward</label>
+            </div>
+            <div class=" mb-3" >
+              <label for="deliveryTypeId">Delivery Service:</label>
+              &nbsp;
+              {{ this.chooseDelivery }}
+              &nbsp;<button class="btn btn-outline-success" (click)="changeDelivery()">Change Delivery Agent</button>
+                </div>
+                <div class="mb-3">
+                    <div *ngIf="this.change==true" class="">
+                      <select id="deliveryAgentId" (change)="getAgentChanged($event)"   class="form-control">
+                        <option value="{{ agent.id }}"  *ngFor="let agent of this.storedExpress">{{ agent.agentName }}</option>
+                      </select>
+                    </div>
+                    
+                  
+                  </div>
+            <button type="submit"  class="btn btn-primary" >Add this delivery address to order</button>
+            </form></div>
+
+      </div>
+      <div class="col-lg-6 ">
+        <form class="  justify-content-center" >
+            <h2>Choose New Service</h2>
+            <div class="d-flex flex-row"><h4>Current service: </h4>
+                <button (click)="changeService()"  class=" btn btn-warning " style="left:20%" >Change</button></div>
+                <div *ngIf="this.serviceAgree==true">
+                    <select  #selectPicker class=" selectpicker" (change)="getPrepaidLimit($event)"  required>
+                        <option value="0" selected>Please choose a service</option>
+                        <option *ngFor="let service of this.deliveryService.services"  value="{{ service.id }}">{{ service.serviceName.toUpperCase() }}</option>
+                      </select>
+                      <div *ngIf="!this.disable" class="form-floating mb-3">
+                        <input type="number" class="form-control" (change)="updatePrePaid()" #paid id="prePaid">
+                        <label>Pre-Paid:</label>
+                      </div>
+                </div>
+                
+            
+          </form>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Package</th>
+                        <th>Quantity</th>
+                        <th>Weight/unit</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of this.value.returnParcels">
+                    <td>{{ item.parcelName }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.weight }}</td>
+                    <td><img [src]="item.imageUrl" height="50px;" alt="" ></td>
+                </tr>
+                
+                    </tbody>
+                
+            </table>
+
+            <div class="  text-right mb-3 justify-content-around d-flex" ><button class="btn btn-warning text-white" (click)="changePackage()">Change package</button></div>
+            <div *ngIf="this.packageAgree==true">
+                <form  class="form-control" *ngFor="let formData of fileForms" [formGroup]="formData">
+                    <div style="visibility:hidden">ID:{{ formData.get('i')?.value }}</div>
+                      <div>
+                        <label for="file">File:</label>
+                        <input type="file" accept="image/*"  (change)="onFileSelected($event,formData.get('i')?.value)" id="file" formControlName="file">
+                        <div *ngIf="formData.get('file')?.hasError('required') && formData.get('file')?.touched">
+                          File is required.
+                        </div>
+                      </div>
+                      <div>
+                        <label for="parcelName">Parcel Name:</label>
+                        <input type="text" id="parcelName" formControlName="parcelName">
+                      </div>
+                      <div>
+                        <label for="weight">Weight:</label>
+                        <input type="number" min="0.1" id="weight" formControlName="weight">
+                      </div>
+                      <div>
+                        <label>Quantity:</label>
+                        <input type="number" min="1" id="weight" placeholder="1..." formControlName="quantity">
+                      </div>
+                      <div>
+                        <button type="button" (click)="removeFormDataEntry(formData.get('i')?.value)">Remove Entry</button>
+                      </div>
+                  
+                    </form>
+                    <div>
+                      <button type="button" (click)="addFormDataEntry()">Add Entry</button>
+                    </div>
+                    <div class="d-flex flex-row justity-content-between">
+                      <button class="btn btn-primary" type="submit" (click)="onSubmit()">Upload Files</button>
+                      
+                    </div>
+            </div>
+        </div>
+        <div class=" text-right mb-3 justify-content-around d-flex" ><button class="btn btn-warning text-white" (click)="onSubmit()">Submit changes</button><button class="btn btn-primary text-white" (click)="discard()">Discard</button></div>
+      </div>
+    </div>
+    
+    
+  </div>
+ 
+    
+

@@ -13,6 +13,7 @@
       <div class="liner"></div>
       <span>Address</span>
     </div>
+    
   </div>
   <div class="line">
     <div class="dot-move"></div>
@@ -53,8 +54,12 @@
       
       <div class="slider-form slider-three" *ngIf="this.isClass3">
         <label for="" class="input">
-          <app-new-address [customerIdMain]="this.Input.customerId" [orderIdMain]="this.Input.id.toString()"></app-new-address>
+          <app-new-address *ngIf="this.closeForm==false" (dataToParent)="receiveFromAddressChild($event)" [customerIdMain]="this.Input.customerId" [orderIdMain]="this.Input.id.toString()"></app-new-address>
         </label>
+        <div *ngIf="this.closeForm==true">
+          <a  class=" btn btn-primary mt-4 first next" (click)="navigateCheckoutPage()">Checkout</a>
+          <a  class="btn btn-danger mt-4 first next" (click)="returnOrderPage()">Pay Later</a>
+        </div>
     </div>
   </div>
 </div>

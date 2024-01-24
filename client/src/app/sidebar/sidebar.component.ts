@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SidebarService } from './sidebar.service';
 import { ModalService } from '../nav-bar/modal/modal.service';
+import { faCode,faTree } from '@fortawesome/free-solid-svg-icons';
 // import { MenusService } from './menus.service';
 
 @Component({
@@ -18,6 +19,8 @@ import { ModalService } from '../nav-bar/modal/modal.service';
 })
 export class SidebarComponent implements OnInit {
   menus:any = [];
+  faTree=faTree
+  faCode=faCode
   login!:boolean
   constructor(public sidebarservice: SidebarService,public service:ModalService) {
     this.menus = sidebarservice.getMenuList();

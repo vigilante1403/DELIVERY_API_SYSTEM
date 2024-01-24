@@ -7,6 +7,7 @@ namespace api.Models{
         public string Name { get; set; }
         public Boolean Specila{get;set;}
         public int State { get; set; }
+        
 
     }
 }

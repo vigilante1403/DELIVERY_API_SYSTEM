@@ -1,11 +1,11 @@
-<div class="bg-image h-100" style="background-color:white; ">
+<div class=" h-100"  >
     <div class="mask d-flex align-items-center h-100">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-12">
             <div class="card">
               <div class="card-body p-0">
-                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; min-height:400px ">
                   <table class="table table-striped mb-0">
                     <thead style="background-color: #002d72;">
                       <tr>
@@ -39,6 +39,7 @@
   <ng-template #template>
     <div class="modal-header">
       <h4 class="modal-title pull-left">Details</h4>
+      <img src="https://i.pinimg.com/originals/af/ab/46/afab4635c7491943d71528a650e95673.gif" alt="">
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
@@ -74,7 +75,7 @@
                                 <tbody>
                                   <tr *ngFor="let item of this.detail.returnParcels">
                                     <td>{{ item.parcelName }}</td>
-                                    <td>1</td>
+                                    <td>{{ item.quantity }}</td>
                                     <td>{{ item.weight }}kg</td>
                                     <td><img [src]="item.imageUrl" height="50px" alt="photo"></td>
                                 </tr>
@@ -119,6 +120,7 @@
                                     </tbody>
                                 
                             </table>
+                           
                         </div>
                     </div>
                     

@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef,NgZone, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, AfterViewInit, ElementRef,NgZone, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MapService } from 'src/app/service/map.service';
 import { FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
 import { ICountry, IDeliveryAgent, IDistrict, IOrderShow, ISubmitAddress, IWard } from 'src/app/interface/delivery/IDelivery';
@@ -45,6 +45,10 @@ export class NewAddressComponent {
   })
   @Input() orderIdMain!:string
   @Input() customerIdMain!:string
+  @Output() dataToParent=new EventEmitter<boolean>
+  sendData(){
+    this.dataToParent.emit(true)
+  }
   constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService) { }
  initForm(){
   this.addressForm=this.fb.group({
@@ -182,7 +186,7 @@ export class NewAddressComponent {
           })
           var orderId = this.orderIdMain
           this.service.createNewOrderPayment(orderId,submitAddress).subscribe({
-            next:(res)=>{console.log(res)},
+            next:(res)=>{console.log(res);this.sendData()},
             error:(err)=>{console.log(err)}
           })
         }

@@ -8,6 +8,8 @@ import { AddPackageFormComponent } from './form/add-package-form/add-package-for
 import { AddressFormComponent } from './form/address-form/address-form.component';
 import { OrdersFormComponent } from './form/orders-form/orders-form.component';
 import { NewCartComponent } from './new-cart/new-cart.component';
+import { NewCheckoutComponent } from './new-checkout/new-checkout.component';
+import { UpdateUnpaidFormsComponent } from './update-unpaid-forms/update-unpaid-forms.component';
 import { UserComponent } from './user.component';
 import { Routes } from "@angular/router";
 
@@ -20,7 +22,9 @@ export const UserRoute: Routes = [
     {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent,canActivate:[AuthenticationGuard]},
     {path:'new-cart',component:NewCartComponent,canActivate:[AuthenticationGuard]},
     {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path: 'change-password', component: ChangePasswordComponent},
+    {path:"checkout",component:NewCheckoutComponent,canActivate:[AuthenticationGuard]},
     {path: '1/reset/:token', component: VerifySendToComponent},
-    {path: 'change-password', component: ChangePasswordComponent}
+    {path:'edit/:orderId',component:UpdateUnpaidFormsComponent,canActivate:[AuthenticationGuard]}
     
 ];

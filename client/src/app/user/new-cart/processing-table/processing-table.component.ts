@@ -30,6 +30,9 @@ openModal(template: TemplateRef<void>,orderId:any) {
   console.log("Detail ",this.detail)
   this.ConvertContactData(this.detail.orderDTO.contactAddress)
 }
+closeModal(){
+  this.modalRef?.hide()
+}
 ConvertContactData(contactAddress:any){
   var json = JSON.parse(contactAddress);
   var name = json["FullName"]

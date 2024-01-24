@@ -4,6 +4,7 @@ namespace api.DTO{
         public string ParcelName { get; set; }
         public decimal Weight { get; set; }
         public string ImageUrl { get; set; }
+        public int? Quantity { get; set; }
 
     }
 }

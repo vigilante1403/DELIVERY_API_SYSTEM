@@ -11,5 +11,7 @@ namespace api.Models{
         public string CustomerId { get; set; }
         public Customer Customer { get; set; }
         public string? GenerateAuthentication { get; set; }
+        public int? Quantity { get; set; }=1;
+        public decimal? TotalPriceAmountAssume { get; set; }
     }
 }

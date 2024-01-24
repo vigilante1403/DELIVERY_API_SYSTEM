@@ -1,3 +1,5 @@
+using System.Text;
+using System.Text.Json;
 using api.DAl;
 using api.DTO;
 using api.Exceptions;
@@ -144,10 +146,14 @@ namespace api.Controllers{
                 Directory.CreateDirectory(uploadsFolder);
             }
             foreach(var parcel in parcelList.List){
+                var random1 = _helper.GenerateRandomString(16);
                 Parcel p = new Parcel{
                 ParcelName = parcel.ParcelName,
                 Weight = parcel.Weight ,
-                CustomerId=customerId
+                CustomerId=customerId,
+                Quantity=parcel.Quantity,
+                GenerateAuthentication=random1,
+                TotalPriceAmountAssume=parcel.AmountAssume
                 };
                 if(parcel.Image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
@@ -170,7 +176,7 @@ namespace api.Controllers{
                 return BadRequest(new ErrorResponse(500,"Error in parcel table"));
             }
                 _ = Task.Delay(1000);
-            var latestList = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.CustomerId==customerId,r=>r.OrderByDescending(e=>e.Id),"Customer");
+            var latestList = await _unitOfWork.ParcelRepository.GetEntityByExpression(d=>d.CustomerId==customerId&&d.GenerateAuthentication==random1,null,"Customer");
             var parcelId= latestList.FirstOrDefault().Id;
             OrderDetail detail = new OrderDetail{
                 ParcelId=parcelId,
@@ -214,7 +220,8 @@ namespace api.Controllers{
                     Id=parcel.Id,
                     ParcelName=parcel.ParcelName,
                     Weight=parcel.Weight,
-                    ImageUrl=baseUrl+'/'+parcel.ImageUrl
+                    ImageUrl=baseUrl+'/'+parcel.ImageUrl,
+                    Quantity=parcel.Quantity
                 };
                 returnParcel.Add(rp);
             }
@@ -237,6 +244,7 @@ namespace api.Controllers{
                 Parcel p = existedParcel.FirstOrDefault();
                 p.ParcelName=parcel.ParcelName;
                 p.Weight=parcel.Weight ;
+                p.Quantity=parcel.Quantity;
                 if(parcel.Image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
                 
@@ -426,7 +434,8 @@ namespace api.Controllers{
                     Id=parcel.Id,
                     ParcelName=parcel.ParcelName,
                     Weight=parcel.Weight,
-                    ImageUrl=baseUrl+'/'+parcel.ImageUrl
+                    ImageUrl=baseUrl+'/'+parcel.ImageUrl,
+                    Quantity=parcel.Quantity
                 };
                 returnParcel.Add(rp);
             }
@@ -442,20 +451,35 @@ namespace api.Controllers{
 
         }
         [HttpPost("edit/order-and-other-forms")]
-        public async Task<ActionResult> EditUnfinishedOrder([FromForm] SubmitEditUnfinishedOrder submit,[FromForm] SubmitListParcel? listParcel){
+        public async Task<ActionResult> EditUnfinishedOrder([FromForm] SubmitListParcel? listParcel){
             //truong hop cho truoc orderId
             //allow change service,packages and locations
             //check prev service
+            Console.WriteLine(listParcel.Submit1);
+            Console.WriteLine("Submit1 la: ",listParcel.Submit1);
+            SubmitEditUnfinishedOrder submit = JsonSerializer.Deserialize<SubmitEditUnfinishedOrder>(listParcel.Submit1);
+            Console.WriteLine("Submit la: "+submit);
+            Console.WriteLine(submit.SubmitOrder.OrderDate);
+
             var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(e=>e.Id==submit.OrderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
             var expect = orderList.FirstOrDefault();
+            Console.WriteLine("expect la",expect);
             var paid = expect.OrderPayment.OrderPaymentStatusId==1;
             if(paid){
                 return BadRequest(new ErrorResponse(401,"Can't change paid orders"));
             }
-            expect.ServiceId=submit.SubmitOrder.ServiceId;
-            expect.PrePaid=submit.SubmitOrder.PrePaid;
-            expect.OrderDate=DateTime.Now;
+            if(expect.ServiceId!=submit.SubmitOrder.ServiceId){
+                Console.WriteLine("Expect ServiceId : "+expect.ServiceId);
+                Console.WriteLine("Submit serviceId: "+submit.SubmitOrder.ServiceId);
+                expect.ServiceId=submit.SubmitOrder.ServiceId;
+                expect.PrePaid=submit.SubmitOrder.PrePaid;
+                expect.OrderDate=DateTime.Now;
             _unitOfWork.Save();
+            }else{
+                expect.OrderDate=DateTime.Now;
+                _unitOfWork.Save();
+            }
+            
             //changed service and prepaid
             //unlink prev packages and add new ones
             //order money -- no package
@@ -493,7 +517,9 @@ namespace api.Controllers{
                 ParcelName = parcel.ParcelName,
                 Weight = parcel.Weight ,
                 CustomerId=customerId,
-                GenerateAuthentication=random1
+                GenerateAuthentication=random1,
+                Quantity=parcel.Quantity,
+                TotalPriceAmountAssume=parcel.AmountAssume
                 };
                 if(parcel.Image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
@@ -561,7 +587,8 @@ namespace api.Controllers{
                     var ServicePrice = newServiceChosen.Price;
                     //get subtotal 
                     IEnumerable<OrderDetail> parcelList = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(d=>d.OrderId==submit.OrderId,null,"Parcel");
-                    var weight = parcelList.Sum(x=>x.Parcel.Weight);
+                    var filter=parcelList.Where(x=>x.ParcelId.HasValue);
+                    var weight = filter.Sum(x=>x.Parcel.Weight*x.Parcel.Quantity);
                     decimal weightPlus =0;
                     var freeWeightUpTo = combo.PricePerKg+maxWeight;
                     if(weight>freeWeightUpTo){
@@ -643,7 +670,7 @@ namespace api.Controllers{
 
         }
         [HttpGet("edit/order-and-other-forms/{orderId}")]
-        public async Task<ActionResult> GetDataToEdit([FromRoute] string orderId){
+        public async Task<ActionResult<ReturnPayInfoParcel>> GetDataToEdit([FromRoute] string orderId){
             int Id=0;
             try
             {
@@ -668,6 +695,7 @@ namespace api.Controllers{
             }
             var result = new ReturnPayInfoParcel();
             List<ReturnParcel> p = new List<ReturnParcel>();
+             string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
             //get list of parcels
             var orderDetails = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(w=>w.OrderId==Id,null,"Order,Parcel");
             if(orderDetails.Any()){
@@ -679,7 +707,8 @@ namespace api.Controllers{
                             Id=parcel.Id,
                             ParcelName=parcel.ParcelName,
                             Weight=parcel.Weight,
-                            ImageUrl=parcel.ImageUrl
+                            ImageUrl=baseUrl+'/'+parcel.ImageUrl,
+                            Quantity=parcel.Quantity
                 };
                 p.Add(c);
                     }
@@ -693,7 +722,96 @@ namespace api.Controllers{
             
             return Ok(result);
         }
+    [HttpPost("edit/paid-orders")]
+    //method change paid order details
+    //cho phep doi address-not package
+    public async Task<ActionResult> EditPaidOrder([FromBody] SubmitEditUnfinishedOrder submit){
+            
+           var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(o=>o.Id==submit.OrderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+           if(!orders.Any()){
+                return BadRequest(new ErrorResponse(404));
+           }
+           var order = orders.FirstOrDefault();
+           var submitTime = submit.NewPickUpTime;
+           if(submitTime>=order.OrderDate&&submitTime.HasValue){
+            order.OrderDate=submitTime.Value;
+            _unitOfWork.Save();
+           }
+            var WardList = await _unitOfWork.WardRepository.GetEntityByExpression(null,null,"District");
+                   var DistrictList = await _unitOfWork.DistrictRepository.GetEntityByExpression(null,null,"AllPlacesInCountry");
+                   var CountryList = await _unitOfWork.AllPlacesInCountryRepository.GetEntityByExpression(null,null,null);
+                   var contactWard = WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationEndWardId).FirstOrDefault().Name;
+                   var contactDistrict = DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationEndDistrictId).FirstOrDefault().Name;
+                   var contactCountry = CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Name;
+                   var contactCityMark =  CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   string ContactAddress = "";
+                   if(submit.SubmitAddressNew.LocationEndPlaceId!=-1){
+                         ContactAddress = string.Concat(submit.SubmitAddressNew.LocationEndStreet,", ",contactWard," Ward ",contactDistrict," District ",contactCountry," ",contactCityMark);
+                   }
+                   
+                    var senderWard = WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationStartWardId).FirstOrDefault().Name;
+                   var senderDistrict = DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationStartDistrictId).FirstOrDefault().Name;
+                   var senderCountry = CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Name;
+                   var senderCityMark =  CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   string SenderAddress = "";
+                   if(submit.SubmitAddressNew.LocationStartPlaceId!=-1){
+                    SenderAddress=string.Concat(submit.SubmitAddressNew.LocationStartStreet,", ",senderWard," Ward ",senderDistrict," District ",senderCountry," ",senderCityMark);
+                   }
+                    InfoCombine contact = new InfoCombine{
+                        FullName= submit.SubmitAddressNew.ContactName,
+                        PhoneNumber=submit.SubmitAddressNew.ContactPhoneNumber,
+                       Address=ContactAddress
+                    };
+                    InfoCombine sender = new InfoCombine{
+                        FullName = submit.SubmitAddressNew.SenderName,
+                        PhoneNumber = submit.SubmitAddressNew.SenderPhoneNumber,
+                        Address=SenderAddress
+                    };
+                    var contactString = System.Text.Json.JsonSerializer.Serialize(contact);
+                    var senderString = System.Text.Json.JsonSerializer.Serialize(sender);
+                    if(submit.SubmitAddressNew.LocationEndPlaceId==-1&&submit.SubmitAddressNew.LocationStartPlaceId==-1){
+                        //do nothing
+                    }
+                    else if(submit.SubmitAddressNew.LocationStartPlaceId==-1){
+                        try
+                    {
+                        order.ContactAddress=contactString;
+                        _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500,"Error at order table"));
+                    }
+                    }else if(submit.SubmitAddressNew.LocationEndPlaceId==-1){
+                        try
+                    {
 
+                        order.SenderInfo=senderString;
+                        _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500,"Error at order table"));
+                    }
+                    }else{
+                         try
+                    {
+                        order.ContactAddress=contactString;
+                        order.SenderInfo=senderString;
+                        _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500,"Error at order table"));
+                    }
+                    }
+                   
+                    return Ok();
+
+        }
 
     }
 }
