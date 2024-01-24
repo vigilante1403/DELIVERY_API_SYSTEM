@@ -62,12 +62,11 @@ export class NewPasswordComponent implements OnInit {
     this.newpassword.newPassword= this.newPasswordForm.get('newpassword')?.value;
     this.http.post(env + '/account/3/r/reset-password/' + this.newPasswordForm.get('token')?.value, this.newpassword).subscribe({
       next: (res) => {console.log("thanh cong");
-      this.router.navigate([""]);
+      this.router.navigateByUrl("/");
       },
       error: (err) => {console.log(err);
       }
     })
-   
     
     console.log(this.newPasswordForm.get('newpassword')?.value);
     
