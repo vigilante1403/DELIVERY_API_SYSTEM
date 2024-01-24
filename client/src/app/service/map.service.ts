@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../config/environment';
 import { ICountry, IDeliveryAgent, IDistrict, IPayment, IPaymentStatus, IWard } from '../interface/delivery/IDelivery';
@@ -41,5 +41,16 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
   fetchAllOrderPayments(){
     return this.http.get<IPayment[]>(env+'/Payment/order-payment/all')
   }
-  
+  updatePaidOrder(submit1:any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<any>(env+'/Order/edit/paid-orders',submit1)
+  }
+  updateDelivery(delivery1:any){
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<any>(env+'/Delivery/delivery-alter',delivery1)
+  }
 }

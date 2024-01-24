@@ -72,7 +72,8 @@
                         </table>
                     </div>
                 </div>
-                <div class="text-right mb-3 justify-content-center d-flex"><button class="btn  btn-sm mr-2" type="button"><ngx-paypal [config]="payPalConfig"></ngx-paypal></button></div>
+                <div *ngIf="this.orderShow.service!='vpp'" class="text-right mb-3 justify-content-center d-flex"><button class="btn  btn-sm mr-2" type="button"><ngx-paypal [config]="payPalConfig"></ngx-paypal></button></div>
+                <div *ngIf="this.orderShow.service=='vpp'" class="text-right mb-3 justify-content-center d-flex"><button class="btn btn-outline-primary btn-sm mr-2" type="button" (click)="vppModeCheckout()">Click this to complete your delivery form</button></div>
             </div>
         </div>
     </div>

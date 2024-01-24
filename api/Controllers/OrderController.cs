@@ -153,7 +153,7 @@ namespace api.Controllers{
                 CustomerId=customerId,
                 Quantity=parcel.Quantity,
                 GenerateAuthentication=random1,
-                TotalPriceAmountAssume=parcel.AmountAssume
+                TotalPriceAmountAssume=parcel.AmountAssume*parcel.Quantity
                 };
                 if(parcel.Image.Length>0){
                      var filePath = Path.Combine(uploadsFolder, parcel.Image.FileName);
@@ -725,8 +725,10 @@ namespace api.Controllers{
     [HttpPost("edit/paid-orders")]
     //method change paid order details
     //cho phep doi address-not package
-    public async Task<ActionResult> EditPaidOrder([FromBody] SubmitEditUnfinishedOrder submit){
-            
+    public async Task<ActionResult> EditPaidOrder([FromForm] string submit1){
+        Console.WriteLine("Chuoi string"+submit1);
+            SubmitEditUnfinishedOrder submit = JsonSerializer.Deserialize<SubmitEditUnfinishedOrder>(submit1);
+           
            var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(o=>o.Id==submit.OrderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
            if(!orders.Any()){
                 return BadRequest(new ErrorResponse(404));
@@ -740,19 +742,44 @@ namespace api.Controllers{
             var WardList = await _unitOfWork.WardRepository.GetEntityByExpression(null,null,"District");
                    var DistrictList = await _unitOfWork.DistrictRepository.GetEntityByExpression(null,null,"AllPlacesInCountry");
                    var CountryList = await _unitOfWork.AllPlacesInCountryRepository.GetEntityByExpression(null,null,null);
-                   var contactWard = WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationEndWardId).FirstOrDefault().Name;
-                   var contactDistrict = DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationEndDistrictId).FirstOrDefault().Name;
-                   var contactCountry = CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Name;
-                   var contactCityMark =  CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   var contactWard = "";
+                   if(submit.SubmitAddressNew.LocationEndWardId!=-1){
+                  contactWard= WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationEndWardId).FirstOrDefault().Name;
+                   }
+                   var contactDistrict = "";
+                   if(submit.SubmitAddressNew.LocationEndDistrictId!=-1){
+                  contactDistrict = DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationEndDistrictId).FirstOrDefault().Name;
+                   }
+                   var contactCountry = "";
+                   if(submit.SubmitAddressNew.LocationEndPlaceId!=-1){
+                   contactCountry= CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Name;
+                   }
+                   var contactCityMark ="";
+                   if(submit.SubmitAddressNew.LocationEndPlaceId!=-1){
+                        contactCityMark= CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationEndPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   }
                    string ContactAddress = "";
                    if(submit.SubmitAddressNew.LocationEndPlaceId!=-1){
                          ContactAddress = string.Concat(submit.SubmitAddressNew.LocationEndStreet,", ",contactWard," Ward ",contactDistrict," District ",contactCountry," ",contactCityMark);
                    }
                    
-                    var senderWard = WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationStartWardId).FirstOrDefault().Name;
-                   var senderDistrict = DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationStartDistrictId).FirstOrDefault().Name;
-                   var senderCountry = CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Name;
-                   var senderCityMark =  CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                    var senderWard = "";
+                    if(submit.SubmitAddressNew.LocationStartWardId!=-1){
+                      senderWard=  WardList.Where(e=>e.Id==submit.SubmitAddressNew.LocationStartWardId).FirstOrDefault().Name;
+                    }
+                   var senderDistrict = "";
+                   if(submit.SubmitAddressNew.LocationStartDistrictId!=-1){
+                   senderDistrict= DistrictList.Where(r=>r.Id==submit.SubmitAddressNew.LocationStartDistrictId).FirstOrDefault().Name;
+                   }
+                   var senderCountry = "";
+                   if(submit.SubmitAddressNew.LocationStartPlaceId!=-1){
+                    senderCountry=CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Name;
+                   }
+                   var senderCityMark="";
+                   if(submit.SubmitAddressNew.LocationStartPlaceId!=-1){
+                    senderCityMark = CountryList.Where(w=>w.Id==submit.SubmitAddressNew.LocationStartPlaceId).FirstOrDefault().Specila==true?"City":"Provine";
+                   }
+                     
                    string SenderAddress = "";
                    if(submit.SubmitAddressNew.LocationStartPlaceId!=-1){
                     SenderAddress=string.Concat(submit.SubmitAddressNew.LocationStartStreet,", ",senderWard," Ward ",senderDistrict," District ",senderCountry," ",senderCityMark);

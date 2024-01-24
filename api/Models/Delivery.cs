@@ -21,5 +21,7 @@ namespace api.Models{
         public DeliveryStatus DeliveryStatus { get; set; }
         public decimal? VPPMoney { get; set; }
         public int? CodeLocation { get; set; }
+        public int? ZipCodeStart { get; set; }
+        public int? ZipCodeEnd { get; set; }
     }
 }

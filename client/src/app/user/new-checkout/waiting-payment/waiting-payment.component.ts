@@ -28,7 +28,7 @@ export class WaitingPaymentComponent implements OnInit {
   
     orderId:number=0;
     ngOnInit(){
-      this.toastr.success("Hi","Waiting")
+      
     }
   constructor(private modalService: BsModalService,private toastr:ToastrService,private service:DeliveryService,private router:Router) {
     this.items1 = Array(15).fill(0);

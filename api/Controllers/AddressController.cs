@@ -60,7 +60,8 @@ namespace api.Controllers{
         }
         Ward d = new Ward{
           Name=ward.Name,
-          DistrictId=ward.DistrictId
+          DistrictId=ward.DistrictId,
+          ZipCode=ward.ZipCode
         };
         try
         {

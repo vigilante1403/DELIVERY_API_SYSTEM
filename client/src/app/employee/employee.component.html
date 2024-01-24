@@ -4,9 +4,27 @@
       <button type="submit">Search</button>
     </form>
   
-    <div class="search-results">
-      <ul>
-        <li *ngFor="let result of searchResults">{{ result }}</li>
-      </ul>
+    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+      <table class="table table-striped mb-0">
+        <thead style="background-color: #002d72!important;">
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">DisplayName</th>
+            <th scope="col">UserEmail</th>
+            <th scope="col">Deliveries</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="this.searchDone==true">
+                <td>{{ this.searchResults.id.substring(0,3) }}xxxx</td>
+                <td>{{ this.searchResults.name }}</td>
+                <td>{{this.searchResults.email }}</td>
+                <td><button (click)="proceedToUserDetail(this.searchResults.email,this.searchResults.id)" class="btn btn-outline-warning">Get details</button></td>
+            </tr>
+            <tr *ngIf="this.searchFail==true">
+              <td>Can't find user with {{ this.query }} email</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>

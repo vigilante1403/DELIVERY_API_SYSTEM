@@ -34,6 +34,10 @@
             <input type="text" name="wardName" [(ngModel)]="this.wardName" placeholder="Enter new ward" class="form-control">
             <label>Ward Name:</label>
         </div>
+        <div class="form-floating mb-3" *ngIf="this.allowWardAdd==true">
+          <input type="number" name="wardName" [(ngModel)]="this.wardCode" placeholder="Enter new ward" class="form-control">
+          <label>Ward ZipCode:</label>
+      </div>
         
         <a type="btn btn-primary" *ngIf="this.allowDistrictAdd==true" (click)="addNewDistrict()" class="btn btn-primary">Submit</a>
         <a type="btn btn-primary" *ngIf="this.allowWardAdd==true" (click)="addNewWard()" class="btn btn-primary">Submit</a>

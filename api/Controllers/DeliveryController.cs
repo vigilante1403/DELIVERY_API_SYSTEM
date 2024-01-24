@@ -295,6 +295,10 @@ namespace api.Controllers
             if(paymentId==null){
                 return BadRequest(new ErrorResponse(500));
             }
+            var orderDetails = await _unitOfWork.OrderDetailRepository.GetEntityByExpression(w=>w.OrderId==delivery.OrderId,null,"Parcel,Order");
+            var parcelsids = orderDetails.Where(x=>x.ParcelId.HasValue).Select(w=>w.ParcelId);
+            var parcelList = await _unitOfWork.ParcelRepository.GetEntityByExpression(p=>parcelsids.Contains(p.Id),null,"Customer");
+            var totalAmount = parcelList.Where(w=>w.TotalPriceAmountAssume.HasValue).Sum(w=>w.TotalPriceAmountAssume);
             var orderPayments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(w=>w.Id==paymentId,null,"OrderPaymentStatus");
             var orderPayment = orderPayments.FirstOrDefault();
             //double check
@@ -363,7 +367,11 @@ namespace api.Controllers
                 OrderPaymentId= (int)paymentId,
                 DeliveryStatusId=1,
                 DeliveryDate=deliveryDate,
-                PickUpDateTime=pickUp
+                PickUpDateTime=pickUp,
+                ZipCodeStart=delivery.ZipCodeStart,
+                ZipCodeEnd=delivery.ZipCodeEnd,
+                VPPMoney=totalAmount
+                
             };
             try
             {
@@ -384,7 +392,98 @@ namespace api.Controllers
                 
                 return BadRequest(new ErrorResponse(500,"Can't save status of orderpayment"));
             }
-            return Ok("New delivery ready!");
+            return Ok();
+        }
+        [HttpPost("delivery-alter")]
+        public async Task<ActionResult> AlterSpecificDelivery([FromForm] string delivery1 ){
+            SubmitDelivery delivery = JsonSerializer.Deserialize<SubmitDelivery>(delivery1);
+            var payment = await _unitOfWork.OrderRepository.GetEntityByExpression(d=>d.Id==delivery.OrderId,null,"OrderPayment,Service,Customer,PricePerDistance,DeliveryAgent");
+            var paymentId = payment.FirstOrDefault().OrderPaymentId;
+            
+            if(paymentId==null){
+                return BadRequest(new ErrorResponse(500));
+            }
+           var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(x=>x.OrderId==delivery.OrderId,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            var expect = deliveries.FirstOrDefault();
+            var orderPayments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(w=>w.Id==paymentId,null,"OrderPaymentStatus");
+            var orderPayment = orderPayments.FirstOrDefault();
+            var combo = await _unitOfWork.PricePerDistanceRepository.GetEntityByExpression(e=>e.Id==payment.FirstOrDefault().PricePerDistanceId,null,null);
+            var expectedDays = combo.FirstOrDefault().DeliveryTime;
+            string[] days = expectedDays.Split("-");
+            var sameState = combo.FirstOrDefault().Route.Contains("Same");
+            var responseAgentList = await _unitOfWork.DeliveryAgentRepository.GetEntityByExpression(w=>w.Id==payment.FirstOrDefault().DeliveryAgentId,null,null);
+            var responseAgent = responseAgentList.FirstOrDefault();
+            var senderAddress=payment.FirstOrDefault().SenderInfo;
+            var contactAddress=payment.FirstOrDefault().ContactAddress;
+            var info = JsonSerializer.Deserialize<InfoCombine>(senderAddress);
+            var info2=JsonSerializer.Deserialize<InfoCombine>(contactAddress);
+            var format = "HH:mm:ss";
+            var timeCreated = payment.FirstOrDefault().OrderDate;
+            Console.WriteLine("Thoi gian tao"+timeCreated);
+            TimeSpan timeOfDay = timeCreated.TimeOfDay;
+            TimeOnly time1 = TimeOnly.FromTimeSpan(timeOfDay);
+            var timeRequired = responseAgent.RequiredTimeForOrderToPickUp;
+            DateTime pickUp = timeCreated;
+            var deliveryDate = DateTime.Now;
+            if(timeRequired==null||responseAgent.PickUpTimeForSpecialOrder!=0){
+                //case special delivery
+                pickUp=pickUp.AddHours((double)responseAgent.PickUpTimeForSpecialOrder);
+                if(info.Address.Contains("City")&&info2.Address.Contains("City")){
+                    deliveryDate=pickUp.AddHours(3);
+                }else{
+                    if(sameState){
+                        deliveryDate=pickUp.AddHours(12);
+                    }else{
+                        deliveryDate=pickUp.AddDays(2);
+                    }
+                }
+            }else{
+                 TimeOnly time2 = TimeOnly.ParseExact(timeRequired, format);
+                    if(info.Address.Contains("City")){
+                        if(time1<=time2){//th tao don truoc thoi gian yeu cau
+                        pickUp = pickUp.Date.Add(new TimeSpan(18,0,0));
+                       
+                        
+                        }else{
+                            pickUp=pickUp.AddDays(1);
+                            pickUp=pickUp.Date.Add(new TimeSpan(7,0,0));
+                        }
+                      
+                //xet th thowi gian tao don    //nguoi gui o tp, xet TH pick up o tp->anh huong toi pick up date time
+                     }else{
+                        pickUp=pickUp.Date.Add(new TimeSpan(8,0,0));
+                     }
+                        int dayAdd = int.Parse(days[0]);
+                        deliveryDate=pickUp.AddDays(dayAdd);
+
+            }
+           
+            
+    
+            var deliveryDays = payment.FirstOrDefault().Service.DaysAdd; //day
+
+
+            try
+            {
+                expect.PickUpDateTime=pickUp;
+                expect.DeliveryDate=deliveryDate;
+                if(delivery.ZipCodeStart!=-1){
+                     expect.ZipCodeStart=delivery.ZipCodeStart;
+                }
+                if(delivery.ZipCodeEnd!=-1){
+                    expect.ZipCodeEnd=delivery.ZipCodeEnd;
+                }
+                _unitOfWork.Save();
+                Console.WriteLine("Update thowi gian moi");
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
+           
+            
+            return Ok();
         }
         [HttpGet("update-delivery-status/{customerId}")]
         public async Task<ActionResult> UpdateStatusOfDelivery([FromRoute] string customerId)
@@ -408,6 +507,9 @@ namespace api.Controllers
                     try
                     {
                         var temp = deliveryList.Where(e=>e.Id==process.Id).FirstOrDefault();
+                        if(!temp.CodeLocation.HasValue){
+                            temp.CodeLocation=temp.ZipCodeStart;
+                        }
                          temp.DeliveryStatusId=2;
                     order.OrderStatusId=2;
                     _unitOfWork.Save();
@@ -422,6 +524,7 @@ namespace api.Controllers
                     try
                     {
                         var temp = deliveryList.Where(e=>e.Id==process.Id).FirstOrDefault();
+                        temp.CodeLocation=temp.ZipCodeEnd.Value;
                          temp.DeliveryStatusId=3;
                     order.OrderStatusId=3;
                     _unitOfWork.Save();
@@ -450,6 +553,22 @@ namespace api.Controllers
              var unfinished = ordersList.Where(r=>r.OrderPaymentId==null||r.SenderInfo==null||r.PricePerDistanceId==null||r.OrderPayment.OrderPaymentStatusId==2).ToList();
 
              return Ok(_mapper.Map<List<Order>,List<OrderDTO>>(unfinished));
+        }
+        [HttpPut("update-location")]
+        public async Task<ActionResult> UpdateDeliveryLocation([FromBody] SubmitChangeLocation submit){
+                var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.OrderId==submit.OrderId,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+                var delivery = deliveries.FirstOrDefault();
+                try
+                {
+                    delivery.CodeLocation = submit.NewZipCodeLocation;
+                    _unitOfWork.Save();
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500,"Error at delivery table!"));
+                }
+                return Ok();
         }
     }
     

@@ -1,11 +1,11 @@
-<div class=" h-100"  >
+<div class=" h-100" >
     <div class="mask d-flex align-items-center h-100">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-12">
             <div class="card">
               <div class="card-body p-0">
-                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; min-height:400px ">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
                   <table class="table table-striped mb-0">
                     <thead style="background-color: #002d72;">
                       <tr>
@@ -13,7 +13,7 @@
                         <th scope="col">OrderNo</th>
                         <th scope="col">Delivery Agent</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Expect arrive at</th>
+                        <th scope="col">Pick up at</th>
                         <th scope="col">Details</th>
                       </tr>
                     </thead>
@@ -23,11 +23,12 @@
                         <td>{{ item.orderId }}</td>
                         <td>{{ item.deliveryAgentName }}</td>
                         <td>{{ item.deliveryStatusName }}</td>
-                        <td>{{ item.deliveryDate }}</td>
-                        <td><button (click)="openModal(template,item.orderId)" class="btn btn-success text-white">Details</button></td>
+                        <td>{{ item.pickUpDateTime }}</td>
+                        <td><button class="btn btn-warning text-white" (click)="openModal(template,item.orderId)">View</button></td>
                       </tr>
                     </tbody>
                   </table>
+                  
                 </div>
               </div>
             </div>
@@ -38,8 +39,9 @@
   </div>
   <ng-template #template>
     <div class="modal-header">
+      
       <img src="https://i.pinimg.com/originals/af/ab/46/afab4635c7491943d71528a650e95673.gif" alt="" height="50px" width="50px">
-      <h2><strong>Your delivery is out!!!</strong></h2>
+      <h2><strong>The driver will arrive soon!!!</strong></h2>
       <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
@@ -120,7 +122,9 @@
                                     </tbody>
                                 
                             </table>
-                           
+                            <div class="text-right mb-3 justify-content-around d-flex"><button class=" btn btn-danger" (click)="changeDetails(this.detail.orderId)">Change details</button>
+                              <button class=" col-sm-3 btn btn-primary" (click)="closeModal()">Ok </button></div>
+                            
                         </div>
                     </div>
                     
@@ -130,6 +134,7 @@
     </div>
     </div>
   </ng-template>
+
 
 
 

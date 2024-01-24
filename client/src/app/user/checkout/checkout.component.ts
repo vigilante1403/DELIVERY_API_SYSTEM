@@ -95,7 +95,7 @@ export class CheckoutComponent {
       console.log('onApprove - transaction was approved, but not authorized', data, actions);
       actions.order.get().then((details:any) => {
         console.log('onApprove - you can get full order details inside onApprove: ', details);
-        var submitDelivery=({orderId:Number(this.routeActivate.snapshot.paramMap.get('orderId'))})
+        var submitDelivery=({orderId:Number(this.routeActivate.snapshot.paramMap.get('orderId')),zipCodeStart:Number(localStorage.getItem('wardStart')!) ,zipCodeEnd:Number(localStorage.getItem('wardEnd')!)})
           this.service.createNewDelivery(submitDelivery).subscribe({
             next:(res)=>{console.log(res);this.router.navigateByUrl("/user/new-cart")},
             error:(err)=>{console.log(err)}
@@ -121,5 +121,12 @@ export class CheckoutComponent {
       console.log('onClick', data, actions);
     },
   };
+  }
+  vppModeCheckout(){
+    var submitDelivery=({orderId:Number(this.routeActivate.snapshot.paramMap.get('orderId')),zipCodeStart:Number(localStorage.getItem('wardStart')!) ,zipCodeEnd:Number(localStorage.getItem('wardEnd')!)})
+          this.service.createNewDelivery(submitDelivery).subscribe({
+            next:(res)=>{console.log(res);this.router.navigateByUrl("/user/new-cart")},
+            error:(err)=>{console.log(err)}
+          })
   }
 }

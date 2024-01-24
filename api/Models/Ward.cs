@@ -9,5 +9,6 @@ namespace api.Models{
         [Required]
         public int DistrictId { get; set; }
         public District District { get; set; }
+        public int? ZipCode { get; set; }
     }
 }

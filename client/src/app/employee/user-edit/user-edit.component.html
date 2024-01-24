@@ -1,0 +1,91 @@
+
+<div class="container mt-4 custom">
+    
+    <form  class="form-control" [formGroup]="addressForm" (ngSubmit)="onSubmit()" >  
+        <h3><strong>Contact Old Address: {{ this.contactOldData }}</strong></h3>
+    <h3><strong>Sender Old Address: {{ this.senderOldData }}</strong></h3>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" formControlName="name1" placeholder="Enter sender name">
+        <label>Sender New Name:</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" formControlName="address1" placeholder="Enter pick up location">
+        <label>New pickup location: </label>
+      </div>  
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" formControlName="phone1" placeholder="Enter sender phoneNumber">
+        <label>Sender New phone number</label>
+      </div>
+      <div class="form-floating mb-3" >
+        <select id="deliveryTypeId" (change)="getListDistrict($event)" class="form-control"   required>
+            <option value="-1" selected>Choose new city/province</option>
+            <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+          </select>
+          <label for="deliveryTypeId">City/Province</label>
+      </div>
+      <div class="form-floating mb-3" >
+        <select id="deliveryTypeId"  class="form-control" (change)="getListWard($event)"   required>
+            <option value="-1" selected>Choose new district</option>
+            <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict">{{ district.name }}</option>
+          </select>
+          <label for="deliveryTypeId">District</label>
+      </div>
+      <div class="form-floating mb-3" >
+        <select id="deliveryTypeId" (change)="getChosenWard($event)"  class="form-control"   required>
+            <option value="-1" selected>Choose new ward</option>
+            <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard">{{ ward.name }}</option>
+          </select>
+          <label for="deliveryTypeId">Ward</label>
+      </div>
+      <hr>
+      <hr>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" formControlName="name2" placeholder="Enter recipient name">
+        <label>Recipient New Name:</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
+        <label>New receive location:</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" formControlName="phone2" placeholder="Enter recipient phoneNumber">
+        <label>Recipient New phone number</label>
+      </div>
+      <div class="form-floating mb-3" >
+        <select id="deliveryTypeId" (change)="getListDistrict2($event)" class="form-control"   required>
+            <option value="-1" selected>Choose new city/province</option>
+            <option value="{{ country.id }}"  *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+          </select>
+          <label for="deliveryTypeId">City/Province</label>
+      </div>
+      <div class="form-floating mb-3" >
+        <select id="deliveryTypeId"  class="form-control" (change)="getListWard2($event)"   required>
+            <option value="-1" selected>Choose new district</option>
+            <option value="{{ district.id }}"  *ngFor="let district of this.tempDistrict2">{{ district.name }}</option>
+          </select>
+          <label for="deliveryTypeId">District</label>
+      </div>
+      <div class="form-floating mb-3" >
+        <select id="deliveryTypeId" (change)="getChosenWard2($event)"  class="form-control"required>
+            <option value="-1" selected>Choose new ward</option>
+            <option value="{{ ward.id }}"  *ngFor="let ward of this.tempWard2">{{ ward.name }}</option>
+          </select>
+          <label for="deliveryTypeId">Ward</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="date" [min]="minDate" class="form-control" formControlName="date">
+        <label>New pickup time:</label>
+      </div>
+          
+      <button type="submit" class=" mt-4 btn btn-primary" >Add this delivery address to order</button>
+    
+     
+      </form>
+  </div>
+  
+    
+  
+   
+      
+  
+  

@@ -22,6 +22,10 @@
       <input type="number" min="1" id="weight" placeholder="1..." formControlName="quantity">
     </div>
     <div>
+      <label>Amount assume per unit:</label>
+      <input type="number" min="1" id="amount" placeholder="1..." formControlName="amount">
+    </div>
+    <div>
       <button type="button" (click)="removeFormDataEntry(formData.get('i')?.value)">Remove Entry</button>
     </div>
 

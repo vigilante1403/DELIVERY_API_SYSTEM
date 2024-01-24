@@ -21,6 +21,7 @@ selectedDistrict:number=0
 tempWard:IWard[]=[]
 districtName:string=''
 wardName:string=''
+wardCode:number=0
 constructor(private service:MapService,
   private manage:ManageService){
 
@@ -97,7 +98,8 @@ getListDistrict(event:Event){
   }
   var ward=({
     name:this.wardName,
-    districtId:this.selectedDistrict
+    districtId:this.selectedDistrict,
+    zipCode:this.wardCode
   })
   this.manage.addNewWard(ward).subscribe({
     next:(res)=>{console.log("ok");this.updateWard()},

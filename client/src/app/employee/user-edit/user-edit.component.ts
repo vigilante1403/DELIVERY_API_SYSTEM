@@ -1,16 +1,17 @@
-import { Component, AfterViewInit, ElementRef,NgZone, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MapService } from 'src/app/service/map.service';
-import { FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ICountry, IDeliveryAgent, IDistrict, IOrderShow, ISubmitAddress, IWard } from 'src/app/interface/delivery/IDelivery';
-import { ActivatedRoute } from '@angular/router';
 import { DeliveryService } from 'src/app/service/delivery.service';
+import { MapService } from 'src/app/service/map.service';
 
 @Component({
-  selector: 'app-new-address',
-  templateUrl: './new-address.component.html',
-  styleUrls: ['./new-address.component.scss']
+  selector: 'app-user-edit',
+  templateUrl: './user-edit.component.html',
+  styleUrls: ['./user-edit.component.scss']
 })
-export class NewAddressComponent {
+export class UserEditComponent {
   storedCountries:ICountry[]=[]
   storedDistricts:IDistrict[]=[]
   storedWards:IWard[]=[]
@@ -18,12 +19,12 @@ export class NewAddressComponent {
   tempWard:IWard[]=[]
   tempDistrict2:IDistrict[]=[]
   tempWard2:IWard[]=[]
-  selectedCountry:number=0;
-  selectedDistrict:number=0;
-  selectedWard:number=0;
-  selectedCountry2:number=0;
-  selectedDistrict2:number=0;
-  selectedWard2:number=0;
+  selectedCountry:number=-1;
+  selectedDistrict:number=-1;
+  selectedWard:number=-1;
+  selectedCountry2:number=-1;
+  selectedDistrict2:number=-1;
+  selectedWard2:number=-1;
   addressForm!:FormGroup
   flag:boolean=false;
   storedExpress:IDeliveryAgent[]=[]
@@ -49,15 +50,34 @@ export class NewAddressComponent {
   sendData(){
     this.dataToParent.emit(true)
   }
-  constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService) { }
+  minDate:string=''
+  contactOldData:string=localStorage.getItem('contact-old-data')!=null?localStorage.getItem('contact-old-data')!:''
+  senderOldData:string=localStorage.getItem('sender-old-data')!=null?localStorage.getItem('sender-old-data')!:''
+  constructor(private datepipe:DatePipe,private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService,private router:Router) { 
+    var contactData = this.router.getCurrentNavigation()?.extras.state?.['data']['contact']
+    var senderData = this.router.getCurrentNavigation()?.extras.state?.['data']['sender']
+    console.log(contactData)
+    console.log(senderData)
+    if(contactData!=undefined){
+      localStorage.setItem('contact-old-data',contactData)
+      this.contactOldData=contactData
+    }
+    if(senderData!=undefined){
+      localStorage.setItem('sender-old-data',senderData)
+      this.senderOldData=senderData
+    }
+    const currentDate = new Date()
+    this.minDate=this.datepipe.transform(currentDate, 'yyyy-MM-dd')!
+  }
  initForm(){
   this.addressForm=this.fb.group({
-    name1:['',Validators.required],
-    name2:['',Validators.required],
-    address1:['',Validators.required],
-    address2:['',Validators.required],
-    phone1:['',Validators.required],
-    phone2:['',Validators.required]
+    name1:[''],
+    name2:[''],
+    address1:[''],
+    address2:[''],
+    phone1:[''],
+    phone2:[''],
+    date:[new Date()]
   })
  }
  getListDistrict(event:Event){
@@ -161,47 +181,78 @@ export class NewAddressComponent {
         console.log("Form invalid")
         return;
       }else{
-        if(!this.validateInfo()){
-          console.log("Address or phone number invalid")
-          return;
-        }
-        if(this.selectedCountry==0||this.selectedDistrict==0||this.selectedWard==0||this.selectedCountry2==0||this.selectedDistrict2==0||this.selectedWard2==0){
-          console.log("Form invalid")
-          return;
-        }else{
-          var submitAddress:ISubmitAddress=({
-            locationStartPlaceId:this.selectedCountry,
-    locationEndPlaceId:this.selectedCountry2,
-    locationStartDistrictId:this.selectedDistrict,
-    locationEndDistrictId:this.selectedDistrict2,
-    locationStartWardId:this.selectedWard,
-    locationEndWardId:this.selectedWard2,
-    locationStartStreet:this.addressForm.get('address1')?.value,
-    locationEndStreet:this.addressForm.get('address2')?.value,
-    contactName:this.addressForm.get('name2')?.value,
-    contactPhoneNumber:this.addressForm.get('phone2')?.value,
-    senderName:this.addressForm.get('name1')?.value,
-    senderPhoneNumber:this.addressForm.get('phone1')?.value,
-    deliveryAgentId:this.chooseDeliveryId
+        // if(!this.validateInfo()){
+        //   console.log("Address or phone number invalid")
+        //   return;
+        // }
+       
+          var submitAddress=({
+            LocationStartPlaceId:this.selectedCountry,
+            LocationEndPlaceId:this.selectedCountry2,
+            LocationStartDistrictId:this.selectedDistrict,
+            LocationEndDistrictId:this.selectedDistrict2,
+            LocationStartWardId:this.selectedWard,
+            LocationEndWardId:this.selectedWard2,
+            LocationStartStreet:this.addressForm.get('address1')?.value,
+            LocationEndStreet:this.addressForm.get('address2')?.value,
+            ContactName:this.addressForm.get('name2')?.value,
+            ContactPhoneNumber:this.addressForm.get('phone2')?.value,
+            SenderName:this.addressForm.get('name1')?.value,
+            SenderPhoneNumber:this.addressForm.get('phone1')?.value,
+            DeliveryAgentId:this.chooseDeliveryId
           })
           this.filterZipCodeStart(this.selectedWard);
           this.filterZipCodeEnd(this.selectedWard2)
-          var orderId = this.orderIdMain
-          this.service.createNewOrderPayment(orderId,submitAddress).subscribe({
-            next:(res)=>{console.log(res);this.sendData()},
+          var orderId = this.routeActivate.snapshot.paramMap.get('orderId')
+          var submit=({
+            OrderId:Number(orderId),
+            SubmitAddressNew:submitAddress,
+            NewPickUpTime:this.addressForm.get('date')?.value
+          })
+          var submit1 = JSON.stringify(submit)
+          const formData = new FormData()
+          formData.append('submit1',submit1)
+          console.log("submit1",submit1)
+          this.service.updatePaidOrder(formData).subscribe({
+            next:(res)=>{console.log(res);this.updateDelivery()},
             error:(err)=>{console.log(err)}
           })
-        }
+        
       }
+    }
+    updateDelivery(){
+      var submitNext=({
+        OrderId:Number(this.routeActivate.snapshot.paramMap.get('orderId')),
+        ZipCodeStart:Number(localStorage.getItem('wardStart')!),
+        ZipCodeEnd:Number(localStorage.getItem('wardEnd')!)
+      })
+      const form = new FormData()
+      
+      var delivery1 = JSON.stringify(submitNext)
+      form.append('delivery1',delivery1)
+      this.service.updateDelivery(form).subscribe({
+        next:(res)=>{console.log("Success")},
+        error:(err)=>{console.log(err)}
+      })
     }
     filterZipCodeStart(wardStart:number){
       var temp = this.storedWards;
-      var zipCodeStart = temp.filter(x=>x.id==wardStart)[0].zipCode!;
+      if(wardStart==-1){
+        localStorage.setItem('wardStart','-1')
+      }else{
+        var zipCodeStart = temp.filter(x=>x.id==wardStart)[0].zipCode!;
       localStorage.setItem('wardStart',zipCodeStart?.toString());
+      }
+      
     }
     filterZipCodeEnd(wardEnd:number){
       var temp = this.storedWards;
-      var zipCodeEnd = temp.filter(x=>x.id==wardEnd)[0].zipCode!;
+      if(wardEnd==-1){
+        localStorage.setItem('wardEnd','-1')
+      }else{
+        var zipCodeEnd = temp.filter(x=>x.id==wardEnd)[0].zipCode!;
       localStorage.setItem('wardEnd',zipCodeEnd?.toString());
+      }
+      
     }
 }

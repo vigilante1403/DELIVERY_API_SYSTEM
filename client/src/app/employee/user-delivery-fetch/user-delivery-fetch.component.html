@@ -1,0 +1,43 @@
+<div class="container">
+    <div id="tabs" class=" custom" #tabs>
+
+        <ul class="nav nav-pills d-flex justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link active" href="#search" [ngClass]="{ 'active':activeTab==='delivering'}" (click)="search('delivering', $event)"
+               data-toggle="tab">Delivering</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="#results" [ngClass]="{ 'active':activeTab==='delivered'}" data-toggle="tab"
+               (click)="result('delivered', $event)">Delivered</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="#results" [ngClass]="{ 'active':activeTab==='processing'}" data-toggle="tab"
+               (click)="result('processing', $event)">Processing</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link"  href="#results" [ngClass]="{ 'active':activeTab==='temp'}" data-toggle="tab"
+               (click)="result('temp', $event)">Temp</a>
+          </li> -->
+          
+        </ul>
+    
+        <div class="tab-content d-flex justify-content-center">
+          <div class="tab-pane" id="search" [ngClass]="{ 'active':activeTab==='delivering'}">
+            <app-delivering-fetch [items]="outDeliveries" [details]="outDetails"></app-delivering-fetch>
+            
+          </div>
+          <div class="tab-pane" id="search" [ngClass]="{ 'active':activeTab==='delivered'}">
+            <app-delivered-fetch [items]="finishDeliveries" [details]="doneDetails"></app-delivered-fetch>
+            
+          </div>
+          <div class="tab-pane" id="search" [ngClass]="{ 'active':activeTab==='processing'}">
+            <app-transit-fetch [items]="transitDeliveries" [details]="inDetails"></app-transit-fetch>
+            
+          </div>
+          <!-- <div class="tab-pane" id="results" [ngClass]="{ 'active':activeTab==='temp'}">
+            <app-temp-table [data]="unfinished"></app-temp-table>
+          </div> -->
+        </div>
+    
+      </div>
+</div>

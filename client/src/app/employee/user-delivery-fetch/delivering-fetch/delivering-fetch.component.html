@@ -24,7 +24,7 @@
                         <td>{{ item.deliveryAgentName }}</td>
                         <td>{{ item.deliveryStatusName }}</td>
                         <td>{{ item.deliveryDate }}</td>
-                        <td><button (click)="openModal(template,item.orderId)" class="btn btn-success text-white">Details</button></td>
+                        <td><button class="btn btn-warning text-white" (click)="openModal(template,item.orderId)">View</button></td>
                       </tr>
                     </tbody>
                   </table>
@@ -130,6 +130,7 @@
     </div>
     </div>
   </ng-template>
+
 
 
 
