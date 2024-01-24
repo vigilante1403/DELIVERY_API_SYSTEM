@@ -30,12 +30,14 @@ export interface ISubmitParcel{
     parcelName:string,
     weight:number,
     image:File,
-    quantity:number
+    quantity:number,
+    amountAssume:number
 }
 export interface ISubmitListParcel{
     list:ISubmitParcel[],
     orderId:number,
-    customerId:string
+    customerId:string,
+  
 }
 export interface ISubmitAddress{
     locationStartPlaceId:number,

@@ -5,6 +5,7 @@ namespace api.DTO{
         public decimal Weight { get; set; }
         public IFormFile Image { get; set; }
         public int? Quantity { get; set; }
+        public decimal? AmountAssume { get; set; }
 
     }
 }

@@ -19,5 +19,7 @@ namespace api.Models{
         [Required]
         public int DeliveryStatusId { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
+        public decimal? VPPMoney { get; set; }
+        public int? CodeLocation { get; set; }
     }
 }

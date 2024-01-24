@@ -24,133 +24,31 @@ export class EmployeeSidebarService {
       },
       submenus: [
         {
-          title: 'Users Management',
+          title: 'Edit Users Orders',
           badge: {
             text: 'Pro ',
             class: 'badge-success'
           },
-          url:'/admin/manage/all'
+          url:''
           
         },
         {
-          title: 'Orders Management',
-          url:'/admin/manage/all'
+          title: 'Orders Notifications',
+          url:''
         },
         {
-          title: 'Delivery Agents Management',
-          url:'/admin/manage/all'
+          title: 'Make report to admin',
+          url:''
         },
         {
-          title: 'Location Management',
-          url:'/admin/manage/all'
-        },
-        {
-          title: 'Order Payment Status Management',
-          url:'/admin/manage/all'
-        },
-        {
-          title: 'Order Status Management',
-          url:'/admin/manage/all'
-        },
-        {
-          title: 'Service Management',
-          url:'/admin/manage/all'
-        }
-      ]
-    },
-    {
-      title: 'Admin',
-      icon: 'fa fa-shopping-cart',
-      active: false,
-      type: 'dropdown',
-      badge: {
-        text: '3',
-        class: 'badge-danger'
-      },
-      submenus: [
-        {
-          title: 'Make roles',
-         
+          title: 'Pin location',
+          url:''
         },
         
       ]
     },
-    {
-      title: 'History',
-      icon: 'far fa-gem',
-      active: false,
-      type: 'dropdown',
-      submenus: [
-        {
-          title: 'Orders',
-         
-        },
-        {
-          title: 'Waiting payment orders'
-        },
-      
-      ] 
-    },
-    // {
-    //   title: 'Charts',
-    //   icon: 'fa fa-chart-line',
-    //   active: false,
-    //   type: 'dropdown',
-    //   submenus: [
-    //     {
-    //       title: 'Pie chart',
-    //     },
-    //     {
-    //       title: 'Line chart'
-    //     },
-    //     {
-    //       title: 'Bar chart'
-    //     },
-    //     {
-    //       title: 'Histogram'
-    //     }
-    //   ]
-    // },
-    // {
-    //   title: 'Maps',
-    //   icon: 'fa fa-globe',
-    //   active: false,
-    //   type: 'dropdown',
-    //   submenus: [
-    //     {
-    //       title: 'Google maps',
-    //     },
-    //     {
-    //       title: 'Open street map'
-    //     }
-    //   ]
-    // },
-    // {
-    //   title: 'Extra',
-    //   type: 'header'
-    // },
-    // {
-    //   title: 'Documentation',
-    //   icon: 'fa fa-book',
-    //   active: false,
-    //   type: 'simple',
-    //   badge: {
-    //     text: 'Beta',
-    //     class: 'badge-primary'
-    //   },
-    // },
-    // {
-    //   title: 'Calendar',
-    //   icon: 'fa fa-calendar',
-    //   active: false,
-    //   type: 'simple'
-    // },
-    // {
-    //   title: 'Examples',
-    //   icon: 'fa fa-folder',
-    //   active: false,
-    //   type: 'simple'
-    // }
+
+   
   ];
 choose:string="Users Management"
 ChooseEvent(table:string){
