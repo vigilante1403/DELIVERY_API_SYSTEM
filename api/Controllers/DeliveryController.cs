@@ -3,7 +3,7 @@ using api.DAl;
 using api.DTO;
 using api.Exceptions;
 using api.Models;
-using AutoMapper;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers

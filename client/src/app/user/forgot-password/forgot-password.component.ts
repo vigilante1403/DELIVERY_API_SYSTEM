@@ -18,9 +18,9 @@ export class ForgotPasswordComponent implements OnInit {
   emailFind: string ='';
   isFindByEmail = true;
   isFindByPhone = false;
-  urlNav: any[] = ["user/verify"]
+
   isVerify=false
-  b : IToken={token:'aaaa'}
+ 
   constructor(private http : HttpClient,private fb: FormBuilder,private router: Router){}
 
   ngOnInit(): void {
@@ -35,8 +35,7 @@ export class ForgotPasswordComponent implements OnInit {
  
 
   onSubmit() {
-  //   const newMail=  this.emailForm.get('email')?.value;
-  //  console.log(newMail);
+
    let params = new HttpParams();
    if(this.emailForm.value !== '')
    {
@@ -49,7 +48,7 @@ export class ForgotPasswordComponent implements OnInit {
    
     this.http.get(env+ "/account/3/r/forgot-password/findemail", {params}).subscribe({
       next: (e) => {console.log(e);
-        // this.router.navigate(["user/verify", {email:  this.emailForm.get('email')?.value}]);  
+
         this.emailFind=  this.emailForm.get('email')?.value; 
        this.isVerify=true;
        this.isFindByEmail=false;
@@ -63,7 +62,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
   onSubmit2() {
     let params = new HttpParams();
-    // this.emailSend = this.emailForm.get('email')?.value;
+  
     if(this.emailSend){
       params = params.append('userEmail', this.emailSend);
     }
@@ -71,7 +70,8 @@ export class ForgotPasswordComponent implements OnInit {
     this.http.get(env + '/account/forgot-generate-otp', {params}).subscribe({
       next: (res) => {console.log(res);
         
-        this.isVerify=false
+        this.isVerify=false;
+        this.router.navigateByUrl("/");
       },
       error: (err) => {console.log(err);
       }
