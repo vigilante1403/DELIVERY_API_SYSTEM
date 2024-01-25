@@ -6,19 +6,23 @@
                   <div class="card">
                     <div class="card-body p-0">
                       <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                        <div class="form-input">
+                          <label for="input">Nhập từ khóa:</label>
+                          <input type="text" id="input" (input)="receiveKeyword($event)">
+                        </div>
                         <table class="table table-striped mb-0">
                           <thead style="background-color: #002d72;">
                             <tr>
                               <th scope="col">Id</th>
-                              <th scope="col">Route</th>
-                              <th scope="col">Service</th>
-                              <th scope="col">Status</th>
-                              <th scope="col">Payment Done</th>
-                              <th scope="col">Customer</th>
+                              <th scope="col">Route  <a (click)="onSortRoute()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected"></fa-icon></a></th>
+                              <th scope="col">Service  <a (click)="onSortService()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected2"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected2"></fa-icon></a></th>
+                              <th scope="col">Status <a (click)="onSortOrderStatus()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected3"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected3"></fa-icon></a></th>
+                              <th scope="col">Payment Done <a (click)="onSortPaymentStatus()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected4"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected4"></fa-icon></a></th>
+                              <th scope="col">Customer <a (click)="onSortCustomerId()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected5"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected5"></fa-icon></a></th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let order of this.ordersToShow">
+                            <tr *ngFor="let order of this.ordersToShow">2
                                 <td>{{order.id  }}</td>
                                 <td>{{ order.route }}</td>
                                 <td>{{ order.service }}</td>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ManageService } from '../manage.service';
 import { IDeliveryAgent, IOrderShow, IOrderShow2, IPayment, IPaymentStatus } from 'src/app/interface/delivery/IDelivery';
 import { MapService } from 'src/app/service/map.service';
+import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -14,6 +15,14 @@ export class AllOrdersComponent implements OnInit {
   storedExpress:IDeliveryAgent[]=[]
   storedPayments:IPayment[]=[]
   ordersToShow:IOrderShow2[]=[]
+  backupOrderToShow: IOrderShow2[]=[]
+  selected: boolean = false;
+  selected2: boolean = false;
+  selected3: boolean = false;
+  selected4: boolean = false;
+  selected5: boolean = false;
+  keyword: string ="";
+  faChevronDown= faChevronDown; faChevronUp= faChevronUp;
 
 constructor(public service:ManageService,public mapService:MapService){}
 ngOnInit(){
@@ -89,6 +98,90 @@ splitAddressToRoute(res:IOrderShow[],res2:IDeliveryAgent[],res3:IPayment[]){
     route:addressNew
     })
     this.ordersToShow.push(newOrder)
+    this.backupOrderToShow.push(newOrder);
   });
 }
+
+receiveKeyword(event: Event) {
+ 
+  let target = event.target as HTMLInputElement;
+    this.keyword = target.value;
+   
+    this.searchData();
+  }
+  searchData() {
+   
+    this.ordersToShow = this.ordersToShow.filter(item => item.service.includes(this.keyword));
+  
+    if(this.keyword===''){
+      this.ordersToShow = this.backupOrderToShow;
+    }
+  }
+  sortRoute() {
+    if(this.selected == true) {
+      this.ordersToShow.sort((a,b) => a.route.localeCompare(b.route));
+    } else {
+      this.ordersToShow.sort((a,b) => b.route.localeCompare(a.route));
+    }
+  
+  }
+  sortService() {
+    if(this.selected2 == true) {
+      this.ordersToShow.sort((a,b) => a.service.localeCompare(b.service));
+    } else {
+      this.ordersToShow.sort((a,b) => b.service.localeCompare(a.service));
+    }
+  
+  }
+  sortOrderStatus() {
+    if(this.selected3 == true) {
+      this.ordersToShow.sort((a,b) => a.orderStatus.localeCompare(b.orderStatus));
+    } else {
+      this.ordersToShow.sort((a,b) => b.orderStatus.localeCompare(a.orderStatus));
+    }
+  
+  }
+  sortPaymentStatus() {
+    if(this.selected4 == true) {
+      this.ordersToShow.sort((a,b) => a.orderPaymentStatus.localeCompare(b.orderPaymentStatus));
+    } else {
+      this.ordersToShow.sort((a,b) => b.orderPaymentStatus.localeCompare(a.orderPaymentStatus));
+    }
+  
+  }
+  sortCustomerId() {
+    if(this.selected5 == true) {
+      this.ordersToShow.sort((a,b) => a.customerId.localeCompare(b.customerId));
+    } else {
+      this.ordersToShow.sort((a,b) => b.customerId.localeCompare(a.customerId));
+    }
+  
+  }
+
+    
+  onSortRoute() {
+    this.selected =!this.selected;
+    this.sortRoute();
+  }
+  onSortService() {
+    this.selected2 =!this.selected2;
+    this.sortService();
+  }
+  onSortOrderStatus() {
+    this.selected3 =!this.selected3;
+    this.sortOrderStatus();
+  }
+  
+    
+  onSortPaymentStatus() {
+    this.selected4 =!this.selected4;
+    this.sortPaymentStatus();
+  }
+  
+
+    
+  onSortCustomerId() {
+    this.selected5 =!this.selected5;
+    this.sortCustomerId();
+  }
 }

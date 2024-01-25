@@ -7,11 +7,15 @@
             <div class="card">
               <div class="card-body p-0">
                 <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                  <div class="form-input">
+                    <label for="input">Nhập từ khóa:</label>
+                    <input type="text" id="input" (input)="receiveKeyword($event)">
+                  </div>
                   <table class="table table-striped mb-0">
                     <thead style="background-color: #002d72!important;">
                       <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Status Name</th>
+                        <th scope="col">Status Name  <a (click)="onSortStatus()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected"></fa-icon></a></th>
                       </tr>
                     </thead>
                     <tbody>

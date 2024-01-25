@@ -7,15 +7,19 @@
             <div class="card">
               <div class="card-body p-0">
                 <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                  <div class="form-input">
+                    <label for="input">Nhập từ khóa:</label>
+                    <input type="text" id="input" (input)="receiveKeyword($event)">
+                  </div>
                   <table class="table table-striped mb-0">
                     <thead style="background-color: #002d72!important;">
                       <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Agent Name</th>
-                        <th scope="col">Contact</th>
-                        <th scope="col">Vehicle Number</th>
-                        <th scope="col">Start time</th>
-                        <th scope="col">End time</th>
+                        <th scope="col">Agent Name <a (click)="onSortAgentName()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected"></fa-icon></a></th>
+                        <th scope="col">Contact <a (click)="onSortAgentContact()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected2"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected2"></fa-icon></a></th>
+                        <th scope="col">Vehicle Number <a (click)="onSortVehicle()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected3"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected3"></fa-icon></a></th>
+                        <th scope="col">Start time <a (click)="onSortStartAt()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected4"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected4"></fa-icon></a></th>
+                        <th scope="col">End time <a (click)="onSortEndAt()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected5"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected5"></fa-icon></a></th>
 
                       </tr>
                     </thead>
