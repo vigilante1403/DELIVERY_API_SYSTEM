@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IDelivery, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
+import { IDelivery, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitChangeLocation, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
 import { ICustomer } from '../interface/account/IUser'
 
@@ -71,5 +71,14 @@ export class DeliveryService {
     
     // Make the POST request
     return this.http.post<any>(env+'/Order/edit/order-and-other-forms', data);
+  }
+  updateAllDeliveries(){
+    return this.http.get(env+'/Delivery/update-status-all')
+  }
+  fetchAllOutGoingDeliveries(){
+    return this.http.get<IDelivery[]>(env+'/Delivery/out-going-delivery')
+  }
+  updateLocation(data:ISubmitChangeLocation){
+    return this.http.put<ISubmitChangeLocation>(env+'/Delivery/update-location',data)
   }
 }

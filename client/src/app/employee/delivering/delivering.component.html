@@ -32,13 +32,13 @@
                       
 
                       <!-- Test  -->
-                    <tr>
+                    <tr *ngFor="let delivery of this.deliveries">
                         <td>a</td>
                         <td>b</td>
                         <td>c</td>
                         <td>d</td>
                         <td>e</td>
-                        <td><button class="btn btn-warning text-white" (click)="openModal(template)">Edit</button></td>
+                        <td><button class="btn btn-warning text-white" (click)="openModal(template,delivery.orderId)">Edit</button></td>
                       </tr>
                       
                     </tbody>
@@ -65,7 +65,7 @@
               <div class="col-md-12">
                   <div class="p-3 bg-white rounded">
                      
-                      <app-edit-location (closeModal)="closeModal($event)"></app-edit-location>
+                      <app-edit-location [orderId]="this.orderId" (closeModal)="closeModal($event)"></app-edit-location>
                   </div>
               </div>
           </div>

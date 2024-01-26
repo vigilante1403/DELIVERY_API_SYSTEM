@@ -183,3 +183,7 @@ export class ReturnParcel implements IReturnParcel{
 
     
 }
+export interface ISubmitChangeLocation{
+    orderId:number,
+    newZipCodeLocation:number
+}

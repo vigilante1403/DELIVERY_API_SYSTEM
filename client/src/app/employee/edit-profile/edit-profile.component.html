@@ -1,7 +1,7 @@
 <div class="container" >
     <form [formGroup]="editProfileForm" (ngSubmit)=" onSubmit()">
         <div class="mb-3">
-            <label for="" class="form-label">Displayname</label>
+            <label for="" class="form-label">DisplayName</label>
             <input formControlName="DisplayName" type="text" class="form-control">
         </div>
        
@@ -10,8 +10,7 @@
        
         <div class="mb-3">
             <label for="" class="form-label">Avatar</label>
-            <input formControlName="ImageUrl" value="{{imageUrl}}" type="hidden" class="form-control" readonly>
-            <input formControlName="ImageUrl2" type="file" class="form-control">
+            <input formControlName="ImageUrl" accept="image/*" (change)="onFileSelected($event)" type="file" class="form-control">
         </div>
         <button class="btn btn-primary" [disabled]="this.editProfileForm.invalid" type="submit">Save</button>
     </form>

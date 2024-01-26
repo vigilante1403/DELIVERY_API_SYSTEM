@@ -575,6 +575,62 @@ namespace api.Controllers
             var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.DeliveryStatusId==2,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
             return Ok(_mapper.Map<IEnumerable<Delivery>,IEnumerable<ReturnDelivery>>(deliveries));
         }
+        [HttpGet("update-status-all")]
+        public async Task<ActionResult> UpdateAllDeliveriesStatus(){
+             var processingList = await _unitOfWork.OrderRepository.GetEntityByExpression(
+                e=>(e.OrderStatusId==1||e.OrderStatusId==2)&&e.OrderPayment.OrderPaymentStatusId==1,null,"OrderPayment,Service,Customer,PricePerDistance,DeliveryAgent"
+            );
+            var deliveryList = await _unitOfWork.DeliveryRepository.GetEntityByExpression(null,null,null);
+           var orderIdList = processingList.Select(r=>r.Id);
+           var processDeliveryList = new List<Delivery>();
+           foreach(var id in orderIdList){
+            var delivery = deliveryList.Where(e=>e.OrderId==id).FirstOrDefault();
+            processDeliveryList.Add(delivery);
+           }
+           var now = DateTime.Now;
+           Console.WriteLine(now);
+           foreach(var process in processDeliveryList){
+            var order = processingList.Where(x=>x.Id==process.OrderId).FirstOrDefault();
+                if(now>=process.PickUpDateTime&&now<process.DeliveryDate){
+                    Console.WriteLine("true");
+                    try
+                    {
+                        var temp = deliveryList.Where(e=>e.Id==process.Id).FirstOrDefault();
+                        if(!temp.CodeLocation.HasValue&&temp.ZipCodeEnd.HasValue&&temp.ZipCodeStart.HasValue){
+                            temp.CodeLocation=temp.ZipCodeStart;
+                        }
+                         temp.DeliveryStatusId=2;
+                    order.OrderStatusId=2;
+                    _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                       return BadRequest(new ErrorResponse(500));
+                    }
+                   
+                }else if(now>process.DeliveryDate){
+                    try
+                    {
+                        var temp = deliveryList.Where(e=>e.Id==process.Id).FirstOrDefault();
+                        if(temp.ZipCodeEnd.HasValue&&temp.ZipCodeStart.HasValue){
+                            temp.CodeLocation=temp.ZipCodeEnd.Value;
+                        }
+                        
+                         temp.DeliveryStatusId=3;
+                    order.OrderStatusId=3;
+                    _unitOfWork.Save();
+                    }
+                    catch (System.Exception)
+                    {
+                        
+                        return BadRequest(new ErrorResponse(500));
+                    }
+                   
+                }
+           }
+          return Ok();
+        }
     }
     
 }
