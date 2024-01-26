@@ -15,9 +15,9 @@
                             <thead style="background-color: #002d72!important;">
                               <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">DisplayName <a (click)="onSort()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected"></fa-icon></a></th>
+                                <th scope="col">DisplayName <a (click)="onSortDisplayname()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected"></fa-icon></a></th>
                                 <th scope="col">UserEmail <a (click)="onSortEmail()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected2"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected2"></fa-icon></a></th>
-                                <th scope="col">Role</th>
+                                <th scope="col">Role <a (click)="onSortRole()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected3"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected3"></fa-icon></a></th>
                                 <th scope="col">Status</th>
                               </tr>
                             </thead>

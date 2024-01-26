@@ -1,7 +1,8 @@
 export interface IUser{
     displayName:string,
     email:string,
-    token:string
+    token:string,
+    imageUrl:string
 }
 export interface ILogin{
     email:string,

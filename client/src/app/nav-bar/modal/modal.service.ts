@@ -1,7 +1,7 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ILogin, IRegister, IUser } from '../../interface/account/IUser';
+import { ILogin, IRegister, IUser } from '../../interface/Account/IUser';
 import { env } from '../../config/environment';
 import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
 // import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -15,7 +15,8 @@ export class ModalService {
   modalRef?: BsModalRef;
   user:IUser=({displayName:localStorage.getItem('userName')!=null?localStorage.getItem('userName')!:'',
   email:localStorage.getItem('userEmail')!=null?localStorage.getItem('userEmail')!:'',token:localStorage.getItem('access_token')!=null?
-localStorage.getItem('access_token')!:''});
+localStorage.getItem('access_token')!:'',imageUrl:localStorage.getItem('imageUrl')!=null?
+localStorage.getItem('imageUrl')!:''});
   constructor(private http:HttpClient,) { } // inject modal service
   SignIn(login:ILogin):Observable<IUser>{
    return this.http.post<IUser>(env+'/Account/login',login)
@@ -27,13 +28,15 @@ localStorage.getItem('access_token')!:''});
     localStorage.removeItem('access_token')
     localStorage.removeItem('userEmail')
     localStorage.removeItem('userName')
+    localStorage.removeItem('imageUrl');
     this.loginStatus.next(false)
-    this.user=({displayName:'',email:'',token:''})
+    this.user=({displayName:'',email:'',token:'',imageUrl:''})
    
   }
   checkLogin(){
     return this.login$;
   }
+  
 
 
 

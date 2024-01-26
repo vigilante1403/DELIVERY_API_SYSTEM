@@ -20,13 +20,17 @@ export class EmployeeSidebarComponent {
   menus:any = [];
   faLaptop=faLaptop
   faBookOpen=faBookOpen
-  login!:boolean
+  login!:boolean;
+  imageUrl =localStorage.getItem('imageUrl');
+  
   constructor(public sidebarservice: EmployeeSidebarService,public service:ModalService) {
     this.menus = sidebarservice.getMenuList();
    }
 
   ngOnInit() {
-    this.service.checkLogin().subscribe(value=>this.login=value)
+    this.service.checkLogin().subscribe(value=>this.login=value);
+    // localStorage.setItem('imageUrl',"https://gifdb.com/images/high/winking-laying-pikachu-lmqyt4l2yk8z8k20.webp");
+    
   }
 
   getSideBarState() {
@@ -57,5 +61,5 @@ export class EmployeeSidebarComponent {
   hasBackgroundImage() {
     return this.sidebarservice.hasBackgroundImage;
   }
-
+  
 }

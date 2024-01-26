@@ -9,15 +9,23 @@ import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./all-users.component.scss']
 })
 export class AllUsersComponent implements OnInit {
-  storedUsers:IUser[]=[]
+  storedUsers:IUser[]=[];
+  backupStoredUsers:IUser[]=[];
   admin:string='a'
   selected: boolean = false;
   selected2: boolean = false;
+  selected3: boolean = false;
   keyword: string ="";
   faChevronDown= faChevronDown; faChevronUp= faChevronUp;
 constructor(private service:ManageService){}
 ngOnInit(): void {
    this.loadUser()
+}
+loadUser(){
+  this.service.getAllUsers().subscribe({
+    next:(res)=>{this.storedUsers=res;this.backupStoredUsers=[...res]},
+    error:(err)=>{console.log(err)}
+  })
 }
 
 sortDisplayName() {
@@ -36,14 +44,17 @@ sortEmail() {
   }
 
 }
-loadUser(){
-  this.service.getAllUsers().subscribe({
-    next:(res)=>{this.storedUsers=res;},
-    error:(err)=>{console.log(err)}
-  })
+sortRole() {
+  if(this.selected3 == true) {
+    this.storedUsers.sort((a,b) => a.roleName.localeCompare(b.roleName));
+  } else {
+    this.storedUsers.sort((a,b) => b.roleName.localeCompare(a.roleName));
+  }
+
 }
 
-onSort() {
+
+onSortDisplayname() {
   this.selected =!this.selected;
   this.sortDisplayName();
 }
@@ -51,20 +62,24 @@ onSortEmail() {
   this.selected2 =!this.selected2;
   this.sortEmail();
 }
+onSortRole() {
+  this.selected3 =!this.selected3;
+  this.sortRole();
+}
 
 receiveKeyword(event: Event) {
-  // Gán giá trị vào biến keyword
+ 
 let target = event.target as HTMLInputElement;
   this.keyword = target.value;
-  // Gọi hàm tìm kiếm dữ liệu
+ 
   this.searchData();
 }
 searchData() {
-  // Lọc dữ liệu theo từ khóa
+ 
   this.storedUsers = this.storedUsers.filter(item => item.displayName.includes(this.keyword) || item.email.includes(this.keyword));
 
   if(this.keyword===''){
-    this.loadUser();
+    this.storedUsers=this.backupStoredUsers;
   }
 }
 }
