@@ -1,27 +1,14 @@
-<div class="container">
-    <div class="steps">
-      <div class="step" [class.active]="currentStep === 1" [class.shine]="currentStep === 1">
-        
-      </div>
-      <div class="step" [class.active]="currentStep === 2" [class.shine]="currentStep === 2">
-
-      </div>
-      <div class="step" [class.active]="currentStep === 3" [class.shine]="currentStep === 3"></div>
-
-
-    </div>
-    <div class="line">
-        <div class="dot-move" [style.top.%]="(currentStep - 1) * 25"></div>
-        <div class="dot zero" [class.fade]="currentStep !== 1">
-            <span style="margin-left: 30px;">Service</span>
-        </div>
-        <div class="dot center" *ngIf="this.currentStep>=2" [class.fade]="currentStep !== 2"></div>
-        <div class="dot full" *ngIf="this.currentStep>=3" [class.fade]="currentStep !== 3"></div>
-        <div class="dot near-end" *ngIf="this.currentStep>=4" [class.fade]="currentStep !== 4"></div>
-        <div class="dot end" *ngIf="this.currentStep>=5" [class.fade]="currentStep !== 5"></div>
-      </div>
-  </div>
-  
-  <button (click)="prevStep()">Previous</button>
-  <button (click)="nextStep()">Next</button>
-  
+<button type="button" class="btn btn-primary" (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed"  aria-controls="collapseBasic">Track your order
+</button>
+<hr>
+<div id="collapseBasic" [collapse]="isCollapsed" [isAnimated]="true">
+  <div class="well well-lg card card-block card-header"><div class="progress-track">
+    <ul id="progressbar">
+        <li class="step0  active" id="step1" [class.active]="this.currentStep>=1">Order placed</li>
+        <li class="step0  text-center" [class.active]="this.currentStep>=2" id="step2">In Transit</li>
+        <li class="step0  text-right" [class.active]="this.currentStep>=3" id="step3"><span id="three">Out for Delivery</span></li>
+        <li class="step0 text-right"[class.active]="this.currentStep==4" id="step4">Delivered</li>
+    </ul>
+  </div></div>
+</div>

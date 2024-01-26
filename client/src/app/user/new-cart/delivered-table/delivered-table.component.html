@@ -57,9 +57,14 @@
                             <div class="billed"><span class="font-weight-bold text-uppercase">Order ID: </span><span class="ml-1">#xxxxxxx</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Recipient: </span><span class="ml-1">{{ this.contactAddress }}</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Service Chose: </span><span class="ml-1">{{ this.detail.orderDTO.service }}</span></div>
-                        </div>
+                            
+                          </div>
                         <div class="col-md-6 text-right mt-3">
                             <h4 class="text-danger mb-0"><strong>TARS DELIVERY</strong></h4><span><strong>aptech.com</strong></span></div>
+                            <div *ngIf="this.deliveryDetail.id!=0">
+                              <app-test-line  [currentStep]="this.currentStep"></app-test-line>
+                            </div>
+                            
                     </div>
                     <div class="mt-3">
                         <div class="table-responsive">

@@ -31,6 +31,7 @@ import { PaypalComponent } from './new-checkout/waiting-payment/paypal/paypal.co
 import { PreCheckoutComponent } from './form/pre-checkout/pre-checkout.component';
 import { UpdateUnpaidFormsComponent } from './update-unpaid-forms/update-unpaid-forms.component';
 import { TestLineComponent } from './test-line/test-line.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 
 
@@ -58,6 +59,7 @@ import { TestLineComponent } from './test-line/test-line.component';
     PreCheckoutComponent,
     UpdateUnpaidFormsComponent,
     TestLineComponent,
+    
 
     
   ],
@@ -67,7 +69,8 @@ import { TestLineComponent } from './test-line/test-line.component';
     ReactiveFormsModule,FormsModule,
     FontAwesomeModule,
     AlertModule.forRoot(),
-    NgxPayPalModule
+    NgxPayPalModule,
+    CollapseModule.forRoot()
     
   ],
   exports:[

@@ -30,6 +30,7 @@ import { AdminSidebarComponent } from './admin-sidebar/admin-sidebar.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ToastrModule } from 'ngx-toastr';
 import { EmployeeSidebarComponent } from './employee-sidebar/employee-sidebar.component';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -66,6 +67,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ReactiveFormsModule,
     NgxPayPalModule,
     ReactiveFormsModule,
+    CollapseModule.forRoot(),
  
     JwtModule.forRoot({
       config: {

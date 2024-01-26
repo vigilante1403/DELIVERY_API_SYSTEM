@@ -29,7 +29,7 @@ export class EmployeeSidebarService {
             text: 'Pro ',
             class: 'badge-success'
           },
-          url:''
+          url:'/employee'
           
         },
         {

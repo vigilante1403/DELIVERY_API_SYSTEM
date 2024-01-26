@@ -16,6 +16,15 @@ export class ProcessingTableComponent {
       returnParcels:[new ReturnParcel()],
       returnPayment:new Payment()
   })
+  deliveryDetail:IDelivery=({
+    id:0,
+      orderId:0,
+      deliveryAgentName:'',
+      orderPaymentId:0,
+      pickUpDateTime:new Date(),
+      deliveryDate:new Date(),
+      deliveryStatusName:''
+  })
   contactAddress:string=''
   modalRef?: BsModalRef;
 items1: number[];
@@ -29,6 +38,27 @@ openModal(template: TemplateRef<void>,orderId:any) {
   this.detail= temp.filter(x=>x.orderId==orderId)[0]
   console.log("Detail ",this.detail)
   this.ConvertContactData(this.detail.orderDTO.contactAddress)
+  var temp2= this.items
+  this.deliveryDetail = temp2.filter(x=>x.orderId==orderId)[0]
+  console.log("Detail la:",this.deliveryDetail)
+  this.checkStep()
+}
+currentStep:number=0
+checkStep(){
+  const pickUp = new Date(this.deliveryDetail.pickUpDateTime)
+  const deliveryDate = new Date(this.deliveryDetail.deliveryDate)
+  var date = new Date()
+if (date < pickUp) {
+  this.currentStep = 1;
+} else if(date.getTime()==pickUp.getTime()){
+  this.currentStep=2
+}
+ else if (date >= pickUp && date < deliveryDate) {
+  this.currentStep = 3;
+} else if (date >= deliveryDate) {
+  this.currentStep = 4;
+}
+console.log("Current Step: ",this.currentStep)
 }
 closeModal(){
   this.modalRef?.hide()
