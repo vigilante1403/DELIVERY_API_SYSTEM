@@ -26,13 +26,15 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHelper _helper;
 
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
+        public AccountController(IHelper helper,SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
         {
             _signinManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
+            _helper=helper;
 
         }
         [HttpPost("register")]
@@ -224,7 +226,9 @@ namespace api.Controllers
     
     public static async Task<string> GenerateJwtToken(string userEmail)
     {
-        string secretKey = "CqqXj0t7O2EziQwB16AYFyABPTvsZ9xzf8tWJdc2gwchqwb6gRR7BGZ3PMf5Jt7j5TbqZalHqsYpUiIwW7A380sDIpdUg2FzGFSBuX8z9";
+        api.services.Helper help = new api.services.Helper();
+        var random = help.GenerateRandomString(8);
+        string secretKey = "CqqXj0t7O2EziQwB16AYFyABPTvsZ9xzf8tWJdc2gwchqwb6gRR7BGZ3PMf5Jt7j5TbqZalHqsYpUiIwW7A380sDIpdUg2FzGFSBuX8z9"+random;
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(secretKey);
@@ -265,10 +269,27 @@ namespace api.Controllers
        if(user==null){
         return BadRequest(new ErrorResponse(404,"User not found"));
        }
-       
+       var expectList = await _unitOfWork.ResetPasswordRepository.GetEntityByExpression(d=>d.Authentication==token,null,null);
+       if(!expectList.Any()){
+            return BadRequest(new ErrorResponse(404));
+       }
+       var expect = expectList.FirstOrDefault();
+       if(expect.Used2){
+        return BadRequest(new ErrorResponse(401));
+       }
        var rsToken = await _userManager.GeneratePasswordResetTokenAsync(user);
       var result= await _userManager.ResetPasswordAsync(user,rsToken,newpassword.newPassword);
       if(result.Succeeded){
+        try
+        {
+            expect.Used2=true;
+            _unitOfWork.Save();
+        }
+        catch (System.Exception)
+        {
+            
+            return BadRequest(new ErrorResponse(500));
+        }
         return Ok();
     }else{
         return BadRequest(new ErrorResponse(500));
@@ -281,7 +302,8 @@ namespace api.Controllers
     [HttpGet("token")]
     public async Task<ActionResult<TokenDTO>> GenerateJwtTokenP([FromQuery]string userEmail)
     {
-        string secretKey = "CqqXj0t7O2EziQwB16AYFyABPTvsZ9xzf8tWJdc2gwchqwb6gRR7BGZ3PMf5Jt7j5TbqZalHqsYpUiIwW7A380sDIpdUg2FzGFSBuX8z9";
+        var help = _helper.GenerateRandomString(8);
+        string secretKey = "CqqXj0t7O2EziQwB16AYFyABPTvsZ9xzf8tWJdc2gwchqwb6gRR7BGZ3PMf5Jt7j5TbqZalHqsYpUiIwW7A380sDIpdUg2FzGFSBuX8z9"+help;
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(secretKey);
@@ -315,7 +337,8 @@ namespace api.Controllers
         return Ok(user);
     }
     [HttpPost("sendMail-forgot")]
-     public static  async Task<bool> SendEmailForgotPasswordAsync(string otp,string userEmail)
+     public static  async Task<bool> SendEmailForgotPasswordAsync(string otp,string userEmail,
+     string token)
     {
         
         try
@@ -327,7 +350,7 @@ namespace api.Controllers
                 EnableSsl = true,
                 
             };
-    var token = await GenerateJwtToken(userEmail);
+   
             var mailMessage = new MailMessage
             {
                 From = new MailAddress("new.vytruong.1812@gmail.com"),
@@ -351,12 +374,14 @@ namespace api.Controllers
      [HttpGet("forgot-generate-otp")]
         public async Task<ActionResult> UserAskToOTPPasswordGenerate(string userEmail){
          var otp= GenerateOTP();
-        var sendResult= await SendEmailForgotPasswordAsync(otp,userEmail);
+          var token = await GenerateJwtToken(userEmail);
+        var sendResult= await SendEmailForgotPasswordAsync(otp,userEmail,token);
          //user get otp then pass to form otp submit on client, if matchs proceed to url change-password
          if(sendResult==true){
             ResetPassword otpCode = new ResetPassword{
                 CustomerEmail=userEmail,
                 OTP=otp,
+                Authentication=token
             };
             try
             {
@@ -376,15 +401,15 @@ namespace api.Controllers
 
          [HttpPost("verification-otp-f")]
         public async Task<ActionResult> ProceedToForgotPassword([FromBody] SubmitReset otpSubmit){
-            var latestotpList = await _unitOfWork.ResetPasswordRepository.GetEntityByExpression(d=>(d.OTP==otpSubmit.OTP)&&(d.CustomerEmail==otpSubmit.CustomerEmail),r=>r.OrderByDescending(q=>q.Id),null);
-            var latest = latestotpList.FirstOrDefault();
-            if(!latestotpList.Any()){
+            var expectList = await _unitOfWork.ResetPasswordRepository.GetEntityByExpression(d=>(d.OTP==otpSubmit.OTP)&&(d.CustomerEmail==otpSubmit.CustomerEmail)&&(d.Authentication==otpSubmit.Authentication),null,null);
+            var expect = expectList.FirstOrDefault();
+            if(!expectList.Any()){
                 return BadRequest(new ErrorResponse(404));
             }
             DateTime current = DateTime.Now;
-            var deltaTime = current-latest.CreatedAt;
+            var deltaTime = current-expect.CreatedAt;
             int minuses = deltaTime.Minutes;
-            if(latest.used==true){
+            if(expect.used){
                 return BadRequest(new ErrorResponse(401,"OTP used!"));
 
             }
@@ -392,8 +417,8 @@ namespace api.Controllers
             if(minuses>5){
                 return BadRequest(new ErrorResponse(401,"OTP expired!"));
             }
-            latest.used=true;
-            _unitOfWork.ResetPasswordRepository.Update(latest);
+            expect.used=true;
+            // _unitOfWork.ResetPasswordRepository.Update(expect);
             _unitOfWork.Save();
 
             return Ok();

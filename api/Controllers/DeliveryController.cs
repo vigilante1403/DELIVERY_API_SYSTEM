@@ -3,7 +3,7 @@ using api.DAl;
 using api.DTO;
 using api.Exceptions;
 using api.Models;
-
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -569,6 +569,11 @@ namespace api.Controllers
                     return BadRequest(new ErrorResponse(500,"Error at delivery table!"));
                 }
                 return Ok();
+        }
+        [HttpGet("out-going-delivery")]
+        public async Task<ActionResult<IEnumerable<ReturnDelivery>>> GetAllOutGoingDeliveries(){
+            var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.DeliveryStatusId==2,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            return Ok(_mapper.Map<IEnumerable<Delivery>,IEnumerable<ReturnDelivery>>(deliveries));
         }
     }
     

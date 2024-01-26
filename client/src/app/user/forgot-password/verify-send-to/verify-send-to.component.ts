@@ -28,6 +28,7 @@ export class VerifySendToComponent implements OnInit {
     this.insertCodeForm = this.fb.group({
       OTP: ['', Validators.required],
       CustomerEmail: [this.email, Validators.required],
+      Authentication:[token]
     });
     
 

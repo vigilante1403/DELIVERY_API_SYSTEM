@@ -1,0 +1,90 @@
+.container {
+    display: flex;
+  }
+  
+  .steps {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .step {
+    position: relative;
+    height: 80px; /* Adjust as needed */
+    width: 10px;
+    // background-color: #963f3f;
+    margin-bottom: 10px;
+  }
+  
+  .active {
+    // background-color: #007bff;
+  }
+  
+  .shine {
+    animation: shine 1s infinite alternate;
+  }
+  
+//   @keyframes shine {
+//     to {
+//       box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
+//     }
+//   }
+  
+  .line {
+    position: absolute;
+    width: 10px;
+    margin-left: 0px; /* Adjust as needed */
+    background-color: #ad5252;
+    overflow: hidden;
+    height: 75%;
+    border-top-left-radius:6px;
+    border-top-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+  
+  .dot {
+    position: relative;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 50%;
+    transition: background-color 0.5s, opacity 0.2s; /* Add opacity transition */
+    text-align: center;
+  line-height: 20px!important; /* Vertically center the text */
+  color: #000; /* Set text color */
+}
+  
+.dot span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .dot-move {
+    // background-color: #007bff;
+    opacity: 1; /* Ensure the current dot is fully visible */
+    transition: top 0.5s, background-color 0.5s, opacity 0.5s; /* Add opacity transition */
+  }
+  .dot.fade {
+    opacity: 0.5; /* Set the opacity for faded dots */
+  }
+  .zero {
+    top: 0;
+  }
+  
+  .center {
+    top: 25%;
+  }
+  
+  .full {
+    top: 50%;
+    // top:100%;
+  }
+  .near-end{
+    top:75%
+  }
+  .end{
+    top:96%
+  }
+  

@@ -9,5 +9,8 @@ namespace api.Models{
         public Address Address { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Email1 { get; set; }
+        public string? PhoneNumber1 { get; set; }
     }
 }

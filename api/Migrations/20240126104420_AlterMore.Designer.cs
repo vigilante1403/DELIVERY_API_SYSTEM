@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240124045319_editTokenandOTPPassword")]
-    partial class editTokenandOTPPassword
+    [Migration("20240126104420_AlterMore")]
+    partial class AlterMore
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -212,6 +212,9 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CodeLocation")
+                        .HasColumnType("int");
+
                     b.Property<int>("DeliveryAgentId")
                         .HasColumnType("int");
 
@@ -229,6 +232,15 @@ namespace api.Migrations
 
                     b.Property<DateTime>("PickUpDateTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("VPPMoney")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("ZipCodeEnd")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ZipCodeStart")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -506,6 +518,12 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalPriceAmountAssume")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("Weight")
                         .HasColumnType("decimal(18,2)");
 
@@ -554,6 +572,9 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Authentication")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -564,6 +585,9 @@ namespace api.Migrations
                     b.Property<string>("OTP")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Used2")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("used")
                         .HasColumnType("bit");
@@ -621,6 +645,9 @@ namespace api.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ZipCode")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

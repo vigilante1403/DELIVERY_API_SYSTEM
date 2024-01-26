@@ -29,6 +29,10 @@ export class UserDeliveryFetchComponent implements OnInit  {
   }
 
 ngOnInit(): void {
+  this.service.updateStatusDeliveries(this.customerId).subscribe({
+    next:(res)=>{console.log(res)},
+    error:(err)=>{console.log(err)}
+  })
   this.service.fetchAllDeliveriesOfSpecificCustomer(this.customerId).subscribe({
     next:(res)=>{console.log(res);this.deliveries=res;this.filterAllDeliveriesWithOrderIds(res);this.filter1(res);this.filter2(res);this.filter3(res)},
     error:(err)=>{console.log(err)}

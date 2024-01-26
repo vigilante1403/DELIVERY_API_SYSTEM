@@ -9,6 +9,8 @@ namespace api.Models{
         public DateTime CreatedAt { get; set; }=DateTime.Now;
 
         public bool used {get; set;}
+        public string? Authentication { get; set; }
+        public bool Used2 { get; set; }
 
     }
 }

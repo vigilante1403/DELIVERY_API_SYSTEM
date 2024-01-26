@@ -4,22 +4,21 @@
 
 namespace api.Migrations
 {
-    public partial class editTokenandOTPPassword : Migration
+    public partial class MoreCols : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "used",
+            migrationBuilder.AddColumn<string>(
+                name: "Authentication",
                 table: "ResetPasswords",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "used",
+                name: "Authentication",
                 table: "ResetPasswords");
         }
     }

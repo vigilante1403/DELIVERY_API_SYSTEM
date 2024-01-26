@@ -30,6 +30,7 @@ import { NgxPayPalModule } from 'ngx-paypal';
 import { PaypalComponent } from './new-checkout/waiting-payment/paypal/paypal.component';
 import { PreCheckoutComponent } from './form/pre-checkout/pre-checkout.component';
 import { UpdateUnpaidFormsComponent } from './update-unpaid-forms/update-unpaid-forms.component';
+import { TestLineComponent } from './test-line/test-line.component';
 
 
 
@@ -56,6 +57,7 @@ import { UpdateUnpaidFormsComponent } from './update-unpaid-forms/update-unpaid-
     PaypalComponent,
     PreCheckoutComponent,
     UpdateUnpaidFormsComponent,
+    TestLineComponent,
 
     
   ],
