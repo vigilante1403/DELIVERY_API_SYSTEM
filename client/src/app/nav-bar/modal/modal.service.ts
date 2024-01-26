@@ -1,7 +1,7 @@
 import { Injectable, TemplateRef } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ILogin, IRegister, IUser } from '../../interface/Account/IUser';
+import { ILogin, IRegister, IUser } from '../../interface/account/IUser';
 import { env } from '../../config/environment';
 import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
 // import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';

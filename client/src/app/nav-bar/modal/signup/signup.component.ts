@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ModalService } from '../modal.service';
 import { FormControl, FormGroup, Validators,FormBuilder } from '@angular/forms';
-import { ILogin, IRegister, IUser } from 'src/app/interface/Account/IUser';
+import { ILogin, IRegister, IUser } from 'src/app/interface/account/IUser';
 import { Output } from '@angular/core';
 
 

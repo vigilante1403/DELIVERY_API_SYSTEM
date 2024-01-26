@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IDelivery, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
-import { ICustomer } from '../interface/Account/IUser';
+import { ICustomer } from '../interface/account/IUser'
 
 @Injectable({
   providedIn: 'root'
