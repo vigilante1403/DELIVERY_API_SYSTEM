@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ModalService } from '../modal.service';
 import { FormControl, FormGroup, Validators,FormBuilder } from '@angular/forms';
-import { ILogin, IRegister, IUser } from 'src/app/interface/account/IUser';
+import { ILogin, IRegister, IUser } from 'src/app/interface/Account/IUser';
 import { Output } from '@angular/core';
 
 
@@ -75,7 +75,7 @@ export class SignupComponent implements OnInit {
         console.log('form submitted')
         this.modalService.SignIn(this.loginData).subscribe({
           next:(res)=>{this.modalService.user=res;console.log(res);localStorage.setItem('access_token',res.token);
-        localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);this.closeForm=true
+        localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);localStorage.setItem('imageUrl', res.imageUrl);this.closeForm=true
       ;this.sendData();
     this.modalService.loginStatus.next(true)},
           error:(err)=>{console.log(err);this.modalService.loginStatus.next(false)}

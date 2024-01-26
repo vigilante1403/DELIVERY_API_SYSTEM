@@ -47,6 +47,53 @@ export class EmployeeSidebarService {
         
       ]
     },
+    {
+      title: 'Services',
+      icon: 'fa fa-tachometer-alt',
+      active: false,
+      type: 'dropdown',
+      badge: {
+        text: '',
+        class: 'badge-warning'
+      },
+      submenus: [
+        {
+          title: 'Delivering',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/customer/delivering'
+          
+        },
+        
+        
+      ]
+    }
+    ,
+    {
+      title: 'Account',
+      icon: 'fa fa-tachometer-alt',
+      active: false,
+      type: 'dropdown',
+      badge: {
+        text: 'New ',
+        class: 'badge-warning'
+      },
+      submenus: [
+        {
+          title: 'Edit Profile',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/customer/edit-profile'
+          
+        },
+        
+        
+      ]
+    },
 
    
   ];

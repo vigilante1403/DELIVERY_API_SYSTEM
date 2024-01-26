@@ -137,6 +137,14 @@ export interface IDelivery{
     deliveryDate:Date,
     deliveryStatusName:string
 }
+
+export interface IDelivering{
+    id:number,
+    route: string,
+    deliveryAgentName:string,
+    deliveryDate:Date,
+    deliveryStatusName:string
+}
 export interface IReturnPayInfoParcel{
     orderId:number,
     orderDTO:IOrderShow,

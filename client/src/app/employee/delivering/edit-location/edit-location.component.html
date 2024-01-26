@@ -1,0 +1,30 @@
+
+<div class="container">
+    <h3><strong>EDIT LOCATION</strong></h3>
+    <form class="form-control">
+        <div class="form-group mb-3">
+          <label for="select1">City/Province:</label>
+          <select class="form-control" id="select1" name="select1">
+            <option value="{{ place.id }}" *ngFor="let place of this.storedCountries">{{ place.name }}</option>
+          </select>
+        </div>
+    
+        <div class="form-group mb-3">
+          <label for="select2">District:</label>
+          <select class="form-control" id="select2" name="select2">
+            
+            <option value="{{ district.id }}" *ngFor="let district of this.storedDistricts">{{ district.name }}</option>
+          </select>
+        </div>
+    
+        <div class="form-group mb-3">
+            <label for="select2">Ward:</label>
+            <select class="form-control" id="select2" name="select2">
+              
+              <option value="{{ ward.id }}" *ngFor="let ward of this.storedWards">{{ ward.name }}</option>
+            </select>
+          </div>
+        
+        <button type="button" class="btn btn-primary" (click)="onCloseModal()">Finish</button>
+      </form>
+</div>

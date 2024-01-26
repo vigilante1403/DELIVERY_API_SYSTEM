@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './search.service';
 import { DeliveryService } from '../service/delivery.service';
-import { ICustomer } from '../interface/account/IUser';
+import { ICustomer } from '../interface/Account/IUser';
 import { NavigationExtras, Router } from '@angular/router';
 
 @Component({

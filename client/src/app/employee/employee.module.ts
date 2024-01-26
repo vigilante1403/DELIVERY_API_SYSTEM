@@ -10,11 +10,14 @@ import { DeliveredFetchComponent } from './user-delivery-fetch/delivered-fetch/d
 import { TransitFetchComponent } from './user-delivery-fetch/transit-fetch/transit-fetch.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
 import { NativeDateModule } from '@angular/material/core';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { DeliveringComponent } from './delivering/delivering.component';
+import { EditLocationComponent } from './delivering/edit-location/edit-location.component';
 
 
 
 @NgModule({
-  declarations: [EmployeeComponent, UserDeliveryFetchComponent, DeliveringFetchComponent, DeliveredFetchComponent, TransitFetchComponent, UserEditComponent],
+  declarations: [EmployeeComponent, UserDeliveryFetchComponent, DeliveringFetchComponent, DeliveredFetchComponent, TransitFetchComponent, UserEditComponent, EditProfileComponent, DeliveringComponent, EditLocationComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(EmployeeRoute),
