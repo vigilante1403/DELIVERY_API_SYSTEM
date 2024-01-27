@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace api.Controllers{
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes ="Bearer")]
+    [Authorize(AuthenticationSchemes ="AdminBearer")]
     public class AdminController:ControllerBase{
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _environment;
@@ -78,6 +78,7 @@ namespace api.Controllers{
                 };
                 list.Add(a);
             }
+            Console.WriteLine("Total"+list.Count());
             return Ok(list);
         }
 

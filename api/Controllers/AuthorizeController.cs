@@ -9,7 +9,7 @@ namespace api.Controllers{
    
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes ="Bearer")]
+    [Authorize(AuthenticationSchemes ="AdminBearer,UserBearer")]
     public class AuthorizeController:ControllerBase{
          private readonly IUnitOfWork _unitOfWork;
          public AuthorizeController(IUnitOfWork unitOfWork){

@@ -132,11 +132,17 @@ namespace api.Controllers
             var ordersId = orders.Select(x=>x.Id);
             var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(x=>ordersId.Contains(x.OrderId),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
             var total = deliveries.Count();
+            var token="";
+            if(role=="admin"){
+                token = await _tokenService.CreateAdminToken(user);
+            }else{
+                token= await _tokenService.CreateToken(user);
+            }
             UserDTO userReturn = new UserDTO
             {
                 Email = user.Email,
                 DisplayName = user.DisplayName,
-                Token = await _tokenService.CreateToken(user),
+                Token = token,
                 ImageUrl=imageUrl,
                 UserId=user.Id,
                 Role=role,
@@ -319,7 +325,22 @@ namespace api.Controllers
       }
 
 
-
+    [HttpPost("reset-now")]
+    public async Task<ActionResult> ResetPassword([FromBody] LoginDTO login){
+       var user = await _userManager.FindByEmailAsync(login.Email);
+       if(user==null){
+        return BadRequest(new ErrorResponse(404,"User not found"));
+       }
+       
+       var rsToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+      var result= await _userManager.ResetPasswordAsync(user,rsToken,login.Password);
+      if(result.Succeeded){
+        
+        return Ok();
+    }else{
+        return BadRequest(new ErrorResponse(500));
+    }
+      }
 
     [HttpGet("token")]
     public async Task<ActionResult<TokenDTO>> GenerateJwtTokenP([FromQuery]string userEmail)

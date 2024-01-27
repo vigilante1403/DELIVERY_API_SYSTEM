@@ -33,7 +33,7 @@ builder.Services.AddIdentity<AppUser,IdentityRole>(options=>{
 
 builder.Services.AddHttpClient();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,ops=>{
+.AddJwtBearer("UserBearer",ops=>{
     ops.TokenValidationParameters = new TokenValidationParameters{
         ValidateIssuerSigningKey=true,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:Key"])),
@@ -41,6 +41,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateIssuer = true,
         ValidateLifetime=true,
         ValidAudience = builder.Configuration["Token:Audience"]
+    };
+}).AddJwtBearer("AdminBearer",ops=>{
+    ops.TokenValidationParameters = new TokenValidationParameters{
+        ValidateIssuerSigningKey=true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenAdmin:Key"])),
+        ValidIssuer=builder.Configuration["TokenAdmin:Issuer"],
+        ValidateIssuer = true,
+        ValidateLifetime=true,
+        ValidAudience = builder.Configuration["TokenAdmin:Audience"]
     };
 });
 builder.Services.AddAuthorization(options =>
