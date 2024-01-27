@@ -27,7 +27,8 @@
       "default",
       {
         "aria-required-children": "off",
-        "aria-valid-attr-value": "off"
+        "aria-valid-attr-value": "off",
+        "aria-required-parent": "off"
       }
     ],
     "disown-opener": "off",

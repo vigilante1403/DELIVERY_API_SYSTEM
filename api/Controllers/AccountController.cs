@@ -27,9 +27,11 @@ namespace api.Controllers
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _environment;
+         private readonly IHttpContextAccessor _httpContextAccessor;
+         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHelper _helper;
 
-        public AccountController(IWebHostEnvironment environment,IHelper helper,SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
+        public AccountController(RoleManager<IdentityRole> roleManager,IHttpContextAccessor httpContextAccessor,IWebHostEnvironment environment,IHelper helper,SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
         {
             _signinManager = signInManager;
             _userManager = userManager;
@@ -37,6 +39,8 @@ namespace api.Controllers
             _unitOfWork = unitOfWork;
             _helper=helper;
             _environment=environment;
+            _httpContextAccessor=httpContextAccessor;
+            _roleManager=roleManager;
 
         }
         [HttpPost("register")]
@@ -118,11 +122,27 @@ namespace api.Controllers
             {
                 return Unauthorized(new ErrorResponse(401));
             }
+            
+            var customerList = await _unitOfWork.CustomerRepository.GetEntityByExpression(x=>x.Email==login.Email,null,null);
+            string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
+            var imageUrl=baseUrl+"/"+customerList.FirstOrDefault().ImageUrl;
+            var roles = await _userManager.GetRolesAsync(user);
+            var role = roles.FirstOrDefault();
+            var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(t=>t.CustomerId==user.Id,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            var ordersId = orders.Select(x=>x.Id);
+            var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(x=>ordersId.Contains(x.OrderId),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            var total = deliveries.Count();
             UserDTO userReturn = new UserDTO
             {
                 Email = user.Email,
                 DisplayName = user.DisplayName,
-                Token = await _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user),
+                ImageUrl=imageUrl,
+                UserId=user.Id,
+                Role=role,
+                TotalDeliveriesMade=total.ToString(),
+                PhoneNumber=customerList.FirstOrDefault().PhoneNumber
+
             };
             return userReturn;
         }
@@ -446,12 +466,13 @@ namespace api.Controllers
       public async Task<ActionResult> UpdateUserBasicInfo([FromForm] SubmitBasicInfo submit){
         
         var user = await _userManager.FindByEmailAsync(submit.Email);
+        Console.WriteLine(submit.DisplayName);
         var customerId="";
         if(user!=null){
              customerId = user.Id;
              user.DisplayName=submit.DisplayName;
-             await _userManager.UpdateAsync(user);
-        var folderName= "images/customer/"+customerId;
+            await _userManager.UpdateAsync(user);
+       var folderName= "images/customer/"+customerId;
             var uploadsFolder = Path.Combine(_environment.WebRootPath,folderName);
             if(!Directory.Exists(uploadsFolder)){
                 Directory.CreateDirectory(uploadsFolder);
@@ -467,11 +488,23 @@ namespace api.Controllers
                 if(!customerList.Any()){
                     return BadRequest(new ErrorResponse(404));
                 }
+                var addressList = await _unitOfWork.AddressRepository.GetEntityByExpression(x=>x.CustomerId==customerId,null,"Customer");
+                var address = addressList.FirstOrDefault();
+
                 var customer = customerList.FirstOrDefault();
                 try
                 {
                     customer.Name=submit.DisplayName;
-                customer.ImageUrl=filePath;
+                    address.FirstName=submit.FirstName;
+                    address.LastName=submit.LastName;
+                    address.Street=submit.Street;
+                    if(submit.BackupEmail!=null){
+                        customer.Email1=submit.BackupEmail;
+                    }
+                    customer.PhoneNumber=submit.PhoneNumber;
+                    address.ZipCode=submit.ZipCode;
+                    
+                customer.ImageUrl=folderName+"/"+submit.ImageUrl.FileName;
                 _unitOfWork.Save();
                 }
                 catch (System.Exception)
@@ -482,6 +515,8 @@ namespace api.Controllers
                 
                 }
         }
+    
+        
         
             return Ok();
       }

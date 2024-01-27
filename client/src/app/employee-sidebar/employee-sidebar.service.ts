@@ -83,6 +83,15 @@ export class EmployeeSidebarService {
           url:'/employee/edit-profile'
           
         },
+        {
+          title: 'Your profile',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/profile'
+          
+        },
         
         
       ]

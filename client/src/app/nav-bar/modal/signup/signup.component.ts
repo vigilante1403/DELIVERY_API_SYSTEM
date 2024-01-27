@@ -75,7 +75,7 @@ export class SignupComponent implements OnInit {
         console.log('form submitted')
         this.modalService.SignIn(this.loginData).subscribe({
           next:(res)=>{this.modalService.user=res;console.log(res);localStorage.setItem('access_token',res.token);
-        localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);localStorage.setItem('imageUrl', res.imageUrl);this.closeForm=true
+        localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);localStorage.setItem('imageUrl', res.imageUrl);localStorage.setItem('userId',res.userId!);localStorage.setItem('role',res.role!);localStorage.setItem('totalDeliveriesMade',res.totalDeliveriesMade!);localStorage.setItem('phoneNumber',res.phoneNumber!);this.closeForm=true
       ;this.sendData();
     this.modalService.loginStatus.next(true)},
           error:(err)=>{console.log(err);this.modalService.loginStatus.next(false)}
@@ -105,7 +105,7 @@ export class SignupComponent implements OnInit {
         this.modalService.SignUp(this.registerData).subscribe({
           next:(res)=>{this.modalService.user=res;console.log(res);
             localStorage.setItem('access_token',res.token);
-            localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);this.closeForm=true;this.sendData();this.modalService.loginStatus.next(true)},
+            localStorage.setItem('userEmail',res.email);localStorage.setItem('userName',res.displayName);localStorage.setItem('userId',res.userId!);this.closeForm=true;this.sendData();this.modalService.loginStatus.next(true)},
           error:(err)=>{console.log(err);this.modalService.loginStatus.next(false)}
         })
       }else{

@@ -1,4 +1,5 @@
 import { AuthenticationGuard } from '../middleware/authentication.guard';
+import { ProfileComponent } from '../profile/profile.component';
 import { CartComponent } from './cart/cart.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { CheckoutComponent } from './checkout/checkout.component';
@@ -27,6 +28,7 @@ export const UserRoute: Routes = [
     {path:"checkout",component:NewCheckoutComponent,canActivate:[AuthenticationGuard]},
     {path: '1/reset/:token', component: VerifySendToComponent},
     {path:'edit/:orderId',component:UpdateUnpaidFormsComponent,canActivate:[AuthenticationGuard]},
-    {path:'test-line',component:TestLineComponent}
+    {path:'test-line',component:TestLineComponent},
+    {path:'profile',component:ProfileComponent}
     
 ];

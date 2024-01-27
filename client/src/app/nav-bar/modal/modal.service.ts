@@ -16,7 +16,11 @@ export class ModalService {
   user:IUser=({displayName:localStorage.getItem('userName')!=null?localStorage.getItem('userName')!:'',
   email:localStorage.getItem('userEmail')!=null?localStorage.getItem('userEmail')!:'',token:localStorage.getItem('access_token')!=null?
 localStorage.getItem('access_token')!:'',imageUrl:localStorage.getItem('imageUrl')!=null?
-localStorage.getItem('imageUrl')!:''});
+localStorage.getItem('imageUrl')!:'',userId:localStorage.getItem('userId')!=null?
+localStorage.getItem('userId')!:'',role:localStorage.getItem('role')!=null?
+localStorage.getItem('role')!:'',totalDeliveriesMade:localStorage.getItem('totalDeliveriesMade')!=null?
+localStorage.getItem('totalDeliveriesMade')!:'0',phoneNumber:localStorage.getItem('phoneNumber')!=null?
+localStorage.getItem('phoneNumber')!:'undefined'});
   constructor(private http:HttpClient,) { } // inject modal service
   SignIn(login:ILogin):Observable<IUser>{
    return this.http.post<IUser>(env+'/Account/login',login)
@@ -29,8 +33,12 @@ localStorage.getItem('imageUrl')!:''});
     localStorage.removeItem('userEmail')
     localStorage.removeItem('userName')
     localStorage.removeItem('imageUrl');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('role');
+    localStorage.removeItem('totalDeliveriesMade');
+    localStorage.removeItem('phoneNumber');
     this.loginStatus.next(false)
-    this.user=({displayName:'',email:'',token:'',imageUrl:''})
+    this.user=({displayName:'',email:'',token:'',imageUrl:'',userId:'',role:'',totalDeliveriesMade:'0',phoneNumber:'undefined'})
    
   }
   checkLogin(){

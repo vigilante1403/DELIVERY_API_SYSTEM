@@ -1,15 +1,67 @@
-<div class="container" >
-    <form [formGroup]="editProfileForm" (ngSubmit)=" onSubmit()">
+<div class="container d-flex justify-content-center" >
+    <form class="col-sm-4 mt-4" [formGroup]="editProfileForm" (ngSubmit)=" onSubmit()">
         <div class="mb-3">
-            <label for="" class="form-label">DisplayName</label>
-            <input formControlName="DisplayName" type="text" class="form-control">
+            <label for="" class="form-label">FirstName*:</label>
+            <input formControlName="FirstName"   type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">LastName*:</label>
+            <input formControlName="LastName"   type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">DisplayName*</label>
+            <input formControlName="DisplayName" (change)="updateName($event)"  type="text" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">PhoneNumber*</label>
+            <div class="d-flex flex-row">
+                <input type="text" class="col-sm-3" value="(+84)" disabled>
+                <input formControlName="PhoneNumber"   type="text" class="form-control">
+            </div>
+            
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Backup Email(optional)</label>
+            <div class="d-flex flex-row">
+                
+            <input formControlName="BackupEmail"  type="text" class="form-control">
+            </div>
+            
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Street*</label>
+            <input formControlName="Street"  type="text" class="form-control">
+        </div>
+        <div class="mb-3 d-flex flex-row justify-content-start">
+            <div class="col-sm-4 ">
+                <label for="" class="form-label text-white">Location*:</label>
+                <select name="" (change)="getListDistrict($event)" id="">
+                    <option value="-1">Choose value</option>
+                    <option value="{{ country.id }}" *ngFor="let country of this.storedCountries">{{ country.name }}</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label for="" class="form-label">&nbsp;</label>
+                <select name="" (change)="getListWard($event)" id="">
+                    <option value="-1">Choose value</option>
+                    <option value="{{ district.id }}" *ngFor="let district of this.tempDistrict">{{ district.name }}</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label for="" class="form-label">&nbsp;</label>
+                <select name="" (change)="getChosenWard($event)" id="">
+                    <option value="-1">Choose value</option>
+                    <option value="{{ ward.id}}" *ngFor="let ward of this.tempWard">{{ward.name }}</option>
+                </select>
+            </div>
+            
         </div>
        
         <input formControlName="Email" type="hidden" class="form-control" readonly>
        
        
         <div class="mb-3">
-            <label for="" class="form-label">Avatar</label>
+            <label for="" class="form-label text-white">Avatar*</label>
             <input formControlName="ImageUrl" accept="image/*" (change)="onFileSelected($event)" type="file" class="form-control">
         </div>
         <button class="btn btn-primary" [disabled]="this.editProfileForm.invalid" type="submit">Save</button>
