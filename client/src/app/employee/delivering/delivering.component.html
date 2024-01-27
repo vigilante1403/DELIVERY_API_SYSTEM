@@ -19,25 +19,12 @@
                     </thead>
                     <tbody>
 
-                    <!-- Vong lap for -->
-
-                      <!-- <tr *ngFor="let item of this.items">
-                        <td>{{ item.id }}</td>
-                        <td></td>
-                        <td>{{ item.deliveryAgentName }}</td>
-                        <td>{{ item.deliveryStatusName }}</td>
-                        <td>{{ item.deliveryDate }}</td>
-                        <td><button class="btn btn-warning text-white" (click)="openModal(template)">View</button></td>
-                      </tr> -->
-                      
-
-                      <!-- Test  -->
-                    <tr *ngFor="let delivery of this.deliveries">
-                        <td>a</td>
-                        <td>b</td>
-                        <td>c</td>
-                        <td>d</td>
-                        <td>e</td>
+                    <tr *ngFor="let delivery of this.items">
+                        <td>{{delivery.id}}</td>
+                        <td>{{delivery.route}}</td>
+                        <td>{{delivery.deliveryAgentName}}</td>
+                        <td>{{delivery.deliveryStatusName}}</td>
+                        <td>{{delivery.deliveryDate}}</td>
                         <td><button class="btn btn-warning text-white" (click)="openModal(template,delivery.orderId)">Edit</button></td>
                       </tr>
                       

@@ -140,6 +140,7 @@ export interface IDelivery{
 
 export interface IDelivering{
     id:number,
+    orderId:number,
     route: string,
     deliveryAgentName:string,
     deliveryDate:Date,
