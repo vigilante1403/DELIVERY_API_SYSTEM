@@ -10,7 +10,7 @@ export const EmployeeRoute: Routes = [
     {path: '', component: EmployeeComponent,canActivate:[AuthenticationGuard]},
     {path:'customer/:email/deliveries',component:UserDeliveryFetchComponent,canActivate:[AuthenticationGuard]},
     {path:'customer/:orderId/edit/process',component:UserEditComponent,canActivate:[AuthenticationGuard]},
-    {path: 'customer/edit-profile',component:EditProfileComponent,canActivate:[AuthenticationGuard]},
-    {path: 'customer/delivering',component:DeliveringComponent,canActivate:[AuthenticationGuard]}
+    {path: 'edit-profile',component:EditProfileComponent,canActivate:[AuthenticationGuard]},
+    {path: 'delivering',component:DeliveringComponent,canActivate:[AuthenticationGuard]}
     
 ];

@@ -53,4 +53,7 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
     });
     return this.http.post<any>(env+'/Delivery/delivery-alter',delivery1)
   }
+  editProfileBasic(data:any){
+    return this.http.post<any>(env+'/Account/update-basic-info',data)
+  }
 }

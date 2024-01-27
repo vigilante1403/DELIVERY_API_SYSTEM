@@ -26,15 +26,17 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IWebHostEnvironment _environment;
         private readonly IHelper _helper;
 
-        public AccountController(IHelper helper,SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
+        public AccountController(IWebHostEnvironment environment,IHelper helper,SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
         {
             _signinManager = signInManager;
             _userManager = userManager;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
             _helper=helper;
+            _environment=environment;
 
         }
         [HttpPost("register")]
@@ -439,6 +441,49 @@ namespace api.Controllers
     }else{
         return BadRequest(new ErrorResponse(500));
     }
+      }
+      [HttpPost("update-basic-info")]
+      public async Task<ActionResult> UpdateUserBasicInfo([FromForm] SubmitBasicInfo submit){
+        
+        var user = await _userManager.FindByEmailAsync(submit.Email);
+        var customerId="";
+        if(user!=null){
+             customerId = user.Id;
+             user.DisplayName=submit.DisplayName;
+             await _userManager.UpdateAsync(user);
+        var folderName= "images/customer/"+customerId;
+            var uploadsFolder = Path.Combine(_environment.WebRootPath,folderName);
+            if(!Directory.Exists(uploadsFolder)){
+                Directory.CreateDirectory(uploadsFolder);
+            }
+                if(submit.ImageUrl.Length>0){
+                     var filePath = Path.Combine(uploadsFolder, submit.ImageUrl.FileName);
+                
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    submit.ImageUrl.CopyTo(fileStream);
+                }
+                var customerList = await _unitOfWork.CustomerRepository.GetEntityByExpression(e=>e.Id==customerId,null,null);
+                if(!customerList.Any()){
+                    return BadRequest(new ErrorResponse(404));
+                }
+                var customer = customerList.FirstOrDefault();
+                try
+                {
+                    customer.Name=submit.DisplayName;
+                customer.ImageUrl=filePath;
+                _unitOfWork.Save();
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500));
+                }
+                
+                }
+        }
+        
+            return Ok();
       }
        
     }

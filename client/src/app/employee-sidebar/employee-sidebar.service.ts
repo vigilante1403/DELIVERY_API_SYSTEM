@@ -36,14 +36,7 @@ export class EmployeeSidebarService {
           title: 'Orders Notifications',
           url:''
         },
-        {
-          title: 'Make report to admin',
-          url:''
-        },
-        {
-          title: 'Pin location',
-          url:''
-        },
+        
         
       ]
     },
@@ -63,7 +56,7 @@ export class EmployeeSidebarService {
             text: '',
             class: 'badge-success'
           },
-          url:'/employee/customer/delivering'
+          url:'/employee/delivering'
           
         },
         
@@ -87,7 +80,7 @@ export class EmployeeSidebarService {
             text: '',
             class: 'badge-success'
           },
-          url:'/employee/customer/edit-profile'
+          url:'/employee/edit-profile'
           
         },
         

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { env } from 'src/app/config/environment';
+import { MapService } from 'src/app/service/map.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -13,7 +14,7 @@ export class EditProfileComponent implements OnInit{
   userEmail= localStorage.getItem('userEmail');
   imageUrl= localStorage.getItem('imageUrl');
   
-  constructor(private fb: FormBuilder, private http: HttpClient){}
+  constructor(private fb: FormBuilder,private service:MapService){}
   ngOnInit(): void {
     this.editProfileForm = this.fb.group({
       DisplayName: ['', Validators.required],
@@ -41,6 +42,14 @@ export class EditProfileComponent implements OnInit{
         imageUrl: this.editProfileForm.get('ImageUrl')?.value
       }
       console.log(user.imageUrl);
+      const formData = new FormData()
+      formData.append('displayName',user.displayname)
+      formData.append('email',user.email)
+      formData.append('imageUrl',user.imageUrl)
+      this.service.editProfileBasic(formData).subscribe({
+        next:(res)=>{console.log(res)},
+        error:(err)=>{console.log(err)}
+      })
 
      
     }
