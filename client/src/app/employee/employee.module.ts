@@ -13,6 +13,7 @@ import { NativeDateModule } from '@angular/material/core';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { DeliveringComponent } from './delivering/delivering.component';
 import { EditLocationComponent } from './delivering/edit-location/edit-location.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -22,7 +23,7 @@ import { EditLocationComponent } from './delivering/edit-location/edit-location.
     CommonModule,
     RouterModule.forChild(EmployeeRoute),
     FormsModule,ReactiveFormsModule,
-   
+    NgxSpinnerModule
   ],
   exports:[
     EmployeeComponent
