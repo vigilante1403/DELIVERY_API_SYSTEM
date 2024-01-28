@@ -1,9 +1,7 @@
-
-    <div class="container1">
-        
-<div class="container bootstrap snippets bootdey">
-<div class="row">
-  <!-- <div class="profile-nav col-md-3">
+<div class="container1">
+  <div class="container bootstrap snippets bootdey">
+    <div class="row">
+      <!-- <div class="profile-nav col-md-3">
       <div class="panel">
           <div class="user-heading round">
               <a href="#">
@@ -23,43 +21,233 @@
           </ul>
       </div>
   </div> -->
-  <div class="profile-info col-md-12">
-    <div class="d-flex flex-row justify-content-between" >
-        <div class="d-flex"><h1 class="d-flex align-items-start">Your Activities</h1></div>
-        <div class="d-flex align-items-end"><button (click)="openModal(template_2)" class="btn btn-outline-primary">Change password?</button></div>
-    
-    </div>
-    <ng-template #template_2>
-          
-        <div class="modal-content">
+      <div class="profile-info col-md-12">
+        <div class="d-flex flex-row justify-content-between">
+          <div class="d-flex">
+            <h1 class="d-flex align-items-start">Your Activities</h1>
+          </div>
+          <div class="d-flex align-items-end">
+            <button
+              (click)="openModal(template_2)"
+              class="btn btn-outline-primary"
+            >
+              Change password?
+            </button>
+          </div>
+        </div>
+        <ng-template #template_2>
+          <div class="modal-content">
             <div class="modal-header">
-                    <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
-                    <span aria-hidden="true" class="visually-hidden">&times;</span>
-                    </button>
+              <button
+                type="button"
+                class="btn-close close pull-right"
+                aria-label="Close"
+                (click)="modalRef?.hide()"
+              >
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+              </button>
             </div>
             <div class="modal-body">
-                       
-                <app-change-password (dataToParent)="receiveFromChild($event)" ></app-change-password>
+              <app-change-password
+                (dataToParent)="receiveFromChild($event)"
+              ></app-change-password>
             </div>
+          </div>
+        </ng-template>
+        <hr style="border: 1px solid red" />
+        <div class="d-flex justify-content-between flex-wrap">
+          <div
+            class="col-md-6"
+            style="
+              height: 300px;
+              background-color: rgb(225, 175, 117);
+              margin-bottom: 20px;
+              border-radius: 10px;
+            "
+          >
+            <h2>Our Services</h2>
+            <div
+              class="container"
+              style="height: 83%; overflow-y: scroll; background-color: bisque; border-radius: 20px;"
+            >
+              <div class="d-flex" style="align-items: flex-end">
+                <div
+                  style="
+                    width: 100%;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  "
+                >
+                  <h3>VPP</h3>
+                  <p style="width: 100%">
+                    Value Payable Post (VPP) allows the recipient of a package
+                    to pay for it upondeliv eryddddddddd dddddddddddddd
+                    dddddddddssss ssdddddddd gg gfdgfdg sddddddddddd ddddddddddd
+                  </p>
+                </div>
+                <a style="min-width: 75px" href="">Xem them</a>
+              </div>
+              <div class="d-flex" style="align-items: flex-end">
+                <div
+                  style="
+                    width: 100%;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  "
+                >
+                  <h3>Courier</h3>
+                  <p style="width: 100%">
+                    Value Payable Post (VPP) allows the recipient of a package
+                    to pay for it upondeliv eryddddddddd ddddddddd dg iuk
+                    dddfgddddssss khk lssdddd dddd gg gfdgfdg sddddddddddd
+                    ddddddddddd
+                  </p>
+                </div>
+                <a style="min-width: 75px" href="">Xem them</a>
+              </div>
+              <div class="d-flex" style="align-items: flex-end">
+                <div
+                  style="
+                    width: 100%;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  "
+                >
+                  <h3>Fast Post</h3>
+                  <p style="width: 100%">
+                    Value Payable Post (VPP) allows the recipient of a package
+                    to pay for it upondeliv eryddddddddd dddddddddddd
+                    dddddddddssss ssdddddddd gg gfdgfdg sddddddddddd ddddddddddd
+                  </p>
+                </div>
+                <a style="min-width: 75px" href="">Xem them</a>
+              </div>
+              <div class="d-flex" style="align-items: flex-end">
+                <div
+                  style="
+                    width: 100%;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  "
+                >
+                  <h3>Normal Post</h3>
+                  <p style="width: 100%">
+                    Value Payable Post (VPP) allows the recipient of a package
+                    to pay for it upondeliv erydddddddddddddd dddddddddssss
+                    ssdddddddd gg gfdgfdg sddddddddddd ddddddddddd
+                  </p>
+                </div>
+                <a style="min-width: 75px" href="">Xem them</a>
+              </div>
+              <div class="d-flex" style="align-items: flex-end">
+                <div
+                  style="
+                    width: 100%;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  "
+                >
+                  <h3>Money Order</h3>
+                  <p style="width: 100%">
+                    Value Payable Post (VPP) allows the recipient of a package
+                    to pay for it upondeliv eryddddddddd ssdddddddd gg gfdgfdg
+                    sddddddddddd ddddddddddd
+                  </p>
+                </div>
+                <a style="min-width: 75px; margin-bottom: 16px;" href="">Xem them</a>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-md-6"
+            style="
+              height: 300px;
+              background-color: rgb(110, 110, 227);
+              margin-bottom: 20px;
+              border-radius: 10px;
+            "
+          >
+            <h2>Delivery Agent</h2>
+            <div class="container" style="height:83%;overflow-y: scroll; background-color: bisque; border-radius: 20px;">
+                <div class="d-flex" style="align-items: flex-end;" >
+                    <div style="width: 100%;display: -webkit-box; -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;overflow: hidden;">
+                    <h3>Ninja Delivery</h3>
+                    <p style="width:100%;">Value Payable Post (VPP) allows the recipient of a package to pay for it upondeliv eryddddddddd dddddddddddddd dddddddddssss ssdddddddd gg gfdgfdg sddddddddddd ddddddddddd</p>
+                    </div> 
+                    <a style="min-width: 75px;" href="">Xem them</a>
+                </div>
+                <div class="d-flex" style="align-items: flex-end;" >
+                    <div style="width: 100%;display: -webkit-box; -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;overflow: hidden;">
+                    <h3>Ninja Fast Delivery</h3>
+                    <p style="width:100%;">Value Payable Post (VPP) allows the recipient of a package to pay for it upondeliv eryddddddddd ddddddddd dg iuk dddfgddddssss khk lssdddd dddd gg gfdgfdg sddddddddddd ddddddddddd</p>
+                    </div> 
+                    <a style="min-width: 75px;" href="">Xem them</a>
+                </div>
+                <div class="d-flex" style="align-items: flex-end;" >
+                    <div style="width: 100%;display: -webkit-box; -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;overflow: hidden;">
+                    <h3>Ninja Express Delivery</h3>
+                    <p style="width:100%;">Value Payable Post (VPP) allows the recipient of a package to pay for it upondeliv eryddddddddd dddddddddddd dddddddddssss ssdddddddd gg gfdgfdg sddddddddddd ddddddddddd</p>
+                    </div> 
+                    <a style="min-width: 75px;" href="">Xem them</a>
+                </div>
+                <div class="d-flex" style="align-items: flex-end;" >
+                    <div style="width: 100%;display: -webkit-box; -webkit-line-clamp: 4;
+                    -webkit-box-orient: vertical;overflow: hidden;">
+                    <h3>Ninja Super Express Delivery</h3>
+                    <p style="width:100%;">Value Payable Post (VPP) allows the recipient of a package to pay for it upondeliv erydddddddddddddd dddddddddssss ssdddddddd gg gfdgfdg sddddddddddd ddddddddddd</p>
+                    </div> 
+                    <a style="min-width: 75px;" href="">Xem them</a>
+                </div>
+               
+            </div>
+          </div>
+          <div
+            class="col-md-6"
+            style="
+              height: 300px;
+              background-color: rgb(127, 215, 127);
+              margin-bottom: 20px;
+              border-radius: 10px;
+            "
+          >
+            <h2>Our delivery range</h2>
+            <div class="d-flex align-items-center">
+                <div  class="d-flex align-items-center" style="background-color: bisque; border-radius: 20px;">
+                    <div class="" style="width: 50%; ">
+                        <img src="https://www.google.com/maps/d/thumbnail?mid=1BjdxluXVRtmOHvZl_-wBagGizL0&hl=en" width="90%" height="80%" alt="office map" style="border-radius: 20px;" srcset="">
+                    </div>
+                    <div class="" style="width: 50%;">
+                        <p>We can receive goods and help you send them anywhere in the country. We will charge a fee based on the distance between the shipping location and the receiving location. But service fees in different regions will be different. If you want to know more about how we calculate fees based on distance, <a href="">Click here</a>.</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div
+            class="col-md-6"
+            style="
+              height: 300px;
+              background-color: rgb(221, 221, 131);
+              margin-bottom: 20px;
+              border-radius: 10px;
+            "
+          >
+            <h2>Billing Management</h2>
+          </div>
         </div>
-      </ng-template>
-    <hr style="border: 1px solid red ;">
-    <div class="d-flex justify-content-between flex-wrap">
-        <div class="col-md-5" style="height: 300px; background-color: rgb(225, 175, 117); margin-bottom: 20px;border-radius: 10px;">
-            <h2>office history</h2>
-        </div>
-        <div  class="col-md-5" style="height: 300px; background-color: rgb(110, 110, 227);margin-bottom: 20px;border-radius: 10px;">
-        <h2>Recipient history</h2>
-        </div>
-        <div  class="col-md-5" style="height: 300px; background-color: rgb(127, 215, 127);margin-bottom: 20px;border-radius: 10px;">
-        <h2>Order Status</h2></div>
-        <div  class="col-md-5" style="height: 300px; background-color: rgb(221, 221, 131);margin-bottom: 20px;border-radius: 10px;">
-        <h2>Billing Management</h2>
-        </div>
+      </div>
     </div>
   </div>
 </div>
-</div>
-    </div>
-
-

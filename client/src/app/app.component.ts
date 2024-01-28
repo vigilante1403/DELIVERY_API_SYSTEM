@@ -5,6 +5,8 @@ import { SidebarService } from './sidebar/sidebar.service';
 import { Router } from '@angular/router';
 import { PeriodService } from './period/period.service';
 import { NotifierService } from 'angular-notifier';
+import { BackgroundService } from './background/background.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,9 @@ import { NotifierService } from 'angular-notifier';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private modalService:ModalService,public sidebarservice:SidebarService,private router:Router,private dataService:PeriodService){
+  private interval:any
+  formattedDate:string=''
+  constructor(private datepipe:DatePipe,private background:BackgroundService,private modalService:ModalService,public sidebarservice:SidebarService,private router:Router,private dataService:PeriodService){
     
   }
   title = 'client';
@@ -46,6 +50,42 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     
+  
+   
+    }
+      ngAfterViewInit(){
+        if(this.modalService.user.token!=''){
+          this.background.fetchCustomerTodayEvent(this.modalService.user.userId!)
+        }
+        if(this.background.userEvent.length>0){
+          console.log("Running")
+          
+          setInterval(()=>{
+            var date = new Date()
+          this.formattedDate=this.datepipe.transform(date,'yyyy-MM-dd HH:mm')!
+           if(this.background.userEvent.length>0){
+             this.background.userEvent.forEach(el=>{
+               var pickUp=this.datepipe.transform(new Date(el.pickUpDateTime),'yyyy-MM-dd HH:mm')!
+               var deliver = this.datepipe.transform(new Date(el.deliveryDate),'yyyy-MM-dd HH:mm')!
+               if(pickUp==this.formattedDate){
+                 this.background.makeNotif(this.formattedDate)
+               } else if(deliver==this.formattedDate){
+                 this.background.makeNotif(this.formattedDate)
+               }
+             })
+            }
+          },25000)
+          this.interval=()=>{
+            if(this.modalService.user.token!=''){
+              console.log("Running background")
+              this.background.makeNotif(this.formattedDate)
+            }
+          }
+          setInterval(this.interval,60000)
+        }else{
+          console.log("Empty delivery check")
+        }
+      }
 }
-   // 2 minutes
-}
+  
+
