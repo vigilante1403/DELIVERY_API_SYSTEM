@@ -81,6 +81,16 @@ namespace api.Controllers{
             Console.WriteLine("Total"+list.Count());
             return Ok(list);
         }
+        [HttpPost("Change-user-role")]
+        public async Task<ActionResult> ChangeUserRole([FromBody] string email,string role){
+            var user = await _userManager.FindByEmailAsync(email);
+            await _userManager.AddToRoleAsync(user,role);
+            if(role=="admin"||role=="emloyee"){
+                await _userManager.RemoveFromRoleAsync(user,"user");
+            }
+            return Ok();
+
+        }
 
 
 

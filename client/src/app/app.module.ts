@@ -1,5 +1,5 @@
 
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +32,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { EmployeeSidebarComponent } from './employee-sidebar/employee-sidebar.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { ProfileComponent } from './profile/profile.component';
+import { PeriodComponent } from './period/period.component';
+import { PeriodService } from './period/period.service';
+import {NotifierModule} from 'angular-notifier'
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -49,7 +52,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SidebarComponent,
     AdminSidebarComponent,
     EmployeeSidebarComponent,
-    ProfileComponent
+    ProfileComponent,
+    PeriodComponent
   ],
   imports: [
    AgmCoreModule.forRoot({
@@ -70,6 +74,50 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPayPalModule,
     ReactiveFormsModule,
     CollapseModule.forRoot(),
+    NotifierModule.withConfig({
+      position: {
+
+        horizontal: {
+      
+          /**
+           * Defines the horizontal position on the screen
+           * @type {'left' | 'middle' | 'right'}
+           */
+          position: 'right',
+      
+          /**
+           * Defines the horizontal distance to the screen edge (in px)
+           * @type {number}
+           */
+          distance: 12
+      
+        },
+      
+        vertical: {
+      
+          /**
+           * Defines the vertical position on the screen
+           * @type {'top' | 'bottom'}
+           */
+          position: 'top',
+      
+          /**
+           * Defines the vertical distance to the screen edge (in px)
+           * @type {number}
+           */
+          distance: 12,
+      
+          /**
+           * Defines the vertical gap, existing between multiple notifications (in px)
+           * @type {number}
+           */
+          gap: 10
+      
+        }
+      
+      }
+    })
+    ,
  
     JwtModule.forRoot({
       config: {
@@ -81,6 +129,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       },
     }),
        AlertModule.forRoot(),
+
+
    
     
   ],

@@ -3,8 +3,9 @@
 
     <div *ngIf="isHomeRoute()">
         <!-- Home Component with Top Nav Bar -->
-        <app-nav-bar></app-nav-bar>
-        <router-outlet></router-outlet>
+        <app-nav-bar></app-nav-bar> 
+       <router-outlet></router-outlet> 
+        <notifier-container></notifier-container>
       </div>
       <div class="bg-image" *ngIf="isAdminRoute()">
         <!-- Home Component with Top Nav Bar -->
@@ -17,11 +18,12 @@
                   
                  
               </div>
-              <div class="overlay" (click)="toggleSidebar()" [ngClass]="{'show' : !getSideBarState()}"></div>
+              <!-- <div class="overlay" (click)="toggleSidebar()" [ngClass]="{'show' : !getSideBarState()}"></div> -->
           </main>
         
          
         </div>
+        <notifier-container></notifier-container>
       </div>
       <div  *ngIf="!isHomeRoute()&&!isAdminRoute()&&!isEmployeeRoute()" #otherRoute>
         <!-- Other Component with Sidebar -->
@@ -34,11 +36,12 @@
                     
                    
                 </div>
-                <div class="overlay" (click)="toggleSidebar()" [ngClass]="{'show' : !getSideBarState()}"></div>
+                <!-- <div class="overlay" (click)="toggleSidebar()" [ngClass]="{'show' : !getSideBarState()}"></div> -->
             </main>
           
            
           </div>
+          <notifier-container></notifier-container>
       </div>
       <div class="bg-image" *ngIf="isEmployeeRoute()">
         <!-- Other Component with Sidebar -->
@@ -51,11 +54,12 @@
                     
                    
                 </div>
-                <div class="overlay" (click)="toggleSidebar()" [ngClass]="{'show' : !getSideBarState()}"></div>
+                <!-- <div class="overlay" (click)="toggleSidebar()" [ngClass]="{'show' : !getSideBarState()}"></div> -->
             </main>
           
            
           </div>
+          <notifier-container></notifier-container>
       </div>
 
       

@@ -125,13 +125,27 @@ namespace api.Controllers
             
             var customerList = await _unitOfWork.CustomerRepository.GetEntityByExpression(x=>x.Email==login.Email,null,null);
             string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
-            var imageUrl=baseUrl+"/"+customerList.FirstOrDefault().ImageUrl;
+            var imageUrl="";
+            if(customerList.FirstOrDefault().ImageUrl!=null){
+                 imageUrl=baseUrl+"/"+customerList.FirstOrDefault().ImageUrl;
+            }
+            
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault();
             var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(t=>t.CustomerId==user.Id,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
-            var ordersId = orders.Select(x=>x.Id);
+            var total=0;
+            if(orders.Any()){
+                 var ordersId = orders.Select(x=>x.Id);
             var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(x=>ordersId.Contains(x.OrderId),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
-            var total = deliveries.Count();
+            if(deliveries.Any()){
+                total = deliveries.Count();
+            }
+             
+            }
+            var phone="";
+            if(customerList.FirstOrDefault().PhoneNumber!=null){
+                phone=customerList.FirstOrDefault().PhoneNumber;
+            }
             var token="";
             if(role=="admin"){
                 token = await _tokenService.CreateAdminToken(user);
@@ -147,7 +161,7 @@ namespace api.Controllers
                 UserId=user.Id,
                 Role=role,
                 TotalDeliveriesMade=total.ToString(),
-                PhoneNumber=customerList.FirstOrDefault().PhoneNumber
+                PhoneNumber=phone
 
             };
             return userReturn;
