@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Json;
 using api.DAl;
@@ -6,6 +8,7 @@ using api.Exceptions;
 using api.Models;
 using api.services;
 using AutoMapper;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers{
@@ -839,6 +842,90 @@ namespace api.Controllers{
                     return Ok();
 
         }
+        public static async Task<bool> SendEmailAsync(string userEmail,string title,string body)
+    {
+        
+        try
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("new.vytruong.1812@gmail.com", "erya gvus chag rvok"),
+                EnableSsl = true,
+            };
+            
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("new.vytruong.1812@gmail.com"),
+                Subject = title,
+                Body = body,
+                IsBodyHtml = false,
+            };
+
+            mailMessage.To.Add(userEmail);
+
+            await smtpClient.SendMailAsync(mailMessage);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending email: {ex.Message}");
+            return false;
+        }
+    }
+    [HttpGet("send-email-order/{id}")]
+    public async Task<ActionResult> SendOrderEmail([FromRoute] string id){
+        int orderId=0;
+        try
+        {
+            orderId=int.Parse(id);
+        }
+        catch (System.Exception)
+        {
+            
+            return BadRequest(new ErrorResponse(400,"Invalid orderId"));
+        }
+        var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(x=>x.Id==orderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+        if(!orders.Any()){
+            return BadRequest(new ErrorResponse(400,"Doesn't exist id given"));
+        }
+        var customerId = orders.FirstOrDefault().CustomerId;
+        var customers = await _unitOfWork.CustomerRepository.GetEntityByExpression(x=>x.Id==customerId,null,null);
+        if(!customers.Any()){
+            return BadRequest(new ErrorResponse(404,"Doesn't exist customer"));
+        }
+        var userEmail = customers.FirstOrDefault().Email;
+        if(userEmail==null){
+            return BadRequest(new ErrorResponse(404,"Customer hasn't signed up for email"));
+        }
+        var paymentId = orders.FirstOrDefault().OrderPaymentId;
+        var body="";
+        var title="";
+        if(paymentId!=null){
+            var paymentStatus = orders.FirstOrDefault().OrderPayment.OrderPaymentStatusId==1;
+            if(paymentStatus){
+                var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(x=>x.OrderId==orderId,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+                var deliver = deliveries.FirstOrDefault();
+                var pickUp = deliver.PickUpDateTime;
+                var deliverDate = deliver.DeliveryDate;
+                var pick = pickUp.ToString("dd-MM-yyyy HH:mm:ss");
+                var reach = deliverDate.ToString("dd-MM-yyyy HH:mm:ss");
+                body= $" Dear customer,\n Thank you for your order at our website.\n Your {orderId} will be started to deliver at {pick} and will reach your recipient at {reach}.\n You can see full details and track your delivery in our website.\n Thank you again, have a good day!\n Tars Team";
+                title="Your delivery is now being processed";
+            }else{
+                body = $" Dear customer,\n Thank you for your order at our website.\n To complete the process of order {orderId} and get your delivery started, you'll need to pay at our website\n Have a good day,\n Tars Team";
+                title="Complete your payment at TARS Delivery";
+            }
+        }
+         
+        var sendResult = await SendEmailAsync("new.vytruong.1812@gmail.com",title,body);
+        if(sendResult==true){
+            return Ok();
+        }else{
+            return BadRequest(new ErrorResponse(500,"Send email failed"));
+        }
+
+    }
 
     }
 }
