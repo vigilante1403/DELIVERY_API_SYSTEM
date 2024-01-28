@@ -4,6 +4,8 @@ import { IOrderShow, IPayment, IReturnParcel } from 'src/app/interface/delivery/
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { delay } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
@@ -34,8 +36,9 @@ export class CheckoutComponent {
     public showCancel: boolean = false;
     public showError: boolean = false;
     public payPalConfig?: IPayPalConfig;
-  constructor(public service:CheckoutService,public routeActivate:ActivatedRoute,private router:Router){
-
+    private readonly notifier: NotifierService;
+  constructor(public service:CheckoutService,public routeActivate:ActivatedRoute,private router:Router,private spinner: NgxSpinnerService, private _notifier: NotifierService){
+    this.notifier=_notifier
   }
   ngOnInit(){
     
@@ -97,8 +100,27 @@ export class CheckoutComponent {
         console.log('onApprove - you can get full order details inside onApprove: ', details);
         var submitDelivery=({orderId:Number(this.routeActivate.snapshot.paramMap.get('orderId')),zipCodeStart:Number(localStorage.getItem('wardStart')!) ,zipCodeEnd:Number(localStorage.getItem('wardEnd')!)})
           this.service.createNewDelivery(submitDelivery).subscribe({
-            next:(res)=>{console.log(res);this.router.navigateByUrl("/user/new-cart")},
-            error:(err)=>{console.log(err)}
+            next:(res)=>{console.log(res);
+              this.notifier.show({
+                type: 'success',
+                message: 'Create new delivery success!',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+               this.navigateTo("/user/new-cart");
+              },2000);
+             },
+            error:(err)=>{console.log(err)
+              this.notifier.show({
+                type: 'error',
+                message: 'Create new delivery error, please check again',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+               
+              },2000)}
           })
       })
   
@@ -125,8 +147,35 @@ export class CheckoutComponent {
   vppModeCheckout(){
     var submitDelivery=({orderId:Number(this.routeActivate.snapshot.paramMap.get('orderId')),zipCodeStart:Number(localStorage.getItem('wardStart')!) ,zipCodeEnd:Number(localStorage.getItem('wardEnd')!)})
           this.service.createNewDelivery(submitDelivery).subscribe({
-            next:(res)=>{console.log(res);this.router.navigateByUrl("/user/new-cart")},
-            error:(err)=>{console.log(err)}
+            next:(res)=>{console.log(res);
+              this.notifier.show({
+                type: 'success',
+                message: 'Create new delivery success!',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+               this.navigateTo("/user/new-cart");
+              },2000);
+            },
+            error:(err)=>{console.log(err)
+              this.notifier.show({
+                type: 'error',
+                message: 'Create new delivery error, please check again',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+               
+              },2000)}
           })
+  }
+
+  navigateTo(url: string) { 
+    this.spinner.show();
+    setTimeout(() => {
+      this.router.navigate([url]); 
+      this.spinner.hide(); 
+    }, 2000); 
   }
 }

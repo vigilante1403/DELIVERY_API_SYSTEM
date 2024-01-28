@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NotifierService } from 'angular-notifier';
 import { ICountry, IDistrict, ISubmitChangeLocation, IWard } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
 import { MapService } from 'src/app/service/map.service';
@@ -19,8 +20,11 @@ tempDistrict:IDistrict[]=[]
   selectedWard:number=0;
   closeForm: boolean=false;
   @Output() closeModal =new  EventEmitter<boolean>;
-  @Input() orderId!:number
-constructor(private service: MapService,private deliverySerivce:DeliveryService ){}
+  @Input() orderId!:number;
+  private readonly notifier: NotifierService
+constructor(private service: MapService,private deliverySerivce:DeliveryService, private _notifier: NotifierService ){
+  this.notifier=_notifier;
+}
 ngOnInit(): void {
   this.service.fetchAllCountries().subscribe({
     next:(res)=>{this.storedCountries=res},
@@ -34,6 +38,7 @@ ngOnInit(): void {
     next:(res)=>{this.storedWards=res},
     error:(err)=>{console.log(err)}
   })
+ 
 }
 
 onCloseModal(){
@@ -66,8 +71,25 @@ getListDistrict(event:Event){
       newZipCodeLocation:zipcode
     })
     this.deliverySerivce.updateLocation(submit).subscribe({
-      next:(res)=>{console.log(res);this.onCloseModal()},
-      error:(err)=>{console.log(err)}
+      next:(res)=>{console.log(res);this.onCloseModal()
+        this.notifier.show({
+          type: 'success',
+          message: 'Update location success!',
+          id: 'THAT_NOTIFICATION_ID',
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+        },2000)
+      },
+      error:(err)=>{console.log(err)
+        this.notifier.show({
+          type: 'error',
+          message: 'Update location error, please check again!',
+          id: 'THAT_NOTIFICATION_ID',
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+        },2000)}
     })
   }
  }

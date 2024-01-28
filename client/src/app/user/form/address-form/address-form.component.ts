@@ -5,6 +5,7 @@ import { FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
 import { ICountry, IDeliveryAgent, IDistrict, IOrderShow, ISubmitAddress, IWard } from 'src/app/interface/delivery/IDelivery';
 import { ActivatedRoute } from '@angular/router';
 import { DeliveryService } from 'src/app/service/delivery.service';
+import { NotifierService } from 'angular-notifier';
 
 
 
@@ -49,7 +50,10 @@ export class AddressFormComponent implements OnInit {
     deliveryAgentId:0,
     pricePerDistanceId:0
   })
-  constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService) { }
+  private readonly notifier : NotifierService
+  constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService, private _notifier: NotifierService) {
+    this.notifier=_notifier
+   }
  initForm(){
   this.addressForm=this.fb.group({
     name1:['',Validators.required],
@@ -186,8 +190,24 @@ export class AddressFormComponent implements OnInit {
           })
           var orderId = this.routeActivate.snapshot.paramMap.get('orderId')
           this.service.createNewOrderPayment(orderId,submitAddress).subscribe({
-            next:(res)=>{console.log(res)},
-            error:(err)=>{console.log(err)}
+            next:(res)=>{console.log(res)
+              this.notifier.show({
+                type: 'success',
+                message: 'Success!',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+              },2000)},
+            error:(err)=>{console.log(err)
+              this.notifier.show({
+                type: 'error',
+                message: 'An error occurred, please check again',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+              },2000)}
           })
         }
       }

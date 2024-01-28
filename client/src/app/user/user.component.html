@@ -39,7 +39,7 @@
             </div>
             <div class="modal-body">
                        
-                <app-change-password ></app-change-password>
+                <app-change-password (dataToParent)="receiveFromChild($event)" ></app-change-password>
             </div>
         </div>
       </ng-template>

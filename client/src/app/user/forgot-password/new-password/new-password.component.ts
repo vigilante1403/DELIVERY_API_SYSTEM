@@ -4,6 +4,7 @@ import { AbstractControlOptions, FormBuilder, FormGroup, ValidatorFn, Validators
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { faE, faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { NotifierService } from 'angular-notifier';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { env } from 'src/app/config/environment';
 import { ISubmitChangePassword } from 'src/app/interface/Password/ISubmitChangePassord';
@@ -23,9 +24,9 @@ export class NewPasswordComponent implements OnInit {
   @Input()
   token!: string;
   newpassword: ISubmitChangePassword={newPassword:''}
-
-  constructor(private router: Router,private fb: FormBuilder,private http: HttpClient, private spinner: NgxSpinnerService, private snackBar: MatSnackBar) {
-   
+  private readonly notifier: NotifierService;
+  constructor(private router: Router,private fb: FormBuilder,private http: HttpClient, private spinner: NgxSpinnerService, private snackBar: MatSnackBar, private _notifier: NotifierService) {
+   this.notifier=_notifier
   }
   ngOnInit(): void {
     this.newPasswordForm = this.fb.group({
@@ -64,13 +65,30 @@ export class NewPasswordComponent implements OnInit {
     this.newpassword.newPassword= this.newPasswordForm.get('newpassword')?.value;
     this.http.post(env + '/account/3/r/reset-password/' + this.newPasswordForm.get('token')?.value, this.newpassword).subscribe({
       next: (res) => {console.log("thanh cong");
-      this.openSnackBar();
+      // this.openSnackBar();
+      // setTimeout(()=>{
+      //   this.navigateTo("/");
+      // },1000)
+      this.notifier.show({
+        type: 'success',
+        message: 'Reset password succcess!',
+        id: 'THAT_NOTIFICATION_ID', 
+      });
       setTimeout(()=>{
-        this.navigateTo("/");
-      },1000)
-      
+        this.notifier.hide('THAT_NOTIFICATION_ID');
+        this.navigateTo('/')
+      },2000)
       },
       error: (err) => {console.log(err);
+        this.notifier.show({
+          type: 'error',
+          message: 'Reset password error!',
+          id: 'THAT_NOTIFICATION_ID', 
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+          
+        },2000)
       }
     })
     

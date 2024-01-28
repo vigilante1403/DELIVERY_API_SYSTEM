@@ -3,33 +3,38 @@
     <div class="row justify-content-center">
       <div class="col-lg-6 ">
         <!-- file-upload.component.html -->
-<form (ngSubmit)="onSubmit()" class="form-control" *ngFor="let formData of fileForms" [formGroup]="formData">
+<form (ngSubmit)="onSubmit()" class="form-control"  style="text-align: left;" *ngFor="let formData of fileForms" [formGroup]="formData">
   <div style="visibility:hidden">ID:{{ formData.get('i')?.value }}</div>
-    <div>
+    <div class="mb-3">
       <label for="file">File:</label>
-      <input type="file" accept="image/*"  (change)="onFileSelected($event,formData.get('i')?.value)" id="file" formControlName="file">
+      <input  class="form-control" type="file" accept="image/*"  (change)="onFileSelected($event,formData.get('i')?.value)" id="file" formControlName="file">
+      <span style="color:red" *ngIf="formData.get('file')?.errors?.['required']">File is required</span>
       <div *ngIf="formData.get('file')?.hasError('required') && formData.get('file')?.touched">
         File is required.
       </div>
     </div>
-    <div>
+    <div class="mb-3">
       <label for="parcelName">Parcel Name:</label>
-      <input type="text" id="parcelName" formControlName="parcelName">
+      <input  class="form-control" type="text" id="parcelName" formControlName="parcelName">
+      <span style="color:red" *ngIf="formData.get('paracelName')?.errors?.['required']">Parcel Name is required</span>
     </div>
-    <div>
+    <div class="mb-3">
       <label for="weight">Weight:</label>
-      <input type="number" min="0.1" id="weight" formControlName="weight">
+      <input  class="form-control" type="number" min="0.1" id="weight" formControlName="weight">
+      <span style="color:red" *ngIf="formData.get('weight')?.errors?.['required']">Weight is required</span>
     </div>
-    <div>
-      <button type="button" (click)="removeFormDataEntry(formData.get('i')?.value)">Remove Entry</button>
+    
+    <div  style="text-align: center;" class="">
+      <button style="color: #fff; background-color: rgb(255, 123, 0); border-color: rgb(255, 123, 0);" type="button" class="btn btn-primary" (click)="removeFormDataEntry(formData.get('i')?.value)">Remove Entry</button>
     </div>
-
   </form>
-  <div>
-    <button type="button" (click)="addFormDataEntry()">Add Entry</button>
-  </div>
-  <div>
-    <button type="submit" (click)="onSubmit()">Upload Files</button>
+  <div class="d-flex justify-content-center mt-2">
+    <div class="mb-3 p-1">
+      <button style="color: #fff; background-color: rgb(0, 255, 81); border-color: rgb(0, 255, 81);" type="button" (click)="addFormDataEntry()">Add Entry</button>
+    </div>
+    <div class="mb-3 p-1">
+      <button style="color: #fff; background-color: rgb(0, 136, 255); border-color: rgb(0, 136, 255);" type="submit" (click)="onSubmit()">Upload Files</button>
+    </div>
   </div>
   
   

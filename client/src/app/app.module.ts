@@ -35,6 +35,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { PeriodComponent } from './period/period.component';
 import { PeriodService } from './period/period.service';
 import {NotifierModule} from 'angular-notifier'
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -74,7 +75,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPayPalModule,
     ReactiveFormsModule,
     CollapseModule.forRoot(),
-    
+    NgxSpinnerModule,
     NotifierModule.withConfig({
       position: {
 

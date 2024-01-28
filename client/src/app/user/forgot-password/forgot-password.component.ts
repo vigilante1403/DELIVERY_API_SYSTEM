@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { env } from 'src/app/config/environment';
 
@@ -22,8 +23,10 @@ export class ForgotPasswordComponent implements OnInit {
   isFindByPhone = false;
 
   isVerify=false
- 
-  constructor(private http : HttpClient,private fb: FormBuilder,private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar){}
+ private readonly notifier: NotifierService
+  constructor(private http : HttpClient,private fb: FormBuilder,private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar, private _notifier: NotifierService){
+    this.notifier=_notifier
+  }
 
   ngOnInit(): void {
       this.emailForm = this.fb.group({
@@ -73,13 +76,31 @@ export class ForgotPasswordComponent implements OnInit {
       next: (res) => {console.log(res);
         
         this.isVerify=false;
-        this.openSnackBar();
-        setTimeout(() => {
+        // this.openSnackBar();
+        // setTimeout(() => {
+        //   this.navigateTo("/");
+        // },1000);
+        this.notifier.show({
+          type: 'success',
+          message: 'Send OTP to email succcess!',
+          id: 'THAT_NOTIFICATION_ID', 
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
           this.navigateTo("/");
-        },1000);
+        },2000)
         
       },
       error: (err) => {console.log(err);
+        this.notifier.show({
+          type: 'error',
+          message: 'Send OTP to email error, please check again',
+          id: 'THAT_NOTIFICATION_ID', 
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+         
+        },2000)
       }
     })
   }
