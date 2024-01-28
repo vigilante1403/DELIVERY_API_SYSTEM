@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { env } from 'src/app/config/environment';
 import { IChangePassword } from 'src/app/interface/Password/IChangePassword';
 
@@ -17,17 +20,18 @@ export class ChangePasswordComponent implements OnInit {
   showConfirmPassword = false;
   newpassword: IChangePassword={email: "", oldPassword:'',newPassWord: '',}
   showOldPassword= false;
-  constructor(private fb: FormBuilder,private http: HttpClient){
+  validate = false;
+  constructor(private fb: FormBuilder,private http: HttpClient, private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar){
     
   }
   ngOnInit(): void {
+   
     this.changePasswordForm = this.fb.group({
-      email:[localStorage.getItem('userEmail'),Validators.required],
+      email:[localStorage.getItem('userEmail')],
       oldPassword:['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
-     
-      
+
     }
     , {
       validator: this.matchPassword as ValidatorFn
@@ -47,31 +51,50 @@ export class ChangePasswordComponent implements OnInit {
   matchPassword(formGroup: FormGroup) {
     const password = formGroup.get('newPassword')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
-    if (password !== confirmPassword) {
+    if (confirmPassword == '') {
+      formGroup.get('confirmPassword')?.setErrors({ required: true });
+    }else if (password !== confirmPassword) {
       formGroup.get('confirmPassword')?.setErrors({ mismatch: true });
-      // return { passwordsNotMatch: true };
-    } else {
+    } 
+    else {
       formGroup.get('confirmPassword')?.setErrors(null);
-      // return null;
     }
   }
+
+  get f(){
+    return this.changePasswordForm.controls;
+  }
   onSubmit(){
-console.log(this.changePasswordForm.get('email')?.value);
-console.log(this.changePasswordForm.get('oldPassword')?.value);
-console.log(this.changePasswordForm.get('newPassword')?.value);
+    this.validate = true;
+    if(this.changePasswordForm.invalid){
+     return;
+    }
     this.newpassword.email = localStorage.getItem('userEmail');
 
     this.newpassword.oldPassword = this.changePasswordForm.get('oldPassword')?.value;
     this.newpassword.newPassWord = this.changePasswordForm.get('newPassword')?.value;
-    console.log(this.newpassword);
-    console.log(this.changePasswordForm.value);
     
-    
-    this.http.post(env + '/account/3/r/change-password', this.newpassword).subscribe({
-      next: (res) =>{console.log(res);
-      },
-      error: (err) =>{console.log(err);}
-    })
-
+    // this.http.post(env + '/account/3/r/change-password', this.newpassword).subscribe({
+    //   next: (res) =>{console.log(res);
+    //   },
+    //   error: (err) =>{console.log(err);}
+    // })
+    this.openSnackBar();
+    setTimeout(() => {
+      this.navigateTo("/user");
+    }, 1000)
+   
+  }
+  navigateTo(url: string) { 
+    this.spinner.show();
+    setTimeout(() => {
+      this.router.navigate([url]); 
+      this.spinner.hide(); 
+    }, 2000); 
+  }
+  openSnackBar() {
+    this.snackBar.open("Change Password Success","x", {
+      duration: 3000,
+    });
   }
 }

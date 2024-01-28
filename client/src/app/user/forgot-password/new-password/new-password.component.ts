@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { faE, faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { env } from 'src/app/config/environment';
 import { ISubmitChangePassword } from 'src/app/interface/Password/ISubmitChangePassord';
 
@@ -22,7 +24,7 @@ export class NewPasswordComponent implements OnInit {
   token!: string;
   newpassword: ISubmitChangePassword={newPassword:''}
 
-  constructor(private router: Router,private fb: FormBuilder,private http: HttpClient) {
+  constructor(private router: Router,private fb: FormBuilder,private http: HttpClient, private spinner: NgxSpinnerService, private snackBar: MatSnackBar) {
    
   }
   ngOnInit(): void {
@@ -62,7 +64,11 @@ export class NewPasswordComponent implements OnInit {
     this.newpassword.newPassword= this.newPasswordForm.get('newpassword')?.value;
     this.http.post(env + '/account/3/r/reset-password/' + this.newPasswordForm.get('token')?.value, this.newpassword).subscribe({
       next: (res) => {console.log("thanh cong");
-      this.router.navigateByUrl("/");
+      this.openSnackBar();
+      setTimeout(()=>{
+        this.navigateTo("/");
+      },1000)
+      
       },
       error: (err) => {console.log(err);
       }
@@ -71,6 +77,17 @@ export class NewPasswordComponent implements OnInit {
     console.log(this.newPasswordForm.get('newpassword')?.value);
     
   }
-  
+  navigateTo(url: string) { 
+    this.spinner.show();
+    setTimeout(() => {
+      this.router.navigate([url]); 
+      this.spinner.hide(); 
+    }, 2000); 
+  }
+  openSnackBar() {
+    this.snackBar.open("Change Password Success","x", {
+      duration: 3000,
+    });
+  }
 }
  

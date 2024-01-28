@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { zip } from 'rxjs';
 import { ICountry, IDistrict, IWard } from 'src/app/interface/delivery/IDelivery';
 
@@ -28,7 +29,7 @@ export class EditProfileComponent implements OnInit{
   selectedWard:number=0;
   streetCombine=''
   zipcode=''
-  constructor(private fb: FormBuilder,private service:MapService,private modalService:ModalService,private router:Router){}
+  constructor(private fb: FormBuilder,private service:MapService,private modalService:ModalService,private router:Router, private spinner: NgxSpinnerService){}
   ngOnInit(): void {
     this.initForm()
     this.service.fetchAllCountries().subscribe({
@@ -159,7 +160,7 @@ getListDistrict(event:Event){
       formData.append('Street',street)
       formData.append('ZipCode',this.zipcode)
       this.service.editProfileBasic(formData).subscribe({
-        next:(res)=>{console.log(res);this.modalService.Logout();this.router.navigateByUrl("/")},
+        next:(res)=>{console.log(res);this.modalService.Logout();this.navigateTo("/")},
         error:(err)=>{console.log(err)}
       })
         
@@ -170,5 +171,12 @@ getListDistrict(event:Event){
     }
    
     
+  }
+  navigateTo(url: string) { 
+    this.spinner.show();
+    setTimeout(() => {
+      this.router.navigate([url]); 
+      this.spinner.hide(); 
+    }, 2000); 
   }
 }

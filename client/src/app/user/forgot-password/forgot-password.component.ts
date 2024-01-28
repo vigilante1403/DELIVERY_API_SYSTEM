@@ -2,7 +2,9 @@ import { IToken } from './../../interface/Password/IToken';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { env } from 'src/app/config/environment';
 
 @Component({
@@ -21,7 +23,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   isVerify=false
  
-  constructor(private http : HttpClient,private fb: FormBuilder,private router: Router){}
+  constructor(private http : HttpClient,private fb: FormBuilder,private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar){}
 
   ngOnInit(): void {
       this.emailForm = this.fb.group({
@@ -71,11 +73,26 @@ export class ForgotPasswordComponent implements OnInit {
       next: (res) => {console.log(res);
         
         this.isVerify=false;
-        this.router.navigateByUrl("/");
+        this.openSnackBar();
+        setTimeout(() => {
+          this.navigateTo("/");
+        },1000);
+        
       },
       error: (err) => {console.log(err);
       }
     })
   }
-
+  navigateTo(url: string) { 
+    this.spinner.show();
+    setTimeout(() => {
+      this.router.navigate([url]); 
+      this.spinner.hide(); 
+    }, 2000); 
+  }
+  openSnackBar() {
+    this.snackBar.open("Send To Email Success","x", {
+      duration: 3000,
+    });
+  }
 }

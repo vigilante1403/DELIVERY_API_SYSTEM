@@ -1,16 +1,19 @@
 <div class="container d-flex justify-content-center" >
-    <form class="col-sm-4 mt-4" [formGroup]="editProfileForm" (ngSubmit)=" onSubmit()">
+    <form class="col-sm-5 mt-4" style="background-color: azure;" [formGroup]="editProfileForm" (ngSubmit)=" onSubmit()">
         <div class="mb-3">
             <label for="" class="form-label">FirstName*:</label>
             <input formControlName="FirstName"   type="text" class="form-control">
+            <span style="color:red; margin-top: 2px;" *ngIf="editProfileForm.get('FirstName')?.errors?.['required']">FirstName is required</span>
         </div>
         <div class="mb-3">
             <label for="" class="form-label">LastName*:</label>
             <input formControlName="LastName"   type="text" class="form-control">
+            <span style="color:red; margin-top: 2px;" *ngIf="editProfileForm.get('LastName')?.errors?.['required']">LastName is required</span>
         </div>
         <div class="mb-3">
             <label for="" class="form-label">DisplayName*</label>
             <input formControlName="DisplayName" (change)="updateName($event)"  type="text" class="form-control">
+            <span style="color:red; margin-top: 2px;" *ngIf="editProfileForm.get('DisplayName')?.errors?.['required']">Display Name is required</span>
         </div>
         <div class="mb-3">
             <label for="" class="form-label">PhoneNumber*</label>
@@ -18,6 +21,7 @@
                 <input type="text" class="col-sm-3" value="(+84)" disabled>
                 <input formControlName="PhoneNumber"   type="text" class="form-control">
             </div>
+            <span style="color:red; margin-top: 2px;" *ngIf="editProfileForm.get('PhoneNumber')?.errors?.['required']">Phone Number is required</span>
             
         </div>
         <div class="mb-3">
@@ -31,24 +35,25 @@
         <div class="mb-3">
             <label for="" class="form-label">Street*</label>
             <input formControlName="Street"  type="text" class="form-control">
+            <span style="color:red; margin-top: 2px;" *ngIf="editProfileForm.get('Street')?.errors?.['required']">Street is required</span>
         </div>
         <div class="mb-3 d-flex flex-row justify-content-start">
             <div class="col-sm-4 ">
-                <label for="" class="form-label text-white">Location*:</label>
+                <label for="" class="form-label">Location*:</label>
                 <select name="" (change)="getListDistrict($event)" id="">
                     <option value="-1">Choose value</option>
                     <option value="{{ country.id }}" *ngFor="let country of this.storedCountries">{{ country.name }}</option>
                 </select>
             </div>
             <div class="col-sm-4">
-                <label for="" class="form-label">&nbsp;</label>
+                <label for="" class="form-label">District*:</label>
                 <select name="" (change)="getListWard($event)" id="">
                     <option value="-1">Choose value</option>
                     <option value="{{ district.id }}" *ngFor="let district of this.tempDistrict">{{ district.name }}</option>
                 </select>
             </div>
             <div class="col-sm-4">
-                <label for="" class="form-label">&nbsp;</label>
+                <label for="" class="form-label">Ward*:</label>
                 <select name="" (change)="getChosenWard($event)" id="">
                     <option value="-1">Choose value</option>
                     <option value="{{ ward.id}}" *ngFor="let ward of this.tempWard">{{ward.name }}</option>
@@ -63,7 +68,13 @@
         <div class="mb-3">
             <label for="" class="form-label text-white">Avatar*</label>
             <input formControlName="ImageUrl" accept="image/*" (change)="onFileSelected($event)" type="file" class="form-control">
+            <span style="color:red; margin-top: 2px;" *ngIf="editProfileForm.get('ImageUrl')?.errors?.['required']">Image is required</span>
         </div>
         <button class="btn btn-primary" [disabled]="this.editProfileForm.invalid" type="submit">Save</button>
     </form>
 </div>
+<ngx-spinner
+type="timer"
+>
+<p style="font-size: 20px; color: white">Redirect to...</p>
+</ngx-spinner>

@@ -32,8 +32,9 @@ import { PreCheckoutComponent } from './form/pre-checkout/pre-checkout.component
 import { UpdateUnpaidFormsComponent } from './update-unpaid-forms/update-unpaid-forms.component';
 import { TestLineComponent } from './test-line/test-line.component';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     PreCheckoutComponent,
     UpdateUnpaidFormsComponent,
     TestLineComponent,
-    
+   
 
     
   ],
@@ -70,7 +71,9 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
     FontAwesomeModule,
     AlertModule.forRoot(),
     NgxPayPalModule,
-    CollapseModule.forRoot()
+    CollapseModule.forRoot(),
+    NgxSpinnerModule,
+    MatSnackBarModule
     
   ],
   exports:[
