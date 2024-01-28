@@ -13,9 +13,8 @@ import { NativeDateModule } from '@angular/material/core';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { DeliveringComponent } from './delivering/delivering.component';
 import { EditLocationComponent } from './delivering/edit-location/edit-location.component';
+
 import { NgxSpinnerModule } from 'ngx-spinner';
-
-
 
 @NgModule({
   declarations: [EmployeeComponent, UserDeliveryFetchComponent, DeliveringFetchComponent, DeliveredFetchComponent, TransitFetchComponent, UserEditComponent, EditProfileComponent, DeliveringComponent, EditLocationComponent],
