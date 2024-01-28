@@ -11,14 +11,17 @@
             <div class="form-floating mb-3">
               <input type="text" class="form-control" formControlName="name1" placeholder="Enter sender name">
               <label>Sender Name:</label>
+              <span style="color:red" *ngIf="addressForm.get('name1')?.errors?.['required']">Sender name is required</span>
             </div>
             <div class="form-floating mb-3">
               <input type="text" class="form-control" formControlName="address1" placeholder="Enter pick up location">
               <label>Where do you want your package picked up?</label>
+              <span style="color:red" *ngIf="addressForm.get('address1')?.errors?.['required']">Pick up location is required</span>
             </div>  
             <div class="form-floating mb-3">
               <input type="text" class="form-control" formControlName="phone1" placeholder="Enter sender phoneNumber">
               <label>Sender phone number</label>
+              <span style="color:red" *ngIf="addressForm.get('phone1')?.errors?.['required']">Sender phone number is required</span>
             </div>
             <div class="form-floating mb-3" >
               <select id="deliveryTypeId"  class="form-control" (change)="getListDistrict($event)"   required>
@@ -46,14 +49,17 @@
             <div class="form-floating mb-3">
               <input type="text" class="form-control" formControlName="name2" placeholder="Enter recipient name">
               <label>Recipient Name:</label>
+              <span style="color:red" *ngIf="addressForm.get('name2')?.errors?.['required']">Recipient name is required</span>
             </div>
             <div class="form-floating mb-3">
               <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
               <label>Where do you want recipient recieve the package?</label>
+              <span style="color:red" *ngIf="addressForm.get('address2')?.errors?.['required']">Recieve location is required</span>
             </div>
             <div class="form-floating mb-3">
               <input type="text" class="form-control" formControlName="phone2" placeholder="Enter recipient phoneNumber">
               <label>Recipient phone number</label>
+              <span style="color:red" *ngIf="addressForm.get('phone2')?.errors?.['required']">Recipient phone number is required</span>
             </div>
             <div class="form-floating mb-3" >
               <select id="deliveryTypeId"  class="form-control" (change)="getListDistrict2($event)"   required>
@@ -91,7 +97,7 @@
                     
                   
                   </div>
-            <button type="submit"  class="btn btn-primary" >Add this delivery address to order</button>
+            <button type="submit" [disabled]="this.addressForm.invalid"  class="btn btn-primary" >Add this delivery address to order</button>
             </form></div>
 
       </div>
@@ -142,21 +148,25 @@
                       <div>
                         <label for="file">File:</label>
                         <input type="file" accept="image/*"  (change)="onFileSelected($event,formData.get('i')?.value)" id="file" formControlName="file">
-                        <div *ngIf="formData.get('file')?.hasError('required') && formData.get('file')?.touched">
+                        <!-- <div *ngIf="formData.get('file')?.hasError('required') && formData.get('file')?.touched">
                           File is required.
-                        </div>
+                        </div> -->
+                        <span style="color:red" *ngIf="formData.get('file')?.errors?.['required']">File is required</span>
                       </div>
                       <div>
                         <label for="parcelName">Parcel Name:</label>
                         <input type="text" id="parcelName" formControlName="parcelName">
+                        <span style="color:red" *ngIf="formData.get('parcelName')?.errors?.['required']">Parcel name is required</span>
                       </div>
                       <div>
                         <label for="weight">Weight:</label>
                         <input type="number" min="0.1" id="weight" formControlName="weight">
+                        <span style="color:red" *ngIf="formData.get('weight')?.errors?.['required']">Weight is required</span>
                       </div>
                       <div>
-                        <label>Quantity:</label>
-                        <input type="number" min="1" id="weight" placeholder="1..." formControlName="quantity">
+                        <label for="quantity" >Quantity:</label>
+                        <input type="number" min="1" id="quantity" placeholder="1..." formControlName="quantity">
+                        <span style="color:red" *ngIf="formData.get('quantity')?.errors?.['required']">Quantity is required</span>
                       </div>
                       <div>
                         <button type="button" (click)="removeFormDataEntry(formData.get('i')?.value)">Remove Entry</button>
@@ -172,7 +182,9 @@
                     </div>
             </div>
         </div>
-        <div class=" text-right mb-3 justify-content-around d-flex" ><button class="btn btn-warning text-white" (click)="onSubmit()">Submit changes</button><button class="btn btn-primary text-white" (click)="discard()">Discard</button></div>
+        <div class=" text-right mb-3 justify-content-around d-flex" >
+          <button class="btn btn-warning text-white" (click)="onSubmit()">Submit changes</button>
+          <button class="btn btn-primary text-white" (click)="discard()">Discard</button></div>
       </div>
     </div>
     

@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { NotifierService } from 'angular-notifier';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { env } from 'src/app/config/environment';
 import { IChangePassword } from 'src/app/interface/Password/IChangePassword';
@@ -21,8 +22,11 @@ export class ChangePasswordComponent implements OnInit {
   newpassword: IChangePassword={email: "", oldPassword:'',newPassWord: '',}
   showOldPassword= false;
   validate = false;
-  constructor(private fb: FormBuilder,private http: HttpClient, private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar){
-    
+  @Output() dataToParent  = new EventEmitter<boolean>
+  closeForm =false
+  private readonly notifier: NotifierService
+  constructor(private fb: FormBuilder,private http: HttpClient, private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar, private _notifier: NotifierService){
+    this.notifier=_notifier
   }
   ngOnInit(): void {
    
@@ -74,15 +78,37 @@ export class ChangePasswordComponent implements OnInit {
     this.newpassword.oldPassword = this.changePasswordForm.get('oldPassword')?.value;
     this.newpassword.newPassWord = this.changePasswordForm.get('newPassword')?.value;
     
-    // this.http.post(env + '/account/3/r/change-password', this.newpassword).subscribe({
-    //   next: (res) =>{console.log(res);
-    //   },
-    //   error: (err) =>{console.log(err);}
-    // })
-    this.openSnackBar();
-    setTimeout(() => {
-      this.navigateTo("/user");
-    }, 1000)
+    this.http.post(env + '/account/3/r/change-password', this.newpassword).subscribe({
+      next: (res) =>{console.log(res);
+        this.notifier.show({
+          type: 'success',
+          message: 'Change Password Success',
+          id: 'THAT_NOTIFICATION_ID', 
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+          this.sendData();
+          this.navigateTo("/user");
+        },2000)
+      },
+      error: (err) =>{console.log(err);
+        this.notifier.show({
+          type: 'error',
+          message: 'An error occurred, please check again',
+          id: 'THAT_NOTIFICATION_ID', 
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+         
+        },2000)
+      }
+    })
+    // this.openSnackBar();
+    // setTimeout(() => {
+    //   this.navigateTo("/user");
+    // }, 1000)
+    
+    
    
   }
   navigateTo(url: string) { 
@@ -96,5 +122,8 @@ export class ChangePasswordComponent implements OnInit {
     this.snackBar.open("Change Password Success","x", {
       duration: 3000,
     });
+  }
+  sendData(){
+    this.dataToParent.emit(this.closeForm);
   }
 }

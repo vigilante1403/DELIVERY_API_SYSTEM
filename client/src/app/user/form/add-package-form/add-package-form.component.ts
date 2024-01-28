@@ -1,3 +1,4 @@
+import { NotifierService } from 'angular-notifier';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -14,10 +15,10 @@ export class AddPackageFormComponent implements OnInit {
   index:number=0;
   files:any[]=[]
   submitList:ISubmitListParcel=({list:this.files,orderId:0,customerId:''})
-
-  constructor(private formBuilder: FormBuilder,private routeActivate:ActivatedRoute,private service:DeliveryService) {
+private readonly notifier: NotifierService;
+  constructor(private formBuilder: FormBuilder,private routeActivate:ActivatedRoute,private service:DeliveryService, _notifier: NotifierService) {
     // this.addFormDataEntry();
-   
+   this.notifier=_notifier
   }
   ngOnInit(): void {
 
@@ -112,8 +113,25 @@ export class AddPackageFormComponent implements OnInit {
     customerId: this.routeActivate.snapshot.paramMap.get('customerId'),
   };
     this.service.addPackageToOrder(formData).subscribe({
-      next:(res)=>{console.log(res)},
-      error:(err)=>{console.log(err)}
+      next:(res)=>{console.log(res)
+        this.notifier.show({
+          type: 'success',
+          message: 'Success!',
+          id: 'THAT_NOTIFICATION_ID', 
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+        },2000)
+      },
+      error:(err)=>{console.log(err)
+        this.notifier.show({
+          type: 'error',
+          message: 'An error occurred, please check again',
+          id: 'THAT_NOTIFICATION_ID', 
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+        },2000)}
     })
 
   }

@@ -1,6 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterState } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ICountry, IDeliveryAgent, IDistrict, IOrderShow, IReturnParcel, IReturnPayInfoParcel, IService, ISubmitAddress, ISubmitListParcel, ISubmitOrder, IWard } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
 import { MapService } from 'src/app/service/map.service';
@@ -15,8 +17,9 @@ export class UpdateUnpaidFormsComponent implements OnInit {
   addressAgree:boolean=false;
   packageAgree:boolean=false;
   serviceAgree:boolean=false;
-  currentService:string=''
-  constructor(private route: Router,private fb: FormBuilder,public deliveryService:DeliveryService,private service:MapService) {
+  currentService:string='';
+  private readonly notifier: NotifierService
+  constructor(private route: Router,private fb: FormBuilder,public deliveryService:DeliveryService,private service:MapService,private _notifier: NotifierService, private spinner: NgxSpinnerService) {
     console.log(this.route.getCurrentNavigation()?.extras.state?.['data'])
     const data = this.route.getCurrentNavigation()?.extras.state?.['data']
     if(data!=undefined){
@@ -24,7 +27,7 @@ export class UpdateUnpaidFormsComponent implements OnInit {
       this.value=JSON.parse(data)
       this.currentService=this.value.orderDTO.service
     }
-    
+    this.notifier=_notifier;
   }
   ConvertContactData(contactAddress:any):string{
     var json = JSON.parse(contactAddress);
@@ -192,8 +195,27 @@ export class UpdateUnpaidFormsComponent implements OnInit {
   console.log("Form data: ",formData);
   
   this.deliveryService.editUnfinishedOrder(formData).subscribe({
-    next:(res)=>{console.log(res);this.route.navigateByUrl("/user/new-cart")},
-    error:(err)=>{console.log(err)}
+    next:(res)=>{console.log(res);
+      this.notifier.show({
+        type: 'success',
+        message: 'Edit order success!',
+        id: 'THAT_NOTIFICATION_ID', 
+      });
+      setTimeout(()=>{
+        this.notifier.hide('THAT_NOTIFICATION_ID');
+       this.navigateTo("/user/new-cart");
+      },2000);
+      },
+    error:(err)=>{console.log(err)
+      this.notifier.show({
+        type: 'error',
+        message: 'Edit order error, please check again',
+        id: 'THAT_NOTIFICATION_ID', 
+      });
+      setTimeout(()=>{
+        this.notifier.hide('THAT_NOTIFICATION_ID');
+       
+      },2000)}
   })
   }
   ///adress 
@@ -347,7 +369,7 @@ export class UpdateUnpaidFormsComponent implements OnInit {
       }
     }
   discard(){
-    this.route.navigateByUrl('/user/new-cart')
+    this.navigateTo('/user/new-cart');
   }
   ///service
   selectedError=''
@@ -394,5 +416,12 @@ export class UpdateUnpaidFormsComponent implements OnInit {
       this.submitOrder=submit
     }
     this.onSubmit2()
+  }
+  navigateTo(url: string) { 
+    this.spinner.show();
+    setTimeout(() => {
+      this.route.navigate([url]); 
+      this.spinner.hide(); 
+    }, 2000); 
   }
 }

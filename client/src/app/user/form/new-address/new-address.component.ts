@@ -1,3 +1,4 @@
+import { NotifierService } from 'angular-notifier';
 import { Component, AfterViewInit, ElementRef,NgZone, ViewChild, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MapService } from 'src/app/service/map.service';
 import { FormBuilder,FormControl, FormGroup, Validators } from '@angular/forms';
@@ -11,6 +12,7 @@ import { DeliveryService } from 'src/app/service/delivery.service';
   styleUrls: ['./new-address.component.scss']
 })
 export class NewAddressComponent {
+  private readonly notifier: NotifierService;
   storedCountries:ICountry[]=[]
   storedDistricts:IDistrict[]=[]
   storedWards:IWard[]=[]
@@ -46,11 +48,15 @@ export class NewAddressComponent {
   @Input() orderIdMain!:string
   @Input() customerIdMain!:string
   @Output() dataToParent=new EventEmitter<boolean>
+  
   sendData(){
     this.dataToParent.emit(true)
   }
-  constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService) { }
- initForm(){
+  constructor(private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService, private _notifier: NotifierService) { 
+    this.notifier=_notifier;
+  }
+ 
+  initForm(){
   this.addressForm=this.fb.group({
     name1:['',Validators.required],
     name2:['',Validators.required],
@@ -188,8 +194,26 @@ export class NewAddressComponent {
           this.filterZipCodeEnd(this.selectedWard2)
           var orderId = this.orderIdMain
           this.service.createNewOrderPayment(orderId,submitAddress).subscribe({
-            next:(res)=>{console.log(res);this.sendData()},
-            error:(err)=>{console.log(err)}
+            next:(res)=>{console.log(res);this.sendData()
+              this.notifier.show({
+                type: 'success',
+                message: 'Success!',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+              },2000)
+            },
+            error:(err)=>{console.log(err)
+              this.notifier.show({
+                type: 'error',
+                message: 'An error occurred, please check again',
+                id: 'THAT_NOTIFICATION_ID', 
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+              },2000)
+            }
           })
         }
       }

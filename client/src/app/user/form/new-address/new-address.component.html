@@ -1,17 +1,20 @@
 
 <div class="container mt-4 custom">
   <form  class="form-control" [formGroup]="addressForm" (ngSubmit)="onSubmit()" >  
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3" style="text-align: left;">
       <input type="text" class="form-control" formControlName="name1" placeholder="Enter sender name">
       <label>Sender Name:</label>
+      <span style="color:red" *ngIf="addressForm.get('name1')?.errors?.['required']">Sender Name is required</span>
     </div>
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3" style="text-align: left;">
       <input type="text" class="form-control" formControlName="address1" placeholder="Enter pick up location">
       <label>Where do you want your package picked up?</label>
+      <span style="color:red" *ngIf="addressForm.get('address1')?.errors?.['required']">Pick up location is required</span>
     </div>  
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3" style="text-align: left;">
       <input type="text" class="form-control" formControlName="phone1" placeholder="Enter sender phoneNumber">
       <label>Sender phone number</label>
+      <span style="color:red" *ngIf="addressForm.get('phone1')?.errors?.['required']">Sender phone is required</span>
     </div>
     <div class="form-floating mb-3" >
       <select id="deliveryTypeId" (change)="getListDistrict($event)" class="form-control"   required>
@@ -36,17 +39,20 @@
     </div>
     <hr>
     <hr>
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3" style="text-align: left;">
       <input type="text" class="form-control" formControlName="name2" placeholder="Enter recipient name">
       <label>Recipient Name:</label>
+      <span style="color:red" *ngIf="addressForm.get('name2')?.errors?.['required']">Recipient name is required</span>
     </div>
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3" style="text-align: left;">
       <input type="text" class="form-control" formControlName="address2" placeholder="Enter recieve location">
       <label>Where do you want recipient recieve the package?</label>
+      <span style="color:red" *ngIf="addressForm.get('address2')?.errors?.['required']">Recieve location is required</span>
     </div>
-    <div class="form-floating mb-3">
+    <div class="form-floating mb-3" style="text-align: left;">
       <input type="text" class="form-control" formControlName="phone2" placeholder="Enter recipient phoneNumber">
       <label>Recipient phone number</label>
+      <span style="color:red" *ngIf="addressForm.get('phone2')?.errors?.['required']">Recipient phone is required</span>
     </div>
     <div class="form-floating mb-3" >
       <select id="deliveryTypeId" (change)="getListDistrict2($event)" class="form-control"   required>
@@ -83,7 +89,7 @@
           
         
         </div>
-    <button type="submit" class="btn btn-primary" >Add this delivery address to order</button>
+    <button type="submit" [disabled]="this.addressForm.invalid" class="btn btn-primary" >Add this delivery address to order</button>
   
    
     </form>

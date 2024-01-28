@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { zip } from 'rxjs';
 import { ICountry, IDistrict, IWard } from 'src/app/interface/delivery/IDelivery';
@@ -28,8 +29,11 @@ export class EditProfileComponent implements OnInit{
   selectedDistrict:number=0;
   selectedWard:number=0;
   streetCombine=''
-  zipcode=''
-  constructor(private fb: FormBuilder,private service:MapService,private modalService:ModalService,private router:Router, private spinner: NgxSpinnerService){}
+  zipcode='';
+  private readonly notifier : NotifierService;
+  constructor(private fb: FormBuilder,private service:MapService,private modalService:ModalService,private router:Router, private spinner: NgxSpinnerService, private _notifier: NotifierService){
+    this.notifier=_notifier;
+  }
   ngOnInit(): void {
     this.initForm()
     this.service.fetchAllCountries().subscribe({
@@ -160,16 +164,33 @@ getListDistrict(event:Event){
       formData.append('Street',street)
       formData.append('ZipCode',this.zipcode)
       this.service.editProfileBasic(formData).subscribe({
-        next:(res)=>{console.log(res);this.modalService.Logout();this.navigateTo("/")},
-        error:(err)=>{console.log(err)}
+        next:(res)=>{console.log(res);this.modalService.Logout();
+          this.notifier.show({
+            type: 'success',
+            message: 'Edit profile success!',
+            id: 'THAT_NOTIFICATION_ID',
+          });
+          setTimeout(()=>{
+            this.notifier.hide('THAT_NOTIFICATION_ID');
+            this.navigateTo("/");
+          },2000)
+         },
+        error:(err)=>{console.log(err)
+          this.notifier.show({
+            type: 'error',
+            message: 'Edit profile error, please check again!',
+            id: 'THAT_NOTIFICATION_ID',
+          });
+          setTimeout(()=>{
+            this.notifier.hide('THAT_NOTIFICATION_ID');
+          
+          },2000)
+        }
       })
         
       }
-      
-
      
     }
-   
     
   }
   navigateTo(url: string) { 

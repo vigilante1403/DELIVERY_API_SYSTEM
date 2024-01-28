@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { ICountry, IDeliveryAgent, IDistrict, IOrderShow, ISubmitAddress, IWard } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
 import { MapService } from 'src/app/service/map.service';
@@ -47,13 +48,14 @@ export class UserEditComponent {
   @Input() orderIdMain!:string
   @Input() customerIdMain!:string
   @Output() dataToParent=new EventEmitter<boolean>
+  private readonly notifier : NotifierService;
   sendData(){
     this.dataToParent.emit(true)
   }
   minDate:string=''
   contactOldData:string=localStorage.getItem('contact-old-data')!=null?localStorage.getItem('contact-old-data')!:''
   senderOldData:string=localStorage.getItem('sender-old-data')!=null?localStorage.getItem('sender-old-data')!:''
-  constructor(private datepipe:DatePipe,private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService,private router:Router) { 
+  constructor(private datepipe:DatePipe,private fb:FormBuilder,private service:MapService,private routeActivate:ActivatedRoute,private deliveryService:DeliveryService,private router:Router, private _notifier: NotifierService) { 
     var contactData = this.router.getCurrentNavigation()?.extras.state?.['data']['contact']
     var senderData = this.router.getCurrentNavigation()?.extras.state?.['data']['sender']
     console.log(contactData)
@@ -67,17 +69,18 @@ export class UserEditComponent {
       this.senderOldData=senderData
     }
     const currentDate = new Date()
-    this.minDate=this.datepipe.transform(currentDate, 'yyyy-MM-dd')!
+    this.minDate=this.datepipe.transform(currentDate, 'yyyy-MM-dd')!;
+    this.notifier=_notifier;
   }
  initForm(){
   this.addressForm=this.fb.group({
-    name1:[''],
-    name2:[''],
-    address1:[''],
-    address2:[''],
-    phone1:[''],
-    phone2:[''],
-    date:[new Date()]
+    name1:['',Validators.required],
+    name2:['',Validators.required],
+    address1:['',Validators.required],
+    address2:['',Validators.required],
+    phone1:['',Validators.required],
+    phone2:['',Validators.required],
+    date:[new Date(),Validators.required]
   })
  }
  getListDistrict(event:Event){
@@ -178,7 +181,14 @@ export class UserEditComponent {
     }
     onSubmit(){
       if(this.addressForm.invalid){
-        console.log("Form invalid")
+        this.notifier.show({
+          type: 'error',
+          message: 'Form invalid, please check again!',
+          id: 'THAT_NOTIFICATION_ID',
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+        },2000)
         return;
       }else{
         // if(!this.validateInfo()){
@@ -214,8 +224,26 @@ export class UserEditComponent {
           formData.append('submit1',submit1)
           console.log("submit1",submit1)
           this.service.updatePaidOrder(formData).subscribe({
-            next:(res)=>{console.log(res);this.updateDelivery()},
-            error:(err)=>{console.log(err)}
+            next:(res)=>{console.log(res);this.updateDelivery()
+              this.notifier.show({
+                type: 'success',
+                message: 'Update paid order success!',
+                id: 'THAT_NOTIFICATION_ID',
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+              },2000)
+            },
+            error:(err)=>{console.log(err)
+              this.notifier.show({
+                type: 'error',
+                message: 'An error occurred, please check again!',
+                id: 'THAT_NOTIFICATION_ID',
+              });
+              setTimeout(()=>{
+                this.notifier.hide('THAT_NOTIFICATION_ID');
+              },2000)
+            }
           })
         
       }
@@ -231,8 +259,27 @@ export class UserEditComponent {
       var delivery1 = JSON.stringify(submitNext)
       form.append('delivery1',delivery1)
       this.service.updateDelivery(form).subscribe({
-        next:(res)=>{console.log("Success")},
-        error:(err)=>{console.log(err)}
+        next:(res)=>{console.log("Success")
+        this.notifier.show({
+          type: 'success',
+          message: 'Update Delivery success!',
+          id: 'THAT_NOTIFICATION_ID',
+        });
+        setTimeout(()=>{
+          this.notifier.hide('THAT_NOTIFICATION_ID');
+        },2000)
+
+        },
+        error:(err)=>{console.log(err)
+          this.notifier.show({
+            type: 'error',
+            message: 'An error occurred, please check again!',
+            id: 'THAT_NOTIFICATION_ID',
+          });
+          setTimeout(()=>{
+            this.notifier.hide('THAT_NOTIFICATION_ID');
+          },2000)
+        }
       })
     }
     filterZipCodeStart(wardStart:number){
