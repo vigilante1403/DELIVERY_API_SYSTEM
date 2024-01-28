@@ -74,6 +74,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxPayPalModule,
     ReactiveFormsModule,
     CollapseModule.forRoot(),
+    
     NotifierModule.withConfig({
       position: {
 
