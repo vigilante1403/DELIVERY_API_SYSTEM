@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "CqNi+62pTXmLMk3Ysq2BmT1vDHgHYOdBnZoUAeQdZrs=",
+  "Hash": "gJqp9w9K5EAKnLSiVhURlA92atFRJLNOJeG9BBH7QO4=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -151,6 +151,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\Blank 12 Grids Collage.png"
+    },
+    {
+      "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\cansua.jpg",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/1085c6a9-d66c-4568-9cf4-e30747cb2d70/cansua.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\cansua.jpg"
     },
     {
       "Identity": "D:\\Users\\Uzikami\\Downloads\\học\\Project\\DELIVERY_API_SYSTEM\\api\\wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\fish-underwater-illuminated-by-sunlight-costa-brava-royalty-free-image-1590077426.jpg",
