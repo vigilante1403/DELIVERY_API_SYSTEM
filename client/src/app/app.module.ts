@@ -38,6 +38,8 @@ import {NotifierModule} from 'angular-notifier'
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BackgroundComponent } from './background/background.component';
 import { DatePipe } from '@angular/common';
+import { ServicePageComponent } from './service-page/service-page.component';
+
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -57,7 +59,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     EmployeeSidebarComponent,
     ProfileComponent,
     PeriodComponent,
-    BackgroundComponent
+    BackgroundComponent,
+    ServicePageComponent
   ],
   imports: [
    AgmCoreModule.forRoot({
