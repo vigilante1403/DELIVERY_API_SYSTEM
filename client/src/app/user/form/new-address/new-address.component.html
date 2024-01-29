@@ -83,7 +83,7 @@
         <div class="mb-3">
           <div *ngIf="this.change==true" class="">
             <select id="deliveryAgentId" (change)="getAgentChanged($event)"   class="form-control">
-              <option value="{{ agent.id }}"  *ngFor="let agent of this.storedExpress">{{ agent.agentName }}</option>
+              <option value="{{ agent.id }}"[disabled]="this.agent.id==3&&this.selectedCountry!=this.selectedCountry2"  *ngFor="let agent of this.storedExpress">{{ agent.agentName }}</option>
             </select>
           </div>
           

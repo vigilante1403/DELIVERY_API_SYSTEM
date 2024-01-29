@@ -24,5 +24,6 @@ namespace api.Models{
         public PricePerDistance PricePerDistance { get; set; }
         public int? DeliveryAgentId { get; set; }
         public DeliveryAgent DeliveryAgent { get; set; }
+        
     }
 }

@@ -135,7 +135,8 @@ export interface IDelivery{
     orderPaymentId:number,
     pickUpDateTime:Date,
     deliveryDate:Date,
-    deliveryStatusName:string
+    deliveryStatusName:string,
+    codMoney?: number
 }
 
 export interface IDelivering{

@@ -23,5 +23,7 @@ namespace api.Models{
         public int? CodeLocation { get; set; }
         public int? ZipCodeStart { get; set; }
         public int? ZipCodeEnd { get; set; }
+        public bool? EmailDeliveryStart { get; set; }
+        public bool? EmailDeliveryReached { get; set; }
     }
 }

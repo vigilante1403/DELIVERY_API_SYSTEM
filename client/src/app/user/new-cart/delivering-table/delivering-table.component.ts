@@ -23,7 +23,8 @@ export class DeliveringTableComponent {
       orderPaymentId:0,
       pickUpDateTime:new Date(),
       deliveryDate:new Date(),
-      deliveryStatusName:''
+      deliveryStatusName:'',
+      codMoney:0
   })
   contactAddress:string=''
   modalRef?: BsModalRef;

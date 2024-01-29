@@ -7,6 +7,7 @@ namespace api.DTO{
         public DateTime PickUpDateTime { get; set; }
         public DateTime DeliveryDate { get; set; } //expect date
         public string DeliveryStatusName { get; set; }
+        public decimal? CodMoney { get; set; }
 
     }
 }
