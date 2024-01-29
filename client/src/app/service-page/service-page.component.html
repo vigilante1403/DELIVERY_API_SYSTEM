@@ -1,0 +1,162 @@
+
+<div class="container" style="padding-top: 7rem!important;">
+    <section class="header16 cid-u2K4PmkRAl mbr-fullscreen mbr-parallax-background" id="hero-17-u2K4PmkRAl" style="z-index: 0; background-image: none; position: relative;">
+        <div class="mbr-overlay" style="opacity: 0.3; background-color: rgb(0, 0, 0);"></div>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="content-wrap col-12 col-md-10">
+              <h1 class="mbr-section-title mbr-fonts-style mbr-white mb-4 display-1 animate__animated animate__delay-1s animate__fadeIn">
+                <strong>TARS Delivery</strong>
+              </h1>
+              <p class="mbr-fonts-style mbr-text mbr-white mb-4 display-7 animate__animated animate__delay-1s animate__fadeIn">Unleash the Power of Lightning-Fast Deliveries with TARS Delivery Post Office</p>
+              <div class="mbr-section-btn"><a class="btn btn-white-outline display-7 animate__animated animate__delay-1s animate__fadeIn" href="#">Get Started</a></div>
+            </div>
+          </div>
+        </div>
+      <div id="jarallax-container-0" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; z-index: -100;"><div style="background-position: 50% 50%; background-size: cover; background-repeat: no-repeat; background-image: url(&quot;https://proxy.electricblaze.com/?u=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1512418490979-92798cec1380%3Fixid%3DM3w0Mzc5fDB8MXxzZWFyY2h8MTN8fGRlbGl2ZXJ5fGVufDB8MHx8fDE3MDY1MTk2NjJ8MA%26ixlib%3Drb-4.0.3%26auto%3Dformat%26fit%3Dcrop%26w%3D1200%26q%3D80&amp;e=1706584996&amp;s=lzLvY1h0gTwyCfQ6xedkFUUHpoH3PQWqCrpfVC7xEz4&quot;); position: absolute; top: 0px; left: 0px; width: 1540px; height: 448px; overflow: hidden; pointer-events: none; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; margin-top: 0px; transform: translate3d(0px, 0px, 0px);"></div></div>
+    </section>
+    <section style="margin-top: 20px;">
+        <div class=" h-100" >
+            <div class="mask d-flex align-items-center h-100">
+              <div class="container">
+                <div class="row justify-content-center">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-body p-0">
+                        <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                            <div class="content-wrap col-12" style="text-align: center;">
+                                <h1 class="mbr-section-title mbr-fonts-style mbr-white mb-4 display-1 animate__animated animate__delay-1s animate__fadeIn">
+                                  <strong>Delivery Services</strong>
+                                </h1>
+                                
+                            </div>
+                          <table class="table table-striped mb-0">
+                            <thead style="background-color: #002d72!important;">
+                              <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Service Name </th>
+                                <th scope="col">Price </th>
+                                <th scope="col">Prepaid </th>
+                                <th scope="col">Collect</th>
+                                <th scope="col">DaysAdd(day) </th>
+        
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let service of this.services">
+                                  <td>{{service.id}}</td>
+                                  <td>{{service.serviceName}}</td>
+                                  <td>{{service.price | currency}}</td>
+                                  <td>{{service.prePaid==true?"Yes":"No"}}</td>
+                                  <td>{{service.collect==true?"Yes":"No"}}</td>
+                                  <td>{{service.daysAdd}}</td>
+                                </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+    </section>
+
+    <section class="pricing1 cid-u2GFCeIovY" id="pricing-cards-1-u2GFCeIovY">
+        <div class="container-fluid">
+          <div class="row justify-content-center" style="text-align: center;">
+            <div class="col-12 content-head">
+              <div class="mbr-section-head mb-5">
+                <h1 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2 animate__animated animate__delay-1s animate__fadeIn">
+                  <strong>Delivery Services Price</strong>
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb animate__animated animate__delay-1s animate__fadeIn">
+              <div class="item-wrapper">
+                <div class="item-head" >
+                  <h2  style="color: black;" class="item-title mbr-fonts-style mb-0 display-5">
+                    <strong>Fast Post</strong>
+                  </h2>
+                  <h3  style="color: black;" class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                    <strong>$3.00</strong>/per delivery
+                  </h3>
+                </div>
+                <div class="item-content">
+                  <p class="mbr-text mbr-fonts-style display-7">Experience the thrill of lightning-fast deliveries with our Fast Post service. Get your packages delivered at warp speed!</p>
+                </div>
+                <div class="mbr-section-btn item-footer"><a href="" class="btn item-btn btn-primary display-7">Choose Plan</a></div>
+              </div>
+            </div>
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb animate__animated animate__delay-1s animate__fadeIn">
+              <div class="item-wrapper">
+                <div class="item-head">
+                  <h2 style="color: black;" class="item-title mbr-fonts-style mb-0 display-5">
+                    <strong>Normal Post</strong>
+                  </h2>
+                  <h3 style="color: black;" class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                    <strong>$2.00</strong>/per delivery
+                  </h3>
+                </div>
+                <div class="item-content">
+                  <p class="mbr-text mbr-fonts-style display-7">For those who prefer a more leisurely journey, our Normal Post service takes your packages on a scenic route, delivering them at a relaxed pace.</p>
+                </div>
+                <div class="mbr-section-btn item-footer"><a href="" class="btn item-btn btn-primary display-7">Choose Plan</a></div>
+              </div>
+            </div>
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb animate__animated animate__delay-1s animate__fadeIn">
+              <div class="item-wrapper">
+                <div class="item-head">
+                  <h2 style="color: black;" class="item-title mbr-fonts-style mb-0 display-5">
+                    <strong>VPP</strong>
+                  </h2>
+                  <h3 style="color: black;" class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                    <strong>$2.00</strong>/per delivery
+                  </h3>
+                </div>
+                <div class="item-content">
+                  <p class="mbr-text mbr-fonts-style display-7">For the ultimate in promptness, our VPP service ensures that your packages reach their destination at lightning speed.</p>
+                </div>
+                <div class="mbr-section-btn item-footer"><a href="" class="btn item-btn btn-primary display-7">Choose Plan</a></div>
+              </div>
+            </div>
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb animate__animated animate__delay-1s animate__fadeIn">
+              <div class="item-wrapper">
+                <div class="item-head">
+                  <h2 style="color: black;" class="item-title mbr-fonts-style mb-0 display-5">
+                    <strong>Courrier</strong>
+                  </h2>
+                  <h3 style="color: black;" class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                    <strong>$3.00</strong>/per delivery
+                  </h3>
+                </div>
+                <div class="item-content">
+                  <p class="mbr-text mbr-fonts-style display-7">Experience the adrenaline-pumping thrill of our Courrier service, where speed and precision are our top priorities.</p>
+                </div>
+                <div class="mbr-section-btn item-footer"><a href="" class="btn item-btn btn-primary display-7">Choose Plan</a></div>
+              </div>
+            </div>
+            <div class="item features-without-image col-12 col-md-6 col-lg-3 item-mb animate__animated animate__delay-1s animate__fadeIn">
+                <div class="item-wrapper">
+                  <div class="item-head">
+                    <h2 style="color: black;" class="item-title mbr-fonts-style mb-0 display-5">
+                      <strong>Courrier</strong>
+                    </h2>
+                    <h3 style="color: black;" class="item-subtitle mbr-fonts-style mt-0 mb-0 display-7">
+                      <strong>$3.00</strong>/per delivery
+                    </h3>
+                  </div>
+                  <div class="item-content">
+                    <p class="mbr-text mbr-fonts-style display-7">Experience the adrenaline-pumping thrill of our Courrier service, where speed and precision are our top priorities.</p>
+                  </div>
+                  <div class="mbr-section-btn item-footer"><a href="" class="btn item-btn btn-primary display-7">Choose Plan</a></div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </section>
+</div>

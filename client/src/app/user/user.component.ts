@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class UserComponent {
   modalRef?: BsModalRef;
-  constructor(public service:ModalService,private bsModalService: BsModalService, private router: Router){
+  constructor(public service:ModalService,private bsModalService: BsModalService){
 
   }
   openModal(template: TemplateRef<void>) {
@@ -21,5 +21,5 @@ export class UserComponent {
   receiveFromChild(data:any){
     this.modalRef?.hide()
   }
-
+ 
 }
