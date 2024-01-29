@@ -154,6 +154,7 @@ export class NewAddressComponent {
     }
     changeDelivery(){
       this.change=true;
+      
     }
     getAgentChanged(event:Event){
       const id =Number((event.target as HTMLSelectElement).value) 

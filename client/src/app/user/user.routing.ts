@@ -1,3 +1,4 @@
+import { EditProfileComponent } from '../employee/edit-profile/edit-profile.component';
 import { AuthenticationGuard } from '../middleware/authentication.guard';
 import { PeriodComponent } from '../period/period.component';
 import { ProfileComponent } from '../profile/profile.component';
@@ -30,6 +31,7 @@ export const UserRoute: Routes = [
     {path: '1/reset/:token', component: VerifySendToComponent},
     {path:'edit/:orderId',component:UpdateUnpaidFormsComponent,canActivate:[AuthenticationGuard]},
     {path:'profile',component:ProfileComponent},
-    {path:'period',component:PeriodComponent}
+    {path:'period',component:PeriodComponent},
+    {path: 'edit-profile',component:EditProfileComponent,canActivate:[AuthenticationGuard]},
     
 ];

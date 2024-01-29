@@ -57,7 +57,7 @@
                             <div class="billed"><span class="font-weight-bold text-uppercase">Order ID: </span><span class="ml-1">#xxxxxxx</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Recipient: </span><span class="ml-1">{{ this.contactAddress }}</span></div>
                             <div class="billed"><span class="font-weight-bold text-uppercase">Service Chose: </span><span class="ml-1">{{ this.detail.orderDTO.service }}</span></div>
-                            <div class="billed"><span class="font-weight-bold text-uppercase" *ngIf="this.detail.orderDTO.service=='vpp'">COD Money: </span><span class="ml-1">{{ this.deliveryDetail.codMoney!+this.detail.returnPayment.totalCharges }}$</span></div>
+                            <div class="billed" *ngIf="this.detail.orderDTO.service=='vpp'"><span class="font-weight-bold text-uppercase" >COD Money: </span><span class="ml-1">{{ this.deliveryDetail.codMoney!+this.detail.returnPayment.totalCharges }}$</span></div>
                           </div>
                         <div class="col-md-6 text-right mt-3">
                             <h4 class="text-danger mb-0"><strong>TARS DELIVERY</strong></h4><span><strong>aptech.com</strong></span></div>

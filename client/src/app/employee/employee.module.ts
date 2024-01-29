@@ -15,6 +15,11 @@ import { DeliveringComponent } from './delivering/delivering.component';
 import { EditLocationComponent } from './delivering/edit-location/edit-location.component';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [EmployeeComponent, UserDeliveryFetchComponent, DeliveringFetchComponent, DeliveredFetchComponent, TransitFetchComponent, UserEditComponent, EditProfileComponent, DeliveringComponent, EditLocationComponent],
@@ -22,7 +27,13 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     CommonModule,
     RouterModule.forChild(EmployeeRoute),
     FormsModule,ReactiveFormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    FontAwesomeModule,
+    AlertModule.forRoot(),
+    NgxPayPalModule,
+    CollapseModule.forRoot(),
+    
+    MatSnackBarModule
   ],
   exports:[
     EmployeeComponent

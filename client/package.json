@@ -29,6 +29,8 @@
     "angular-notifier": "^13.0.0",
     "bootstrap": "^5.2.3",
     "bootstrap-select": "^1.13.18",
+    "chart.js": "^3.9.1",
+    "ng2-charts": "^3.1.2",
     "ngx-bootstrap": "^10.3.0",
     "ngx-google-places-autocomplete": "^2.0.5",
     "ngx-icon-picker": "^1.10.0",

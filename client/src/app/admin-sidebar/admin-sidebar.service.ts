@@ -91,26 +91,68 @@ export class AdminSidebarService {
       
       ] 
     },
-    // {
-    //   title: 'Charts',
-    //   icon: 'fa fa-chart-line',
-    //   active: false,
-    //   type: 'dropdown',
-    //   submenus: [
-    //     {
-    //       title: 'Pie chart',
-    //     },
-    //     {
-    //       title: 'Line chart'
-    //     },
-    //     {
-    //       title: 'Bar chart'
-    //     },
-    //     {
-    //       title: 'Histogram'
-    //     }
-    //   ]
-    // },
+    {
+      title: 'Personnel',
+      icon: 'fa fa-chart-line',
+      active: false,
+      type: 'dropdown',
+      submenus: [
+        {
+          title: 'Edit Profile',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/admin/edit-profile'
+          
+        },
+        {
+          title: 'Your profile',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/admin/profile'
+          
+        },
+        {
+          title: 'Make Order',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/admin/order/new'
+          
+        },
+        {
+          title: 'Cart',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/admin/new-cart'
+          
+        },
+        {
+          title: 'Change password',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/admin/change-password'
+          
+        },
+        {
+          title: 'Checkout',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/admin/checkout'
+          
+        },
+      ]
+    },
     // {
     //   title: 'Maps',
     //   icon: 'fa fa-globe',

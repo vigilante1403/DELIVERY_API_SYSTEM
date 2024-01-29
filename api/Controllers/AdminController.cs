@@ -37,7 +37,8 @@ namespace api.Controllers{
         //after retrieve filter -- don da duoc thanh toan - don chua thanh toan -- lich su chinh sua
         [HttpGet("order-created")]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> RetrieveAllCreatedOrder(){
-            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(null,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            var orderList = await _unitOfWork.OrderRepository.GetEntityByExpression(x=>x.SenderInfo!=null&&x.OrderPaymentId!=null&&x.DeliveryAgentId!=null&&x.PricePerDistanceId!=null,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+
             return Ok(_mapper.Map<IEnumerable<Order>,IEnumerable<OrderDTO>>(orderList));
         }
         //method get all don duoc pick up hnay 
@@ -66,6 +67,10 @@ namespace api.Controllers{
             List<ReturnUser> list = new List<ReturnUser>();
             foreach(var user in userIdAndRole){
                 var userId = user.UserId;
+                var customers= await _unitOfWork.CustomerRepository.GetEntityByExpression(r=>r.Id==userId,null,null);
+                if(!customers.Any()){
+                    continue;
+                }
                 var userToFind = users.Where(e=>e.Id==userId).FirstOrDefault();
                 var roleId = user.RoleId;
                 var roleName = roles.Where(e=>e.Id==roleId).FirstOrDefault().Name;
@@ -81,7 +86,7 @@ namespace api.Controllers{
             Console.WriteLine("Total"+list.Count());
             return Ok(list);
         }
-        [HttpPost("Change-user-role")]
+        [HttpPost("change-user-role")]
         public async Task<ActionResult> ChangeUserRole([FromBody] string email,string role){
             var user = await _userManager.FindByEmailAsync(email);
             await _userManager.AddToRoleAsync(user,role);
@@ -91,6 +96,12 @@ namespace api.Controllers{
             return Ok();
 
         }
+        //lay don hang duoc tao vao hnay --delivery hoan thanh vao waiting payment cua order
+
+        //lay delivery duoc pick up 
+        //lay delivery duoc giao
+
+        
 
 
 

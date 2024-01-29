@@ -92,6 +92,43 @@ export class EmployeeSidebarService {
           url:'/employee/profile'
           
         },
+        {
+          title: 'Make Order',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/order/new'
+          
+        },
+        {
+          title: 'Cart',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/new-cart'
+          
+        },
+        {
+          title: 'Change password',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/change-password'
+          
+        },
+        {
+          title: 'Checkout',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/checkout'
+          
+        },
+        
         
         
       ]

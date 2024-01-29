@@ -6,9 +6,26 @@
                   <div class="card">
                     <div class="card-body p-0">
                       <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
-                        <div class="form-input">
-                          <label for="input">Nhập từ khóa:</label>
-                          <input type="text" id="input" (input)="receiveKeyword($event)">
+                        
+                        <div class="d-flex flex-row">
+                          <div class="form-input">
+                            <label for="input">Nhập từ khóa:</label>
+                            <input type="text" id="input" (input)="receiveKeyword($event)">
+                          </div>
+                          <div class="form-input">
+                            <label for="input">Sort by:</label>
+                            <select name="" id="">
+                              <option value="">
+                                Delivered
+                              </option>
+                              <option value="">
+                                Processing
+                              </option>
+                              <option value="">
+                                delivering
+                              </option>
+                            </select>
+                          </div>
                         </div>
                         <table class="table table-striped mb-0">
                           <thead style="background-color: #002d72;">

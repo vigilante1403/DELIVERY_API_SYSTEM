@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/ORgSVBVAFsQSPCa2Cd8buWl/cOyU+SGQh7x17lnu9M=",
+  "Hash": "2okLcg3+SGMW8od+LWlJcxbZzIVoiGcW2CBSAKVwK6M=",
   "Source": "api",
   "BasePath": "_content/api",
   "Mode": "Default",
@@ -287,6 +287,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\customer\\1085c6a9-d66c-4568-9cf4-e30747cb2d70\\ultravac-5-in-1.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\11b483f3-bd08-49ef-b0c8-85623aff86a2\\cute-pokemon-pikachu-sticker-preview.jpg",
+      "SourceId": "api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\",
+      "BasePath": "_content/api",
+      "RelativePath": "images/customer/11b483f3-bd08-49ef-b0c8-85623aff86a2/cute-pokemon-pikachu-sticker-preview.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\customer\\11b483f3-bd08-49ef-b0c8-85623aff86a2\\cute-pokemon-pikachu-sticker-preview.jpg"
     },
     {
       "Identity": "C:\\Users\\Kitty\\Desktop\\APTECH\\HK3\\DeliveryApiSystem\\api\\wwwroot\\images\\customer\\null\\rubella-MMR.png",

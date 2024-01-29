@@ -9,6 +9,12 @@ import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { ManageComponent } from './manage/manage.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { NgxPayPalModule } from 'ngx-paypal';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -20,7 +26,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     IconPickerModule,
     MatCardModule,
     MatListModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule,ReactiveFormsModule,
+    NgxSpinnerModule,
+    AlertModule.forRoot(),
+    NgxPayPalModule,
+    CollapseModule.forRoot(),
+    
+    MatSnackBarModule
   ],
   exports:[
 
