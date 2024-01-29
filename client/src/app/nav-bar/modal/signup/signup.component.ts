@@ -74,7 +74,8 @@ export class SignupComponent implements OnInit {
         this.loginData=({email:this.getEmailLogin()?.value,password:this.getPasswordLogin()?.value})
         console.log('form submitted')
         this.modalService.SignIn(this.loginData).subscribe({
-          next:(res)=>{this.modalService.user=res;console.log(res);localStorage.setItem('access_token',res.token);
+          next:(res)=>{this.modalService.user=res;console.log(res);
+        localStorage.setItem('access_token',res.token);
         localStorage.setItem('userEmail',res.email);
         localStorage.setItem('userName',res.displayName);
         localStorage.setItem('imageUrl', res.imageUrl);

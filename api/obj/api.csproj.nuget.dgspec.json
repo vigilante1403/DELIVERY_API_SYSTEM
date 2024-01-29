@@ -92,7 +92,7 @@
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[13.0.3, )"
+              "version": "[13.0.2, )"
             },
             "Nexmo.Csharp.Client": {
               "target": "Package",
@@ -113,10 +113,6 @@
             "Twilio": {
               "target": "Package",
               "version": "[6.3.0, )"
-            },
-            "Vonage": {
-              "target": "Package",
-              "version": "[6.15.0, )"
             }
           },
           "imports": [

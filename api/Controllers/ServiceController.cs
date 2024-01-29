@@ -13,8 +13,7 @@ using Twilio.Rest.Chat.V2;
 using Twilio.Rest.Verify.V2.Service;
 using Twilio.Types;
 using Nexmo.Api.Messaging;
-using Vonage;
-using Vonage.Request;
+
 
 namespace api.Controllers{
     [ApiController]
@@ -140,51 +139,7 @@ namespace api.Controllers{
            
         }
         //crud service 
-        [HttpPost("test-message")]
-       public async Task TestMessage()
-    {
-        // Find your Account SID and Auth Token at twilio.com/console
-        // and set the environment variables. See http://twil.io/secure
-
-        string accountSid = "ACffe5d11a9c4824ecbc344f7568cf2c7a";
-        string authToken = "bf27798ddfd076e9e807726fa16e1cf9";
-        string verifyServiceSid = "VAf1dca0ee08da3182678265add41e1fe7";
-
-        TwilioClient.Init(accountSid, authToken);
-
-        try
-{
-    var message = MessageResource.Create(
-        from: new PhoneNumber("+18887660223"),   // Your Twilio phone number
-        body: "Hello, this is a test message!",
-        to: new PhoneNumber("+84784991812")                // Recipient's phone number in E.164 format
-    );
-
-    Console.WriteLine($"Message SID: {message.Sid}");
-}
-catch (Twilio.Exceptions.ApiException ex)
-{
-    Console.WriteLine($"Twilio API Exception: {ex.Message}");
-    // Handle the exception as needed
-}   
-    }
-    [HttpGet("test-nexmo")]
-   public async Task SendNexmoSms()
-    {
-        // Replace with your Nexmo API key and secret
-       var credentials = Vonage.Request.Credentials.FromApiKeyAndSecret(
-    "3834b1df",
-    "c7pfYAW9H2of1B9v"
-    );
-
-var VonageClient = new VonageClient(credentials);
-var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()
-{
-    To = "84784991812",
-    From = "Vonage APIs",
-    Text = "A text message sent using the Vonage SMS API"
-});
-    }
+        
    public async Task SendTelegramMessage(string botToken, long chatId, string message="hihi")
     {
         using (HttpClient client = new HttpClient())

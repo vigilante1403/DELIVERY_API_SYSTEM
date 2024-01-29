@@ -5,6 +5,7 @@ using api.Exceptions;
 using api.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace api.Controllers
 {
@@ -630,6 +631,26 @@ namespace api.Controllers
                 }
            }
           return Ok();
+        }
+        [HttpGet("fetch-customer-deliveries/{customerId}")]
+        public async Task<ActionResult<List<ReturnDelivery>>> FetchAllCustomerDeliveriesInToday([FromRoute] string customerId){
+            var today = DateTime.Now;
+            var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(y=>y.CustomerId==customerId&&(y.OrderStatusId==1||y.OrderStatusId==2)&&(y.OrderPayment.OrderPaymentStatusId==1),null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            if(!orders.Any()){
+                return Ok();
+            }
+            var ordersIds = orders.Select(x=>x.Id);
+            var expectDeliveryList = await _unitOfWork.DeliveryRepository.GetEntityByExpression(e=>ordersIds.Contains(e.OrderId)&&(e.DeliveryStatusId==1||e.DeliveryStatusId==2),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            List<Delivery> list = new List<Delivery>();
+            if(!expectDeliveryList.Any()){
+                return Ok();
+            }
+            foreach(var delivery in expectDeliveryList){
+                if(delivery.PickUpDateTime.Date==today.Date||delivery.DeliveryDate.Date==today.Date){
+                    list.Add(delivery);
+                }
+            }
+            return Ok(_mapper.Map<List<Delivery>,List<ReturnDelivery>>(list));
         }
     }
     
