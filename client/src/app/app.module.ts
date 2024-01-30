@@ -38,7 +38,9 @@ import {NotifierModule} from 'angular-notifier'
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BackgroundComponent } from './background/background.component';
 import { DatePipe } from '@angular/common';
-import { ServicePageComponent } from './service-page/service-page.component';
+import { ServicePageComponent } from './service-page/our-service/service-page.component';
+import { PricePerDistanceComponent } from './service-page/price-per-distance/price-per-distance.component';
+import { DeliveryAgentPageComponent } from './service-page/delivery-agent-page/delivery-agent-page.component';
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -60,7 +62,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ProfileComponent,
     PeriodComponent,
     BackgroundComponent,
-    ServicePageComponent
+    ServicePageComponent,
+    PricePerDistanceComponent,
+    DeliveryAgentPageComponent
   ],
   imports: [
    AgmCoreModule.forRoot({

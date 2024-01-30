@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { IService } from '../interface/delivery/IDelivery';
-import { env } from '../config/environment';
+import { IPricePerDistance, IService } from '../../interface/delivery/IDelivery';
+import { env } from '../../config/environment';
 
 @Component({
   selector: 'app-service-page',
@@ -10,6 +10,7 @@ import { env } from '../config/environment';
 })
 export class ServicePageComponent implements OnInit{
   services: IService[]=[];
+  
   constructor(private http: HttpClient){}
   ngOnInit(): void {
       this.loadService();
@@ -24,4 +25,5 @@ export class ServicePageComponent implements OnInit{
       }
     })
   }
+  
 }

@@ -195,5 +195,12 @@ namespace api.Controllers{
         return Ok("send OTP success");
     }
 
+    [HttpGet("pricePerDistance/all")]
+    public async Task<ActionResult<IEnumerable<PricePerDistance>>> GetPricePerDistanceList(){
+            IEnumerable<PricePerDistance> list = await _unitOfWork.PricePerDistanceRepository.GetEntityByExpression(null,q=>q.OrderBy(e=>e.Id),null);
+            return Ok(list);
     }
+
+    }
+    
 }
