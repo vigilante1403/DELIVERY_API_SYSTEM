@@ -1,0 +1,58 @@
+<section style="margin-top: 50px;">
+    <div class="d-flex justify-content-center align-items-center flex-column">
+    <h1> <strong>How We Charge</strong></h1>
+    <div style="width: 60%;">
+        <h3> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis vitae dolorem consequuntur, aspernatur ad dolorum est atque eum soluta cum, odit hic omnis alias. Minima laborum non ipsa voluptatem rerum! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia dolorum saepe laudantium temporibus vel impedit tempora distinctio, dignissimos recusandae eius, voluptas eligendi voluptatibus quis neque, quod nesciunt assumenda ipsum corporis? Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit fugit minima odio laborum aut odit perspiciatis iure enim aperiam distinctio quas officia natus, perferendis qui! Ipsum, officia? Vitae, ea consequatur!</h3>
+    </div>
+    </div>
+</section>
+
+
+<section style="margin-top: 40px;">
+    <div class=" h-100" >
+        <div class="mask d-flex align-items-center h-100">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body p-0">
+                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                        <div class="content-wrap col-12" style="text-align: center;">
+                            <h1 class="mbr-section-title mbr-fonts-style mbr-white mb-4 display-1 animate__animated animate__delay-1s animate__fadeIn">
+                              <strong>Price List</strong>
+                            </h1>
+                            
+                        </div>
+                      <table class="table table-striped mb-0">
+                        <thead style="background-color: #002d72!important;">
+                          <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Route</th>
+                            <th scope="col">Weight Limit(Kg)</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Price Adds Weight/kg</th>
+                            <th scope="col">Delivery Time(day) </th>
+    
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of this.listPPD">
+                              <td>{{item.id}}</td>
+                              <td>{{item.route}}</td>
+                              <td>{{item.pricePerKg }}</td>
+                              <td>{{item.priceRoute | currency}}</td>
+                              <td>{{item.priceAdd1Kg | currency}}</td>
+                              <td>{{item.deliveryTime}}</td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+</section>
