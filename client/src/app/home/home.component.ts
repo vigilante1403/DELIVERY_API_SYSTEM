@@ -30,22 +30,15 @@ export class HomeComponent implements OnInit {
       message: 'You are awesome! I mean it!',
       id: 'THAT_NOTIFICATION_ID',
     });
-    setTimeout(()=>{
-      this.notifier.hide('THAT_NOTIFICATION_ID');
-    },2000)
+    
 
     this.spinner.show();
     setTimeout(()=>{
       this.spinner.hide();
-    },2000)
+      setTimeout(()=>{
+        this.notifier.hide('THAT_NOTIFICATION_ID');
+      },1000)
+    },1500)
   }
-  scrollTo(id: string) {
-    // Get the element with the given id
-    let element = document.getElementById(id);
-    // If the element exists
-    if (element) {
-      // Scroll it into view
-      element.scrollIntoView();
-    }
-  }
+  
 }

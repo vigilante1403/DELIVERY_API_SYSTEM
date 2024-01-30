@@ -31,7 +31,7 @@ export class ServiceComponent implements OnInit {
     }
     searchData() {
      
-      this.storedServices = this.storedServices.filter(item => item.serviceName.includes(this.keyword));
+      this.storedServices = this.storedServices.filter(item => item.serviceName.includes(this.keyword)|| item.price ===parseInt(this.keyword));
     
       if(this.keyword===''){
         this.storedServices=this.backupStoredServices;

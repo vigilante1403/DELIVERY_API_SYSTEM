@@ -15,7 +15,6 @@ import { DeliveryService } from 'src/app/service/delivery.service';
 })
 export class AllUsersComponent implements OnInit {
   storedUsers:IUser[]=[];
-  storedCustomers:ICustomer[]=[]
   customerlist: ICustomer=({id:"",name:'',phoneNumber:'',email:''});
   backupStoredUsers:IUser[]=[];
   admin:string='a'
@@ -29,7 +28,6 @@ export class AllUsersComponent implements OnInit {
 constructor(private modalService: BsModalService,private service:ManageService, private http: HttpClient,public deliveryService:DeliveryService){}
 ngOnInit(): void {
    this.loadUser();
-  //  this.fetchAllCustomerDetail();
 }
 loadUser(){
   this.service.getAllUsers().subscribe({
@@ -40,7 +38,6 @@ loadUser(){
 getRoleChoose(event:Event){
   const val = (event.target as HTMLSelectElement).value
   this.selectedRole=val;
-  console.log("New val of role:",this.selectedRole)
 }
 sortDisplayName() {
   if(this.selected == true) {
@@ -67,7 +64,6 @@ sortRole() {
 
 }
 
-
 onSortDisplayname() {
   this.selected =!this.selected;
   this.sortDisplayName();
@@ -86,16 +82,7 @@ receiveKeyword(event: Event) {
 let target = event.target as HTMLInputElement;
   this.keyword = target.value;
  
-  // this.searchData();
 }
-// searchData() {
- 
-//   this.storedUsers = this.storedUsers.filter(item => item.displayName.includes(this.keyword) || item.email.includes(this.keyword));
-
-//   if(this.keyword===''){
-//     this.storedUsers=this.backupStoredUsers;
-//   }
-// }
 searchButton(){
   var temp=this.backupStoredUsers;
   
@@ -104,8 +91,6 @@ searchButton(){
   }
   if(this.keyword!=""){
     if(this.keyword.includes("@")){
-      // var users = this.storedUsers
-      // var user = users.filter(x=>x.email.includes(this.keyword))[0].id
       temp=temp.filter(x=>x.email.includes(this.keyword));
     }else{
       temp=temp.filter(x=>x.id.includes(this.keyword)||x.displayName.includes(this.keyword))

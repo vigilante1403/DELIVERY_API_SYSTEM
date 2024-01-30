@@ -121,14 +121,14 @@ loadExpress(){
   
     searchButton(){
       var temp=this.backupStoredExpress;
-      console.log(this.selectedStartAt);
+      
       
       if(this.selectedStartAt!='-1' && this.selectedStartAt!='0'){
         temp=temp.filter(x=>x.startWorkingTime?.includes(this.selectedStartAt))
       }
       if(this.selectedStartAt==='0'){
         temp=temp.filter(x=>x.startWorkingTime ==='')
-        console.log(temp);  
+       
       }
       if(this.selectedEndAt!='-1' && this.selectedEndAt!='0'){
         temp=temp.filter(x=>x.endWorkingTime?.includes(this.selectedEndAt))
