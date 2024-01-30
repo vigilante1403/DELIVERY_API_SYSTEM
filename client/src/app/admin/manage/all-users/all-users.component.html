@@ -7,10 +7,30 @@
                     <div class="card">
                       <div class="card-body p-0">
                         <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
-                          <div class="form-input">
+                          <div class="d-flex flex-row">
+                          <div class="form-input" style="margin-right: 20px;">
                             <label for="input">Nhập từ khóa:</label>
-                            <input type="text" id="input" (input)="receiveKeyword($event)">
+                            <input #search type="text" id="input" (input)="receiveKeyword($event)">
                           </div>
+                          <div class="form-input" style="margin-right: 20px;">
+                            <label for="input">Role:</label>
+                            <select name="" id="" (change)="getRoleChoose($event)">
+                              <option value="-1">ALL</option>
+                              <option value="admin" >ADMIN</option>
+                              <option value="user" >USER</option>
+                            </select>
+                          </div>
+                          <div class="form-input"style="margin-right: 20px;">
+                            
+                           <a class="btn btn-primary text-white" (click)="searchButton()">Search</a>
+                           
+                          </div>
+                          <div class="form-input"style="margin-right: 20px;">
+                            
+                           <a class="btn btn-success text-white" (click)="refreshButton()">Refresh</a>
+                           
+                          </div>
+                        </div>
                           <table class="table table-striped mb-0">
                             <thead style="background-color: #002d72!important;">
                               <tr>
@@ -30,7 +50,7 @@
                                     <td ><span *ngIf="this.user.roleName.startsWith(admin);" class="badge bg-success">{{ user.roleName }}</span>
                                         <span *ngIf="!this.user.roleName.startsWith(admin);" class="badge bg-primary">{{ user.roleName }}</span></td>
                                     <td>Active</td>
-                                    <td style="cursor:pointer">View</td>
+                                    <td style="cursor:pointer"(click)="openModal(template,user.email)">View</td>
                                 </tr>
                             </tbody>
                           </table>
@@ -42,6 +62,39 @@
               </div>
             </div>
           </div>
+          <ng-template #template >
+            <div class="modal-content">
+              <div class="modal-header">
+             
+                <h2><strong>User Info</strong></h2>
+                <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+                  <span aria-hidden="true" class="visually-hidden">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="d-flex justify-content-center row">
+                      <div class="col-md-12">
+                          <div class=" bg-white rounded">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <h1 class="text-uppercase"><strong></strong></h1>
+                                  <div class="billed"><span class="font-weight-bold text-uppercase">User Id:</span><span class="ml-1">&nbsp;{{this.customerlist.id}}</span></div>
+                                  <div class="billed"><span class="font-weight-bold text-uppercase">User Name:</span><span class="ml-1">&nbsp;{{this.customerlist.name}}</span></div>
+                                  <div class="billed"><span class="font-weight-bold text-uppercase">Phone: </span><span class="ml-1">{{customerlist.phoneNumber}}</span></div>
+                                  <div class="billed"><span class="font-weight-bold text-uppercase">Email: </span><span class="ml-1">{{customerlist.email}}</span></div>
+                                 
+                                </div>
+                               
+                              
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
   
   
     

@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ManageService } from '../manage.service';
-import { IUser } from 'src/app/interface/delivery/IDelivery';
+import { IUser } from '../../../interface/delivery/IDelivery';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { HttpClient } from '@angular/common/http';
+import { ICustomer } from 'src/app/interface/account/IUser';
+import { env } from 'src/app/config/environment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { DeliveryService } from 'src/app/service/delivery.service';
 
 @Component({
   selector: 'app-all-users',
@@ -10,16 +15,21 @@ import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 })
 export class AllUsersComponent implements OnInit {
   storedUsers:IUser[]=[];
+  storedCustomers:ICustomer[]=[]
+  customerlist: ICustomer=({id:"",name:'',phoneNumber:'',email:''});
   backupStoredUsers:IUser[]=[];
   admin:string='a'
   selected: boolean = false;
   selected2: boolean = false;
   selected3: boolean = false;
   keyword: string ="";
+  selectedRole: string=''
   faChevronDown= faChevronDown; faChevronUp= faChevronUp;
-constructor(private service:ManageService){}
+  modalRef?: BsModalRef;
+constructor(private modalService: BsModalService,private service:ManageService, private http: HttpClient,public deliveryService:DeliveryService){}
 ngOnInit(): void {
-   this.loadUser()
+   this.loadUser();
+  //  this.fetchAllCustomerDetail();
 }
 loadUser(){
   this.service.getAllUsers().subscribe({
@@ -27,7 +37,11 @@ loadUser(){
     error:(err)=>{console.log(err)}
   })
 }
-
+getRoleChoose(event:Event){
+  const val = (event.target as HTMLSelectElement).value
+  this.selectedRole=val;
+  console.log("New val of role:",this.selectedRole)
+}
 sortDisplayName() {
   if(this.selected == true) {
     this.storedUsers.sort((a,b) => a.displayName.localeCompare(b.displayName));
@@ -72,14 +86,52 @@ receiveKeyword(event: Event) {
 let target = event.target as HTMLInputElement;
   this.keyword = target.value;
  
-  this.searchData();
+  // this.searchData();
 }
-searchData() {
+// searchData() {
  
-  this.storedUsers = this.storedUsers.filter(item => item.displayName.includes(this.keyword) || item.email.includes(this.keyword));
+//   this.storedUsers = this.storedUsers.filter(item => item.displayName.includes(this.keyword) || item.email.includes(this.keyword));
 
-  if(this.keyword===''){
-    this.storedUsers=this.backupStoredUsers;
+//   if(this.keyword===''){
+//     this.storedUsers=this.backupStoredUsers;
+//   }
+// }
+searchButton(){
+  var temp=this.backupStoredUsers;
+  
+  if(this.selectedRole!='-1'){
+    temp=temp.filter(x=>x.roleName?.includes(this.selectedRole))
   }
+  if(this.keyword!=""){
+    if(this.keyword.includes("@")){
+      // var users = this.storedUsers
+      // var user = users.filter(x=>x.email.includes(this.keyword))[0].id
+      temp=temp.filter(x=>x.email.includes(this.keyword));
+    }else{
+      temp=temp.filter(x=>x.id.includes(this.keyword)||x.displayName.includes(this.keyword))
+    }
+    
+  }
+  this.storedUsers=temp;
 }
+@ViewChild('search') search!:ElementRef
+
+  refreshButton(){
+    this.storedUsers=this.backupStoredUsers
+    this.search.nativeElement.value=""
+  }
+  fetchAllCustomerDetail(email:string){
+    this.deliveryService.getCustomerInfo(email).subscribe({
+      next: (res:ICustomer) =>{console.log(res);
+        this.customerlist=res;
+      },
+      error: (err)=>{ console.log(err);
+      }
+    })
+  }
+  openModal(template: TemplateRef<void>,email:string){
+    this.modalRef = this.modalService.show(template);
+    this.fetchAllCustomerDetail(email)
+    
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ManageService } from '../manage.service';
 import { MapService } from 'src/app/service/map.service';
 import { IDeliveryAgent } from 'src/app/interface/delivery/IDelivery';
@@ -19,6 +19,8 @@ export class AllAgentsComponent implements OnInit {
   selected5: boolean = false;
   keyword: string ="";
   faChevronDown= faChevronDown; faChevronUp= faChevronUp;
+  selectedStartAt: string='';
+  selectedEndAt: string='';
 constructor(private service:MapService){
 
 }
@@ -28,25 +30,12 @@ ngOnInit(): void {
 
 loadExpress(){
   this.service.fetchAllExpress().subscribe({
-    next:(res)=>{this.storedExpress=res;this.backupStoredExpress=[...res]},
+    next:(res)=>{this.storedExpress=res;this.backupStoredExpress=[...res];
+    console.log(this.storedExpress);
+    },
     error:(err)=>{console.log(err)}
   })
 }
-receiveKeyword(event: Event) {
- 
-  let target = event.target as HTMLInputElement;
-    this.keyword = target.value;
-   
-    this.searchData();
-  }
-  searchData() {
-   
-    this.storedExpress = this.storedExpress.filter(item => item.agentName.includes(this.keyword) || item.agentContactNumber.includes(this.keyword));
-  
-    if(this.keyword===''){
-      this.storedExpress = this.backupStoredExpress;
-    }
-  }
 
   sortAgentName() {
     if(this.selected == true) {
@@ -114,4 +103,52 @@ receiveKeyword(event: Event) {
     this.selected5 =!this.selected5;
     this.sortEndAt();
   }
+  getStartAtChoose(event:Event){
+    const val = (event.target as HTMLSelectElement).value
+    this.selectedStartAt=val; 
+  }
+  getEndAtChoose(event:Event){
+    const val = (event.target as HTMLSelectElement).value
+    this.selectedEndAt=val;    
+  }
+  receiveKeyword(event: Event) {
+ 
+    let target = event.target as HTMLInputElement;
+      this.keyword = target.value;
+     
+      
+    }
+  
+    searchButton(){
+      var temp=this.backupStoredExpress;
+      console.log(this.selectedStartAt);
+      
+      if(this.selectedStartAt!='-1' && this.selectedStartAt!='0'){
+        temp=temp.filter(x=>x.startWorkingTime?.includes(this.selectedStartAt))
+      }
+      if(this.selectedStartAt==='0'){
+        temp=temp.filter(x=>x.startWorkingTime ==='')
+        console.log(temp);  
+      }
+      if(this.selectedEndAt!='-1' && this.selectedEndAt!='0'){
+        temp=temp.filter(x=>x.endWorkingTime?.includes(this.selectedEndAt))
+      }
+      if(this.selectedEndAt==='0'){
+        temp=temp.filter(x=>x.endWorkingTime === '');
+      }
+      
+      if(this.keyword!=""){
+      
+          temp=temp.filter(x=>x.vehicleNumber.includes(this.keyword)||x.agentName.includes(this.keyword)||x.agentContactNumber.includes(this.keyword))
+ 
+      }
+      this.storedExpress=temp;
+    }
+    @ViewChild('search') search!:ElementRef
+    
+      refreshButton(){
+        this.storedExpress=this.backupStoredExpress;
+        this.search.nativeElement.value=""
+      }
+      
 }
