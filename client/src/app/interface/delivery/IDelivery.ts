@@ -199,3 +199,7 @@ export interface IPricePerDistance{
     priceAdd1Kg: number;
     deliveryTime: number;
 }
+export interface IDeliveryStatus{
+    id:number,
+    statusName:string
+}
