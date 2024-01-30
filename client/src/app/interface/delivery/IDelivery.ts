@@ -189,3 +189,12 @@ export interface ISubmitChangeLocation{
     orderId:number,
     newZipCodeLocation:number
 }
+
+export interface IPricePerDistance{
+    id: number;
+    route: string;
+    pricePerKg:number;
+    priceRoute:number;
+    priceAdd1Kg: number;
+    deliveryTime: number;
+}
