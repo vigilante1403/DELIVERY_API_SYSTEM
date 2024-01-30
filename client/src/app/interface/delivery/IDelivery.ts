@@ -112,6 +112,7 @@ export interface IOrderShow2{
     orderStatus:string,
     orderPaymentStatus:string,
     deliveryAgent:string,
+    state?:string
 }
 export interface IPaymentStatus{
     id:number,
@@ -188,4 +189,8 @@ export class ReturnParcel implements IReturnParcel{
 export interface ISubmitChangeLocation{
     orderId:number,
     newZipCodeLocation:number
+}
+export interface IDeliveryStatus{
+    id:number,
+    statusName:string
 }

@@ -6,25 +6,63 @@
                   <div class="card">
                     <div class="card-body p-0">
                       <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
-                        
                         <div class="d-flex flex-row">
+                          
                           <div class="form-input">
-                            <label for="input">Nhập từ khóa:</label>
-                            <input type="text" id="input" (input)="receiveKeyword($event)">
+                            <label for="input">Service:</label>
+                            <select name="" id="" (change)="getServiceChoose($event)">
+                              <option value="-1">ALL</option>
+                              <option value="{{ service.serviceName }}" *ngFor="let service of this.storedServices">{{ service.serviceName.toUpperCase() }}</option>
+                            </select>
                           </div>
                           <div class="form-input">
-                            <label for="input">Sort by:</label>
-                            <select name="" id="">
-                              <option value="">
-                                Delivered
-                              </option>
-                              <option value="">
-                                Processing
-                              </option>
-                              <option value="">
-                                delivering
+                            <label for="input">Order Status:</label>
+                            <select name="" id="" (change)="getOrderStatusChoose($event)">
+                              <option value="-1">ALL</option>
+                              <option value="{{ status.statusName }}" *ngFor="let status of this.storedOrderStatus">
+                                {{ status.statusName }}
                               </option>
                             </select>
+                          </div>
+                          <div class="form-input">
+                            <label for="input">Payment Status:</label>
+                            <select name="" id="" (change)="getPaymentStatusChoose($event)">
+                              <option value="-1">
+                                ALL
+                              </option>
+                              <option value="{{ status.statusName }}" *ngFor="let status of this.storedPaymentStatus">
+                                {{ status.statusName }}
+                              </option>
+                              
+                            </select>
+                          </div>
+                          <div class="form-input">
+                            <label for="input">Route:</label>
+                            <select name="" id="" (change)="getRouteChoose($event)">
+                              <option value="-1">
+                                ALL
+                              </option>
+                              <option value="same">
+                                Same State
+                              </option>
+                              <option value="diff">
+                                Different State
+                              </option>
+                            </select>
+                          </div>
+                          <div class="form-input">
+                            <label for="input">CustomerId/CustomerEmail:</label>
+                            <input #search type="text" id="input" (input)="receiveKeyword($event)">
+                          </div>
+                          <div class="form-input">
+                            <label for="">&nbsp;Search</label>
+                           <a class="btn btn-primary text-white" (click)="searchButton()">Search</a>
+                           
+                          </div>
+                          <div class="form-input">
+                            <label for="">&nbsp;Refresh</label>
+                           <a class="btn btn-success text-white" (click)="refreshButton()">Refresh</a>
+                           
                           </div>
                         </div>
                         <table class="table table-striped mb-0">
@@ -36,7 +74,8 @@
                               <th scope="col">Status <a (click)="onSortOrderStatus()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected3"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected3"></fa-icon></a></th>
                               <th scope="col">Payment Done <a (click)="onSortPaymentStatus()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected4"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected4"></fa-icon></a></th>
                               <th scope="col">Customer <a (click)="onSortCustomerId()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected5"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected5"></fa-icon></a></th>
-                            </tr>
+                              <th scope="col">Details</th>
+                              </tr>
                           </thead>
                           <tbody>
                             <tr *ngFor="let order of this.ordersToShow">
@@ -46,6 +85,7 @@
                                 <td>{{ order.orderStatus }}</td>
                                 <td>{{ order.orderPaymentStatus }}</td>
                                 <td>{{ order.customerId.substring(0,8) }}xxx</td>
+                                <td><a class="btn" (click)="openModal(template,order.id)">View</a></td>
                             </tr>
                           </tbody>
                         </table>
@@ -57,7 +97,108 @@
             </div>
           </div>
         </div>
-
+        <ng-template #template>
+          <div class="modal-header">
+            <img src="https://i.pinimg.com/originals/af/ab/46/afab4635c7491943d71528a650e95673.gif" alt="" height="50px" width="50px">
+            <h2><strong>Customer Delivery Detail</strong></h2>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+              <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="d-flex justify-content-center row">
+                  <div class="col-md-12">
+                      <div class="p-3 bg-white rounded">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <h1 class="text-uppercase"><strong>Invoice</strong></h1>
+                              <div class="billed"><span class="font-weight-bold text-uppercase">Billed:</span><span class="ml-1">&nbsp;#{{ this.detail.orderId }}</span></div>
+                              <div class="billed"><span class="font-weight-bold text-uppercase">Date:</span><span class="ml-1">&nbsp;{{ this.detail.orderDTO.orderDate }}</span></div>
+                              <div class="billed"><span class="font-weight-bold text-uppercase">Order ID: </span><span class="ml-1">#xxxxxxx</span></div>
+                              <div class="billed"><span class="font-weight-bold text-uppercase">Sender: </span><span class="ml-1">{{ this.senderAddress }}</span></div>
+                              <div class="billed"><span class="font-weight-bold text-uppercase">Recipient: </span><span class="ml-1">{{ this.contactAddress }}</span></div>
+                              <div class="billed"><span class="font-weight-bold text-uppercase">Service Chose: </span><span class="ml-1">{{ this.detail.orderDTO.service }}</span></div>
+                              <div class="billed" *ngIf="this.detail.orderDTO.service=='vpp'"><span class="font-weight-bold text-uppercase" >COD Money: </span><span class="ml-1">{{(this.deliveryDetail.codMoney!+this.detail.returnPayment.totalCharges).toLocaleString('en-us') }}$</span></div>
+                            </div>
+                              <div class="col-md-6 text-right mt-3">
+                                  <h4 class="text-danger mb-0"><strong>TARS DELIVERY</strong></h4><span><strong>aptech.com</strong></span></div>
+                                  <div *ngIf="this.deliveryDetail.id!=0">
+                                    <app-test-line  [currentStep]="this.currentStep"></app-test-line>
+                                  </div>
+                                </div>
+                          <div class="mt-3">
+                              <div class="table-responsive">
+                                  <table class="table">
+                                      <thead>
+                                          <tr>
+                                              <th>Package</th>
+                                              <th>Unit</th>
+                                              <th>Weight</th>
+                                              <th>Image</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr *ngFor="let item of this.detail.returnParcels">
+                                          <td>{{ item.parcelName }}</td>
+                                          <td>{{ item.quantity }}</td>
+                                          <td>{{ item.weight }}kg</td>
+                                          <td><img [src]="item.imageUrl" height="50px" alt="photo"></td>
+                                      </tr>
+                                      
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td><strong>Prepaid</strong></td>
+                                          
+                                          <td>{{  this.detail.returnPayment.prePaid.toLocaleString('en-US', { style: 'decimal' }) }}$</td>
+                                          
+                                          <!-- <td>{{ this.basketService.basketTotal.total.toLocaleString('en-US', { style: 'decimal' }) }} VND</td> -->
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td><strong>Weight charges</strong></td>
+                                          <td>{{ this.detail.returnPayment.subTotal.toLocaleString('en-US', { style: 'decimal' }) }}$</td>
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td><strong>Service price</strong></td>
+                                          <td>{{ this.detail.returnPayment.servicePrice.toLocaleString('en-US', { style: 'decimal' }) }}$</td>
+                                      </tr>
+                                      <tr>
+                                          <td></td>
+                                      <td></td>
+                                      <td><strong>Distance price</strong></td>
+                                      <td>{{ this.detail.returnPayment.distanceCharges.toLocaleString('en-US', { style: 'decimal' }) }}$</td>
+                                  </tr>
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td><strong>Total + Shipping</strong></td>
+                                      <td>{{ this.detail.returnPayment.totalCharges.toLocaleString('en-US', { style: 'decimal' }) }} $</td>
+                                      </tr>
+                                  
+                                          
+                                          
+                                      
+                                          </tbody>
+                                      
+                                  </table>
+                                  <div class="text-right mb-3 justify-content-around d-flex">
+                                    <button class=" col-sm-3 btn btn-primary" (click)="closeModal()">Ok </button></div>
+                                  
+                              </div>
+                          </div>
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+        </ng-template>
+      
 
   
 

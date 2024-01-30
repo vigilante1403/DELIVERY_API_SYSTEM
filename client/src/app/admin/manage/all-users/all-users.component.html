@@ -19,6 +19,7 @@
                                 <th scope="col">UserEmail <a (click)="onSortEmail()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected2"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected2"></fa-icon></a></th>
                                 <th scope="col">Role <a (click)="onSortRole()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected3"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected3"></fa-icon></a></th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Info</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -29,6 +30,7 @@
                                     <td ><span *ngIf="this.user.roleName.startsWith(admin);" class="badge bg-success">{{ user.roleName }}</span>
                                         <span *ngIf="!this.user.roleName.startsWith(admin);" class="badge bg-primary">{{ user.roleName }}</span></td>
                                     <td>Active</td>
+                                    <td style="cursor:pointer">View</td>
                                 </tr>
                             </tbody>
                           </table>

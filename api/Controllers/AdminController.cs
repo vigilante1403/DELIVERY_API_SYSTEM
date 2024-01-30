@@ -96,6 +96,13 @@ namespace api.Controllers{
             return Ok();
 
         }
+        [HttpGet("delivery-created")]
+        public async Task<ActionResult<IEnumerable<ReturnDelivery>>> RetrieveAllCreatedDeliveries(){
+            IEnumerable<Order> ordersList = await _unitOfWork.OrderRepository.GetEntityByExpression(null,q=>q.OrderByDescending(w=>w.OrderDate),"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            var orderIdList = ordersList.Select(w=>w.Id);
+            IEnumerable<Delivery> deliveryList = await _unitOfWork.DeliveryRepository.GetEntityByExpression(q=>orderIdList.Contains(q.OrderId),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            return Ok(_mapper.Map<IEnumerable<Delivery>,IEnumerable<ReturnDelivery>>(deliveryList));
+        }
         //lay don hang duoc tao vao hnay --delivery hoan thanh vao waiting payment cua order
 
         //lay delivery duoc pick up 

@@ -77,7 +77,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     
   ],
   exports:[
-    UserComponent
+    UserComponent,
+    TestLineComponent
   ]
 })
 export class UserModule { }

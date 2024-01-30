@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IDelivery, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitChangeLocation, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
+import { IDelivery, IDeliveryStatus, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitChangeLocation, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
 import { ICustomer } from '../interface/account/IUser'
 
@@ -53,6 +53,9 @@ export class DeliveryService {
   fetchAllUnFinishedOrders(customerId:any){
     return this.http.get<IOrderShow[]>(env+'/Delivery/temp/'+customerId)
   }
+  fetchAllDeliveries(){
+    return this.http.get<IDelivery[]>(env+'/Admin/delivery-created')
+  }
   updateStatusDeliveries(customerId:any){
     return this.http.get(env+'/Delivery/update-delivery-status/'+customerId)
 
@@ -80,5 +83,11 @@ export class DeliveryService {
   }
   updateLocation(data:ISubmitChangeLocation){
     return this.http.put<ISubmitChangeLocation>(env+'/Delivery/update-location',data)
+  }
+  fetchAllDeliveryStatus(){
+    return this.http.get<IDeliveryStatus[]>(env+'/Order/order-status')
+  }
+  fetchAllPaymentStatus(){
+    return this.http.get<IDeliveryStatus[]>(env+'/Payment/order-payment-status')
   }
 }

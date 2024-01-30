@@ -137,6 +137,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       },
     }),
        AlertModule.forRoot(),
+       
 
 
    
