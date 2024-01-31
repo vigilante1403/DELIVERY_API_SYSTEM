@@ -51,6 +51,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ValidateLifetime=true,
         ValidAudience = builder.Configuration["TokenAdmin:Audience"]
     };
+}).AddJwtBearer("EmployeeBearer",ops=>{
+    ops.TokenValidationParameters = new TokenValidationParameters{
+        ValidateIssuerSigningKey=true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenEmployee:Key"])),
+        ValidIssuer=builder.Configuration["TokenEmployee:Issuer"],
+        ValidateIssuer = true,
+        ValidateLifetime=true,
+        ValidAudience = builder.Configuration["TokenEmployee:Audience"]
+    };
 });
 builder.Services.AddAuthorization(options =>
     {

@@ -234,7 +234,7 @@ namespace api.Controllers
         
         
         [HttpGet("profile")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes ="AdminBearer,EmployeeBearer")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetAllCustomerInfo()
         {
             IEnumerable<Customer> customers = await _unitOfWork.CustomerRepository.GetEntityByExpression(null, null, "Address");

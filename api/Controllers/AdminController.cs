@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace api.Controllers{
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes ="AdminBearer")]
+    [Authorize(AuthenticationSchemes ="AdminBearer,EmployeeBearer")]
     public class AdminController:ControllerBase{
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _environment;
