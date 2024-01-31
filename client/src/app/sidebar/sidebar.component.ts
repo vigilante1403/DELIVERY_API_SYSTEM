@@ -3,6 +3,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { SidebarService } from './sidebar.service';
 import { ModalService } from '../nav-bar/modal/modal.service';
 import { faCode,faTree } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 // import { MenusService } from './menus.service';
 
 @Component({
@@ -22,7 +23,7 @@ export class SidebarComponent implements OnInit {
   faTree=faTree
   faCode=faCode
   login!:boolean
-  constructor(public sidebarservice: SidebarService,public service:ModalService) {
+  constructor(public sidebarservice: SidebarService,public service:ModalService,private router:Router) {
     this.menus = sidebarservice.getMenuList();
    }
 
@@ -33,7 +34,10 @@ export class SidebarComponent implements OnInit {
   getSideBarState() {
     return this.sidebarservice.getSidebarState();
   }
-
+  logout(){
+    this.service.Logout();
+    
+  }
   toggle(currentMenu:any) {
     if (currentMenu.type === 'dropdown') {
       this.menus.forEach((element:any) => {

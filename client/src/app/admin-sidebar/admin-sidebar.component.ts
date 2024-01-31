@@ -32,7 +32,9 @@ export class AdminSidebarComponent {
   getSideBarState() {
     return this.sidebarservice.getSidebarState();
   }
-
+logout(){
+  this.service.Logout()
+}
   toggle(currentMenu:any) {
     if (currentMenu.type === 'dropdown') {
       this.menus.forEach((element:any) => {

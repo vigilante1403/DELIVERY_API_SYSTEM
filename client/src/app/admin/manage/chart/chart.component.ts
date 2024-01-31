@@ -30,4 +30,20 @@ export class ChartComponent {
     responsive: true
   };
   chartType:any="bar"
+  onChartHover = ($event: any) => {
+    window.console.log('onChartHover', $event);
+  };
+
+  onChartClick = ($event: any) => {
+    window.console.log('onChartClick', $event);
+  };
+  newDataPoint(dataArr = [100, 100, 100], label:any) {
+    this.chartData.forEach((dataset, index) => {
+      this.chartData[index] = Object.assign({}, this.chartData[index], {
+        data: [...this.chartData[index].data, dataArr[index]]
+      });
+    });
+
+    this.chartLabels = [...this.chartLabels, label];
+  }
 }

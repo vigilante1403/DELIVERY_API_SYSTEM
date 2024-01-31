@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ILogin, IRegister, IUser } from '../../interface/account/IUser';
 import { env } from '../../config/environment';
 import { BsModalService,BsModalRef } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 // import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Injectable({
@@ -21,7 +22,7 @@ localStorage.getItem('userId')!:'',role:localStorage.getItem('role')!=null?
 localStorage.getItem('role')!:'',totalDeliveriesMade:localStorage.getItem('totalDeliveriesMade')!=null?
 localStorage.getItem('totalDeliveriesMade')!:'0',phoneNumber:localStorage.getItem('phoneNumber')!=null?
 localStorage.getItem('phoneNumber')!:'undefined'});
-  constructor(private http:HttpClient,) { } // inject modal service
+  constructor(private http:HttpClient,private router:Router) { } // inject modal service
   SignIn(login:ILogin):Observable<IUser>{
    return this.http.post<IUser>(env+'/Account/login',login)
   }
@@ -39,7 +40,7 @@ localStorage.getItem('phoneNumber')!:'undefined'});
     localStorage.removeItem('phoneNumber');
     this.loginStatus.next(false)
     this.user=({displayName:'',email:'',token:'',imageUrl:'',userId:'',role:'',totalDeliveriesMade:'0',phoneNumber:'undefined'})
-   
+   this.router.navigateByUrl("/")
   }
   checkLogin(){
     return this.login$;
