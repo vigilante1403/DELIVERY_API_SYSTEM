@@ -17,6 +17,8 @@ import { ChangePasswordComponent } from "../user/change-password/change-password
 import { NewCheckoutComponent } from "../user/new-checkout/new-checkout.component";
 import { VerifySendToComponent } from "../user/forgot-password/verify-send-to/verify-send-to.component";
 import { UpdateUnpaidFormsComponent } from "../user/update-unpaid-forms/update-unpaid-forms.component";
+import { MakeRoleComponent } from "./make-role/make-role.component";
+import { NewEmployeeComponent } from "./new-employee/new-employee.component";
 
 
 export const AdminRoute: Routes = [
@@ -38,5 +40,7 @@ export const AdminRoute: Routes = [
     {path: 'change-password', component: ChangePasswordComponent},
     {path:"checkout",component:NewCheckoutComponent},
     {path:'edit/:orderId',component:UpdateUnpaidFormsComponent},
+    {path:'make-role' ,component:MakeRoleComponent},
+    {path:'new-employee',component:NewEmployeeComponent}
     
 ];

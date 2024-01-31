@@ -17,7 +17,9 @@ export class AllUsersComponent implements OnInit {
   storedUsers:IUser[]=[];
   customerlist: ICustomer=({id:"",name:'',phoneNumber:'',email:''});
   backupStoredUsers:IUser[]=[];
-  admin:string='a'
+  admin:string='a';
+  employee:string='e';
+  users:string='u';
   selected: boolean = false;
   selected2: boolean = false;
   selected3: boolean = false;

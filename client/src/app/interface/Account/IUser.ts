@@ -23,3 +23,10 @@ export interface ICustomer{
     email:string,
     phoneNumber:string
 }
+export interface ICustomer2{
+    id:string,
+    name:string,
+    email:string,
+    phoneNumber:string,
+    imageUrl:string,
+}

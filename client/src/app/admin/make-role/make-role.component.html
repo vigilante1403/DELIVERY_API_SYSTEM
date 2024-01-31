@@ -1,0 +1,121 @@
+
+<div class=" h-100" >
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                  <div class="d-flex flex-row">
+                  <div class="form-input" style="margin-right: 20px;">
+                    <label for="input">Nhập từ khóa:</label>
+                    <input #search type="text" id="input" (input)="receiveKeyword($event)">
+                  </div>
+                  <div class="form-input" style="margin-right: 20px;">
+                    <label for="input">Role:</label>
+                    <select name="" id="" (change)="getRoleChoose($event)">
+                      <option value="-1">ALL</option>
+                      <option value="admin" >ADMIN</option>
+                      <option value="user" >USER</option>
+                    </select>
+                  </div>
+                  <div class="form-input"style="margin-right: 20px;">
+                    
+                   <a class="btn btn-primary text-white" (click)="searchButton()">Search</a>
+                   
+                  </div>
+                  <div class="form-input"style="margin-right: 20px;">
+                    
+                   <a class="btn btn-success text-white" (click)="refreshButton()">Refresh</a>
+                   
+                  </div>
+                </div>
+                  <table class="table table-striped mb-0">
+                    <thead style="background-color: #002d72!important;">
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">DisplayName <a (click)="onSortDisplayname()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected"></fa-icon></a></th>
+                        <th scope="col">UserEmail <a (click)="onSortEmail()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected2"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected2"></fa-icon></a></th>
+                        <th scope="col">Role <a (click)="onSortRole()"> <fa-icon [icon]="faChevronDown" *ngIf="!this.selected3"></fa-icon>  <fa-icon [icon]="faChevronUp" *ngIf="this.selected3"></fa-icon></a></th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Info</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of this.storedUsers">
+                            <td>{{ user.id.substring(0,3) }}xxxx</td>
+                            <td>{{ user.displayName }}</td>
+                            <td>{{ user.email }}</td>
+                            <td ><span *ngIf="this.user.roleName.startsWith(admin);" class="badge bg-success">{{ user.roleName }}</span>
+                                <span *ngIf="this.user.roleName.startsWith(employee);" class="badge bg-warning">{{ user.roleName }}</span>
+                                <span *ngIf="this.user.roleName.startsWith(users);" class="badge bg-primary">{{ user.roleName }}</span></td>
+                            <td>Active</td>
+                            <td style="cursor:pointer"(click)="openModal(template,user.email)">Edit Role</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #template >
+    <div class="modal-content">
+      <div class="modal-header">
+     
+        <h2><strong>User Info</strong></h2>
+        <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+           
+          <div class="d-flex justify-content-center row">
+              <div class="col-md-12">
+                  <div class=" bg-white rounded">
+                      <div class="row">
+                        <div class="col-md-12">
+                            <div class="profile-img">
+                                <img src="{{this.userInfo.imageUrl}}" alt=""/>
+                                
+                            </div>
+                          <h1 class="text-uppercase"><strong></strong></h1>
+                          <div class="billed"><span class="font-weight-bold text-uppercase">User Id:</span><span class="ml-1">&nbsp;{{this.userInfo.userId}}</span></div>
+                          <div class="billed"><span class="font-weight-bold text-uppercase">User Name:</span><span class="ml-1">&nbsp;{{this.userInfo.displayName}}</span></div>
+                          <div class="billed"><span class="font-weight-bold text-uppercase">Phone: </span><span class="ml-1">{{userInfo.phoneNumber}}</span></div>
+                          <div class="billed"><span class="font-weight-bold text-uppercase">Email: </span><span class="ml-1">{{userInfo.email}}</span></div>
+                          <div class="billed"><span class="font-weight-bold text-uppercase">Role: </span><span class="ml-1">{{userInfo.role}}</span></div>
+                          <div class="billed"><span class="font-weight-bold text-uppercase">Change Role: </span>
+                            <select (click)="getChangeRoleChoose($event)" value="{{userInfo.role}}">
+                            <option value="user">User</option>
+                            <option value="employee">Employee</option>
+                          </select></div>
+                         
+                        </div>
+                       
+                      
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="onChangeRole()">Ok</button>
+        <button class="btn btn-warning" (click)="modalRef?.hide()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
+  <ngx-spinner type="timer">
+
+  </ngx-spinner>
+
+
+
+
+

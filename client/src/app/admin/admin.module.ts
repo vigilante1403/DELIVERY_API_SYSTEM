@@ -15,11 +15,16 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MakeRoleComponent } from './make-role/make-role.component';
+import { NewEmployeeComponent } from './new-employee/new-employee.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    MakeRoleComponent,
+    NewEmployeeComponent
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(AdminRoute),
