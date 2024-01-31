@@ -60,8 +60,6 @@ namespace api.Controllers
             
             var newUser = await _userManager.FindByEmailAsync(user.Email);
             await _userManager.AddToRoleAsync(newUser,"user");
-            var totalAddress = await _unitOfWork.AddressRepository.GetAll();
-            var total = totalAddress.Count();
             Customer customer = new Customer
             {
                 Id = newUser.Id,
@@ -105,6 +103,70 @@ namespace api.Controllers
                 Email = newUser.Email,
                 DisplayName = newUser.DisplayName,
                 Token = await _tokenService.CreateToken(newUser)
+            };
+            return Ok(returnUser);
+
+        }
+        [HttpPost("register-employee")]
+        public async Task<ActionResult<UserDTO>> RegisterForEmployee([FromBody] RegisterDTO register)
+        {
+            var user = new AppUser
+            {
+                DisplayName = register.DisplayName,
+                Email = register.Email,
+                UserName = register.Email
+            };
+            var result = await _userManager.CreateAsync(user, register.Password);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new ErrorResponse(400,"error in aspnet user"));
+            }
+            
+            var newUser = await _userManager.FindByEmailAsync(user.Email);
+            await _userManager.AddToRoleAsync(newUser,"employee");
+            Customer customer = new Customer
+            {
+                Id = newUser.Id,
+                Name = newUser.DisplayName,
+                Email = newUser.Email,
+                PhoneNumber = "Unknown"
+            };
+            try
+            {
+                _unitOfWork.CustomerRepository.Add(customer);
+
+            }
+            catch (System.Exception)
+            {
+
+                return BadRequest(new ErrorResponse(500,"Error at customer table"));
+            }
+            Address a = new Address
+                {
+                    
+                    FirstName = newUser.DisplayName,
+                    LastName = "Unknown",
+                    Street = "Unknown",
+                    City = "Unknown",
+                    State = "Unknown",
+                    ZipCode = "Unknown",
+                    CustomerId=newUser.Id
+                };
+                try
+                {
+                    _unitOfWork.AddressRepository.Add(a);
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500,"error at address table"));
+                }
+
+            UserDTO returnUser = new UserDTO
+            {
+                Email = newUser.Email,
+                DisplayName = newUser.DisplayName,
+                Token = await _tokenService.CreateEmployeeToken(newUser)
             };
             return Ok(returnUser);
 
