@@ -69,9 +69,14 @@ export class AdminSidebarService {
       },
       submenus: [
         {
-          title: 'Make roles',
-         
+          title: 'New employee',
+          url:'/admin/new-employee'
         },
+        {
+          title: 'Make roles',
+          url:'/admin/make-role'
+        },
+       
         
       ]
     },

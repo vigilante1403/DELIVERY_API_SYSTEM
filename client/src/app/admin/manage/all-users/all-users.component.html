@@ -48,7 +48,9 @@
                                     <td>{{ user.displayName }}</td>
                                     <td>{{ user.email }}</td>
                                     <td ><span *ngIf="this.user.roleName.startsWith(admin);" class="badge bg-success">{{ user.roleName }}</span>
-                                        <span *ngIf="!this.user.roleName.startsWith(admin);" class="badge bg-primary">{{ user.roleName }}</span></td>
+                                        <span *ngIf="this.user.roleName.startsWith(users);" class="badge bg-primary">{{ user.roleName }}</span>
+                                        <span *ngIf="this.user.roleName.startsWith(employee);" class="badge bg-warning">{{ user.roleName }}</span>
+                                      </td>
                                     <td>Active</td>
                                     <td style="cursor:pointer"(click)="openModal(template,user.email)">View</td>
                                 </tr>

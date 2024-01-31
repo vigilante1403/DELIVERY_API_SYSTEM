@@ -87,11 +87,13 @@ namespace api.Controllers{
             return Ok(list);
         }
         [HttpPost("change-user-role")]
-        public async Task<ActionResult> ChangeUserRole([FromBody] string email,string role){
-            var user = await _userManager.FindByEmailAsync(email);
-            await _userManager.AddToRoleAsync(user,role);
-            if(role=="admin"||role=="emloyee"){
+        public async Task<ActionResult> ChangeUserRole([FromBody] ChangeRoleDTO change){
+            var user = await _userManager.FindByEmailAsync(change.email);
+            await _userManager.AddToRoleAsync(user,change.role);
+            if(change.role=="admin"||change.role=="employee"){
                 await _userManager.RemoveFromRoleAsync(user,"user");
+            }if(change.role=="admin"||change.role=="user"){
+                await _userManager.RemoveFromRoleAsync(user,"employee");
             }
             return Ok();
 
