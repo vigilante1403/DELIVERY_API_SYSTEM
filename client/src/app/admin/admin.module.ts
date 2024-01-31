@@ -15,6 +15,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 
@@ -33,7 +34,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     NgxPayPalModule,
     CollapseModule.forRoot(),
     
-    MatSnackBarModule
+    MatSnackBarModule,
+
   ],
   exports:[
 

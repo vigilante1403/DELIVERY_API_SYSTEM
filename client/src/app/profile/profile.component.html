@@ -3,12 +3,20 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-img">
-                    <img [src]="this.modal.user.imageUrl" alt=""/>
+                    <div *ngIf="this.modal.user.imageUrl.length>2; else noImage">
+                        <img [src]="this.modal.user.imageUrl" alt=""/>
+                    </div>
+                    <ng-template #noImage>
+                        <img *ngIf="this.tempImage==''" src="https://artscimedia.case.edu/wp-content/uploads/sites/79/2016/12/14205134/no-user-image.gif" alt=""/>
+                        <img *ngIf="this.tempImage!=''" [src]="this.tempImage" alt=""/>
+                    </ng-template>
                     <div style="cursor:pointer" class="file btn btn-lg btn-primary">
                         Change Photo
-                        <input type="file" name="file"/>
+                        <input type="file" name="file" accept="image/*" (change)="onFileSelected($event)"/>
                     </div>
+                    
                 </div>
+                <div class="btn btn-primary text-white" *ngIf="this.change" style="margin-left:40%" (click)="onSaveChanges()">Save</div>
             </div>
             <div class="col-md-6">
                 <div class="profile-head">

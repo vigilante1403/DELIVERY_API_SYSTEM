@@ -56,4 +56,7 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
   editProfileBasic(data:any){
     return this.http.post<any>(env+'/Account/update-basic-info',data)
   }
+  editAvatarOnly(data:any){
+    return this.http.post<any>(env+'/Account/update-avatar-only',data)
+  }
 }

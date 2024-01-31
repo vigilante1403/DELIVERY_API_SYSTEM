@@ -37,6 +37,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     NgxSpinnerModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+
     
     
   ],

@@ -619,6 +619,55 @@ namespace api.Controllers
         
             return Ok();
       }
+      [HttpPost("update-avatar-only")]
+      public async Task<ActionResult<object>> UpdateUserAvatarOnly([FromForm] SubmitBasicInfo submit){
+        
+        var user = await _userManager.FindByEmailAsync(submit.Email);
+        Console.WriteLine(submit.DisplayName);
+        var customerId="";
+        var imageString="";
+        if(user!=null){
+             customerId = user.Id;
+            
+       var folderName= "images/customer/"+customerId;
+       
+            var uploadsFolder = Path.Combine(_environment.WebRootPath,folderName);
+            if(!Directory.Exists(uploadsFolder)){
+                Directory.CreateDirectory(uploadsFolder);
+            }
+                if(submit.ImageUrl.Length>0){
+                     var filePath = Path.Combine(uploadsFolder, submit.ImageUrl.FileName);
+                
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    submit.ImageUrl.CopyTo(fileStream);
+                }
+                var customerList = await _unitOfWork.CustomerRepository.GetEntityByExpression(e=>e.Id==customerId,null,null);
+                if(!customerList.Any()){
+                    return BadRequest(new ErrorResponse(404));
+                }
+
+                var customer = customerList.FirstOrDefault();
+                try
+                {
+                    
+                customer.ImageUrl=folderName+"/"+submit.ImageUrl.FileName;
+                _unitOfWork.Save();
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500));
+                }
+                string baseUrl = _httpContextAccessor.HttpContext.Request.Scheme+"://"+_httpContextAccessor.HttpContext.Request.Host;
+                imageString = baseUrl+"/"+folderName+"/"+submit.ImageUrl.FileName;
+                }
+        }
+         
+       
+        
+            return new {imageUrl=imageString};
+      }
        
     }
 

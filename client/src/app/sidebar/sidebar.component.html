@@ -7,7 +7,10 @@
         </div>
   
         <div class="sidebar-profile">
-          <div class="user-pic">
+          <div class="user-pic" *ngIf="this.service.user.imageUrl.length>2">
+            <img class="img-responsive img-rounded" [src]="this.service.user.imageUrl" alt="User picture">
+          </div>
+          <div class="user-pic" *ngIf="this.service.user.imageUrl===''">
             <img class="img-responsive img-rounded" src="https://media2.giphy.com/media/U2nN0ridM4lXy/giphy.gif" alt="User picture">
           </div>
           <div class="user-info">

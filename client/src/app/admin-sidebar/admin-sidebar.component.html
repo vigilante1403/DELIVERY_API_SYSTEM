@@ -5,9 +5,11 @@
           <a >TARS Delivery</a>
           <a class="btn btn-outline-warning" (click)="logout()">Logout</a>
         </div>
-  
         <div class="sidebar-profile">
-          <div class="user-pic">
+          <div class="user-pic" *ngIf="this.service.user.imageUrl.length>2">
+            <img class="img-responsive img-rounded" [src]="this.service.user.imageUrl" alt="User picture">
+          </div>
+          <div class="user-pic" *ngIf="this.service.user.imageUrl===''">
             <img class="img-responsive img-rounded" src="https://gifdb.com/images/high/winking-laying-pikachu-lmqyt4l2yk8z8k20.webp" alt="User picture">
           </div>
           <div class="user-info">
