@@ -16,19 +16,17 @@ import { UpdateUnpaidFormsComponent } from "../user/update-unpaid-forms/update-u
 import { CheckoutComponent } from "../user/checkout/checkout.component";
 
 export const EmployeeRoute: Routes = [
-    {path: '', component: EmployeeComponent,canActivate:[AuthenticationGuard]},
-    {path:'customer/:email/deliveries',component:UserDeliveryFetchComponent,canActivate:[AuthenticationGuard]},
-    {path:'customer/:orderId/edit/process',component:UserEditComponent,canActivate:[AuthenticationGuard]},
-    {path: 'edit-profile',component:EditProfileComponent,canActivate:[AuthenticationGuard]},
-    {path: 'delivering',component:DeliveringComponent,canActivate:[AuthenticationGuard]},
-    {path:'profile',component:ProfileComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/new',component:OrdersFormComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent,canActivate:[AuthenticationGuard]},
-    {path:'new-cart',component:NewCartComponent,canActivate:[AuthenticationGuard]},
-    {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path: '', component: EmployeeComponent},
+    {path:'customer/:email/deliveries',component:UserDeliveryFetchComponent},
+    {path:'customer/:orderId/edit/process',component:UserEditComponent},
+    {path: 'edit-profile',component:EditProfileComponent},
+    {path: 'delivering',component:DeliveringComponent},
+    {path:'profile',component:ProfileComponent},
+    {path:'order/new',component:OrdersFormComponent},
+    {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent},
+    {path:'new-cart',component:NewCartComponent},
     {path: 'change-password', component: ChangePasswordComponent},
-    {path:"checkout",component:NewCheckoutComponent,canActivate:[AuthenticationGuard]},
-    {path: '1/reset/:token', component: VerifySendToComponent},
-    {path:'edit/:orderId',component:UpdateUnpaidFormsComponent,canActivate:[AuthenticationGuard]},
+    {path:"checkout",component:NewCheckoutComponent},
+    {path:'edit/:orderId',component:UpdateUnpaidFormsComponent},
     
 ];

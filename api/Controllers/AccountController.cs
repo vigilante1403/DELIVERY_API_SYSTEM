@@ -449,8 +449,8 @@ namespace api.Controllers
 
 
     //forgot password
-    [HttpGet("3/r/forgot-password/findemail")]
-    public async Task<ActionResult> FindAccountByEmail(string email){
+    [HttpGet("3/r/forgot-password/findemail/{email}")]
+    public async Task<ActionResult> FindAccountByEmail([FromRoute]string email){
         var user = await _userManager.FindByEmailAsync(email);
         if(user==null){
         return BadRequest(new ErrorResponse(404,"User not found"));
@@ -476,7 +476,7 @@ namespace api.Controllers
             {
                 From = new MailAddress("new.vytruong.1812@gmail.com"),
                 Subject = "Password Forgot Token",
-                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/user/1/reset/{token}",
+                Body = $"Your password reset token is:{otp}\n If you're really ask for reseting password, access to this link: http://localhost:4200/1/reset/{token}",
                 IsBodyHtml = false,
             };
 

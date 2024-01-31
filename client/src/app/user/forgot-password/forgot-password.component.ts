@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { env } from 'src/app/config/environment';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -24,7 +25,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   isVerify=false
  private readonly notifier: NotifierService
-  constructor(private http : HttpClient,private fb: FormBuilder,private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar, private _notifier: NotifierService){
+  constructor(private userService:UserService,private fb: FormBuilder,private router: Router,private spinner: NgxSpinnerService, private snackBar: MatSnackBar, private _notifier: NotifierService){
     this.notifier=_notifier
   }
 
@@ -39,19 +40,12 @@ export class ForgotPasswordComponent implements OnInit {
   }
  
 
-  onSubmit() {
+  onSubmit(event:Event) {
 
-   let params = new HttpParams();
-   if(this.emailForm.value !== '')
-   {
-    params=params.append('email', this.emailForm.get('email')?.value);
-   }
-   console.log(params);
-   console.log("lo");
    
    console.log(this.emailForm.get('email')?.value);
    
-    this.http.get(env+ "/account/3/r/forgot-password/findemail", {params}).subscribe({
+    this.userService.verifyEmail(this.emailForm.get('email')?.value).subscribe({
       next: (e) => {console.log(e);
 
         this.emailFind=  this.emailForm.get('email')?.value; 
@@ -59,11 +53,12 @@ export class ForgotPasswordComponent implements OnInit {
        this.isFindByEmail=false;
        this.isFindByPhone=false;
        this.emailSend = this.emailForm.get('email')?.value;
+       console.log("Verify",this.isVerify)
       },
       error: (err) => {console.log(err);
       }
     })
-   
+
   }
   onSubmit2() {
     let params = new HttpParams();
@@ -72,14 +67,14 @@ export class ForgotPasswordComponent implements OnInit {
       params = params.append('userEmail', this.emailSend);
     }
   
-    this.http.get(env + '/account/forgot-generate-otp', {params}).subscribe({
+    this.userService.sendOtp(params).subscribe({
       next: (res) => {console.log(res);
         
         this.isVerify=false;
-        // this.openSnackBar();
-        // setTimeout(() => {
-        //   this.navigateTo("/");
-        // },1000);
+        this.openSnackBar();
+        setTimeout(() => {
+          this.navigateTo("/");
+        },1000);
         this.notifier.show({
           type: 'success',
           message: 'Send OTP to email succcess!',

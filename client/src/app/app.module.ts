@@ -37,12 +37,17 @@ import { PeriodService } from './period/period.service';
 import {NotifierModule} from 'angular-notifier'
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { BackgroundComponent } from './background/background.component';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ServicePageComponent } from './service-page/our-service/service-page.component';
 import { PricePerDistanceComponent } from './service-page/price-per-distance/price-per-distance.component';
 import { DeliveryAgentPageComponent } from './service-page/delivery-agent-page/delivery-agent-page.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { CustomMaterialModule } from './custom-material/custom-material.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { UserModule } from './user/user.module';
+import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
+import { VerifySendToComponent } from './user/forgot-password/verify-send-to/verify-send-to.component';
+import { NewPasswordComponent } from './user/forgot-password/new-password/new-password.component';
 
 
 
@@ -69,6 +74,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PricePerDistanceComponent,
     DeliveryAgentPageComponent,
     ConfirmDialogComponent,
+    ForgotPasswordComponent,
+    VerifySendToComponent,
+    NewPasswordComponent
 
   ],
   imports: [
@@ -146,7 +154,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       },
     }),
        AlertModule.forRoot(),
-       CustomMaterialModule
+       CustomMaterialModule,
+       MatSnackBarModule,
+       UserModule,
+       CommonModule
        
 
 

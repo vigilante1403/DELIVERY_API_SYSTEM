@@ -40,7 +40,10 @@ localStorage.getItem('phoneNumber')!:'undefined'});
     localStorage.removeItem('phoneNumber');
     this.loginStatus.next(false)
     this.user=({displayName:'',email:'',token:'',imageUrl:'',userId:'',role:'',totalDeliveriesMade:'0',phoneNumber:'undefined'})
-   this.router.navigateByUrl("/")
+   if(!this.router.url.startsWith("/forgot-password")&&!this.router.url.startsWith("/1/reset/")){
+    this.router.navigateByUrl("/")
+   }
+   
   }
   checkLogin(){
     return this.login$;

@@ -18,20 +18,19 @@ import { UserComponent } from './user.component';
 import { Routes } from "@angular/router";
 
 export const UserRoute: Routes = [
-    {path: '', component: UserComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/new',component:OrdersFormComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/cart/:customerId',component:CartComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/cart/:customerId/:orderId/add-package',component:AddPackageFormComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/cart/:customerId/:orderId/add-addresses',component:AddressFormComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent,canActivate:[AuthenticationGuard]},
-    {path:'new-cart',component:NewCartComponent,canActivate:[AuthenticationGuard]},
-    {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path: '', component: UserComponent},
+    {path:'order/new',component:OrdersFormComponent},
+    {path:'order/cart/:customerId',component:CartComponent},
+    {path:'order/cart/:customerId/:orderId/add-package',component:AddPackageFormComponent},
+    {path:'order/cart/:customerId/:orderId/add-addresses',component:AddressFormComponent},
+    {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent},
+    {path:'new-cart',component:NewCartComponent},
+
     {path: 'change-password', component: ChangePasswordComponent},
-    {path:"checkout",component:NewCheckoutComponent,canActivate:[AuthenticationGuard]},
-    {path: '1/reset/:token', component: VerifySendToComponent},
-    {path:'edit/:orderId',component:UpdateUnpaidFormsComponent,canActivate:[AuthenticationGuard]},
+    {path:"checkout",component:NewCheckoutComponent},
+    {path:'edit/:orderId',component:UpdateUnpaidFormsComponent},
     {path:'profile',component:ProfileComponent},
     {path:'period',component:PeriodComponent},
-    {path: 'edit-profile',component:EditProfileComponent,canActivate:[AuthenticationGuard]},
+    {path: 'edit-profile',component:EditProfileComponent},
     
 ];

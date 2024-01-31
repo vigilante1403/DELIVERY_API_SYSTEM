@@ -29,16 +29,14 @@ export const AdminRoute: Routes = [
         
     // ]
     // },
-    {path:'manage',loadChildren:()=>import('./manage/manage.module').then(mod=>mod.ManageModule),canActivate:[AuthenticationGuard,AuthorizationGuard]},
-    {path: 'edit-profile',component:EditProfileComponent,canActivate:[AuthenticationGuard]},
-    {path:'profile',component:ProfileComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/new',component:OrdersFormComponent,canActivate:[AuthenticationGuard]},
-    {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent,canActivate:[AuthenticationGuard]},
-    {path:'new-cart',component:NewCartComponent,canActivate:[AuthenticationGuard]},
-    {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path:'manage',loadChildren:()=>import('./manage/manage.module').then(mod=>mod.ManageModule)},
+    {path: 'edit-profile',component:EditProfileComponent},
+    {path:'profile',component:ProfileComponent},
+    {path:'order/new',component:OrdersFormComponent},
+    {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent},
+    {path:'new-cart',component:NewCartComponent},
     {path: 'change-password', component: ChangePasswordComponent},
-    {path:"checkout",component:NewCheckoutComponent,canActivate:[AuthenticationGuard]},
-    {path: '1/reset/:token', component: VerifySendToComponent},
-    {path:'edit/:orderId',component:UpdateUnpaidFormsComponent,canActivate:[AuthenticationGuard]},
+    {path:"checkout",component:NewCheckoutComponent},
+    {path:'edit/:orderId',component:UpdateUnpaidFormsComponent},
     
 ];

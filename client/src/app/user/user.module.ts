@@ -51,9 +51,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     DeliveredTableComponent,
     ProcessingTableComponent,
     TempTableComponent,
-    ForgotPasswordComponent,
-    VerifySendToComponent,
-    NewPasswordComponent,
+
     ChangePasswordComponent,
     NewCheckoutComponent,
     DonePaymentComponent,
