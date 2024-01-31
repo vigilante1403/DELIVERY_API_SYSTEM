@@ -60,6 +60,10 @@ getListDistrict(event:Event){
   this.tempWard=this.storedWards
   this.tempWard=this.tempWard.filter(e=>e.districtId==Number(id))
  }
+ getChosenWard(event:Event){
+  const id = (event.target as HTMLSelectElement).value
+  this.selectedWard=Number(id);
+ }
  updateLocation(){
   if(this.selectedWard==-1){
     console.log("invalid")

@@ -21,9 +21,11 @@ import { NgxPayPalModule } from 'ngx-paypal';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
+import { DeliveredComponent } from './delivered/delivered.component';
+import { EditAfterwardsImageComponent } from './delivered/edit-afterwards-image/edit-afterwards-image.component';
 
 @NgModule({
-  declarations: [EmployeeComponent, UserDeliveryFetchComponent, DeliveringFetchComponent, DeliveredFetchComponent, TransitFetchComponent, UserEditComponent, EditProfileComponent, DeliveringComponent, EditLocationComponent],
+  declarations: [EmployeeComponent, UserDeliveryFetchComponent, DeliveringFetchComponent, DeliveredFetchComponent, TransitFetchComponent, UserEditComponent, EditProfileComponent, DeliveringComponent, EditLocationComponent, DeliveredComponent, EditAfterwardsImageComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(EmployeeRoute),

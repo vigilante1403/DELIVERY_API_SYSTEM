@@ -29,7 +29,8 @@ namespace api.Helper{
             .ForMember(e=>e.OrderId,q=>q.MapFrom(t=>t.OrderId))
             .ForMember(i=>i.OrderPaymentId,q=>q.MapFrom(g=>g.OrderPaymentId))
             .ForMember(w=>w.CodMoney,m=>m.MapFrom(q=>q.VPPMoney))
-            .ForMember(y=>y.DeliveryStatusName,n=>n.MapFrom(s=>s.DeliveryStatus.StatusName));
+            .ForMember(y=>y.DeliveryStatusName,n=>n.MapFrom(s=>s.DeliveryStatus.StatusName))
+            .ForMember(t=>t.ReceiveImage,k=>k.MapFrom<ImageResolver>());
         }
     }
 }

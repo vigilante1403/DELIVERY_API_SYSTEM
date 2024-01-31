@@ -59,6 +59,15 @@ export class EmployeeSidebarService {
           url:'/employee/delivering'
           
         },
+        {
+          title: 'Delivered',
+          badge: {
+            text: '',
+            class: 'badge-success'
+          },
+          url:'/employee/delivered'
+          
+        },
         
         
       ]

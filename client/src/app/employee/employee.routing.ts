@@ -14,6 +14,7 @@ import { NewCheckoutComponent } from "../user/new-checkout/new-checkout.componen
 import { VerifySendToComponent } from "../user/forgot-password/verify-send-to/verify-send-to.component";
 import { UpdateUnpaidFormsComponent } from "../user/update-unpaid-forms/update-unpaid-forms.component";
 import { CheckoutComponent } from "../user/checkout/checkout.component";
+import { DeliveredComponent } from "./delivered/delivered.component";
 
 export const EmployeeRoute: Routes = [
     {path: '', component: EmployeeComponent},
@@ -21,6 +22,7 @@ export const EmployeeRoute: Routes = [
     {path:'customer/:orderId/edit/process',component:UserEditComponent},
     {path: 'edit-profile',component:EditProfileComponent},
     {path: 'delivering',component:DeliveringComponent},
+    {path: 'delivered',component:DeliveredComponent},
     {path:'profile',component:ProfileComponent},
     {path:'order/new',component:OrdersFormComponent},
     {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent},

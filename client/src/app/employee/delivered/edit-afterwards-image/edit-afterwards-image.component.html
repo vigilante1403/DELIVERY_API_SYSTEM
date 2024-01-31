@@ -1,0 +1,13 @@
+<div class="container">
+    <h3><strong>EDIT IMAGE</strong></h3>
+    <form class="form-control">
+        <div class="form-group mb-3">
+          <label for="select1">Select Image:</label>
+          <input type="file" accept="image/*" (change)="onFileSelected($event)">
+        </div>
+        <div *ngIf="this.change">
+            <img [src]="this.tempImage" height="50px;" alt="">
+        </div>
+        <button *ngIf="this.change" type="button" class="btn btn-primary mt-4" (click)="onSaveChanges()">Finish</button>
+      </form>
+</div>

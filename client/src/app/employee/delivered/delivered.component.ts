@@ -1,14 +1,14 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IDelivering, IDelivery, IOrderShow } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
 
 @Component({
-  selector: 'app-delivering',
-  templateUrl: './delivering.component.html',
-  styleUrls: ['./delivering.component.scss']
+  selector: 'app-delivered',
+  templateUrl: './delivered.component.html',
+  styleUrls: ['./delivered.component.scss']
 })
-export class DeliveringComponent implements OnInit{
+export class DeliveredComponent {
   items:IDelivering[]=[]
   deliveries:IDelivery[]=[]
   
@@ -23,7 +23,7 @@ constructor(private modalService: BsModalService,private service:DeliveryService
  
 }
 ngOnInit(): void {
-  this.service.fetchAllOutGoingDeliveries().subscribe({
+  this.service.fetchAllReachedDeliveries().subscribe({
     next:(res)=>{console.log(res);this.deliveries=res; localStorage.setItem('deliveries',JSON.stringify(res));
     this.splitAddressToRoute(
       JSON.parse(localStorage.getItem('storedOrders')!),
@@ -53,6 +53,8 @@ splitAddressToRoute(res: IOrderShow[], res2: IDelivery[]) {
       deliveryDate: any;
       deliveryStatusName: any;
       deliveryAgentName: any;
+      receiveImage?:string;
+      
     }) => {
       var element = temp.find((item2) => item.orderId == item2.id);
 
@@ -95,6 +97,7 @@ splitAddressToRoute(res: IOrderShow[], res2: IDelivery[]) {
           deliveryStatusName: item.deliveryStatusName,
           deliveryAgentName: item.deliveryAgentName,
           route: addressNew,
+          receiveImage:item.receiveImage
         };
         console.log(newDeliveries);
 
@@ -104,4 +107,3 @@ splitAddressToRoute(res: IOrderShow[], res2: IDelivery[]) {
   );
 }
 }
-

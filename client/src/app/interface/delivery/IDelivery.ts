@@ -137,7 +137,8 @@ export interface IDelivery{
     pickUpDateTime:Date,
     deliveryDate:Date,
     deliveryStatusName:string,
-    codMoney?: number
+    codMoney?: number,
+    receiveImage?:string
 }
 
 export interface IDelivering{
@@ -146,7 +147,8 @@ export interface IDelivering{
     route: string,
     deliveryAgentName:string,
     deliveryDate:Date,
-    deliveryStatusName:string
+    deliveryStatusName:string,
+    receiveImage?:string
 }
 export interface IReturnPayInfoParcel{
     orderId:number,

@@ -81,6 +81,9 @@ export class DeliveryService {
   fetchAllOutGoingDeliveries(){
     return this.http.get<IDelivery[]>(env+'/Delivery/out-going-delivery')
   }
+  fetchAllReachedDeliveries(){
+    return this.http.get<IDelivery[]>(env+'/Delivery/reached-delivery')
+  }
   updateLocation(data:ISubmitChangeLocation){
     return this.http.put<ISubmitChangeLocation>(env+'/Delivery/update-location',data)
   }
@@ -95,5 +98,8 @@ export class DeliveryService {
   }
   cancelPaidOrderNotPickUpYet(orderId:number){
     return this.http.post<any>(env+'/Payment/paid-orders/cancel',orderId)
+  }
+  updateReceiveImage(form:any){
+    return this.http.post<any>(env+'/Delivery/update-receive-image',form)
   }
 }

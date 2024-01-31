@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IDelivery } from 'src/app/interface/delivery/IDelivery';
 
 @Component({
@@ -9,9 +10,11 @@ import { IDelivery } from 'src/app/interface/delivery/IDelivery';
 export class TestLineComponent implements OnInit {
  
   isCollapsed=true
+  modalRef?: BsModalRef;
 
   @Input() currentStep!:number
-  constructor(){
+  @Input() imageUrl?:string
+  constructor(private modalService: BsModalService){
     
   }
   
@@ -19,4 +22,10 @@ export class TestLineComponent implements OnInit {
 
   
  }
+ openModal(template: TemplateRef<void>) {
+  this.modalRef = this.modalService.show(template);
+}
+closeModal(data:any){
+  this.modalRef?.hide()
+}
 }

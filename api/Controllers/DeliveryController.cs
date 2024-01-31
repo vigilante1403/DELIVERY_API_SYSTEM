@@ -18,11 +18,13 @@ namespace api.Controllers
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _environment;
       
-        public DeliveryController(IUnitOfWork unitOfWork,IMapper mapper)
+        public DeliveryController(IUnitOfWork unitOfWork,IMapper mapper,IWebHostEnvironment environment)
         {
             _unitOfWork = unitOfWork;
             _mapper=mapper;
+            _environment=environment;
         
         }
 
@@ -577,6 +579,11 @@ namespace api.Controllers
             var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.DeliveryStatusId==2,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
             return Ok(_mapper.Map<IEnumerable<Delivery>,IEnumerable<ReturnDelivery>>(deliveries));
         }
+        [HttpGet("reached-delivery")]
+        public async Task<ActionResult<IEnumerable<ReturnDelivery>>> GetAllReachedDeliveries(){
+            var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.DeliveryStatusId==3,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            return Ok(_mapper.Map<IEnumerable<Delivery>,IEnumerable<ReturnDelivery>>(deliveries));
+        }
         [HttpGet("update-status-all")]
         public async Task<ActionResult> UpdateAllDeliveriesStatus(){
              var processingList = await _unitOfWork.OrderRepository.GetEntityByExpression(
@@ -652,7 +659,60 @@ namespace api.Controllers
                 }
             }
             return Ok(_mapper.Map<List<Delivery>,List<ReturnDelivery>>(list));
+        }[HttpPost("update-receive-image")]
+        public async Task<ActionResult> UpdateDeliveryReceiveImage([FromForm] SubmitReceiveImage submit){
+            var id=0;
+            try
+            {
+                id = int.Parse(submit.OrderId);
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(400));
+            }
+            
+            var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(i=>i.OrderId==id,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            if(!deliveries.Any()){
+                return BadRequest(new ErrorResponse(404,$"Can't find order id no.{submit.OrderId}"));
+            }
+            var delivery = deliveries.FirstOrDefault();
+            var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(r=>r.Id==id,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            if(!orders.Any()){
+                return BadRequest(new ErrorResponse(404,"Can't find this submit orderId"));
+            }
+            var customerId = orders.FirstOrDefault().CustomerId;
+            var folderName= "images/customer/"+customerId;
+            var uploadsFolder = Path.Combine(_environment.WebRootPath,folderName);
+            if(!Directory.Exists(uploadsFolder)){
+                Directory.CreateDirectory(uploadsFolder);
+            }
+                var fullpath="";
+            if(submit.ImageUrl.Length>0){
+                     var filePath = Path.Combine(uploadsFolder, submit.ImageUrl.FileName);
+                
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    submit.ImageUrl.CopyTo(fileStream);
+                }
+                fullpath=folderName+"/"+submit.ImageUrl.FileName;
+                try
+                {
+                     delivery.ReceiveImage=fullpath;
+                _unitOfWork.Save();
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500));
+                }
+               
+                }else{
+                    return BadRequest(new ErrorResponse(400,"No image file existed"));
+                }
+                return Ok();
+            }
         }
     }
     
-}
+

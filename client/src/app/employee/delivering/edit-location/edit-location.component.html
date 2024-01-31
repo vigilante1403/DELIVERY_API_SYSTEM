@@ -20,7 +20,7 @@
     
         <div class="form-group mb-3">
             <label for="select2">Ward:</label>
-            <select class="form-control"  id="select2" name="select2">
+            <select class="form-control" (change)="getChosenWard($event)"  id="select2" name="select2">
               <option value="-1">Choose ward</option>
               <option value="{{ ward.id }}" *ngFor="let ward of this.tempWard">{{ ward.name }}</option>
             </select>

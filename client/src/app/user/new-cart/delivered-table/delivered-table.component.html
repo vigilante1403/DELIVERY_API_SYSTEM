@@ -62,7 +62,7 @@
                         <div class="col-md-6 text-right mt-3">
                             <h4 class="text-danger mb-0"><strong>TARS DELIVERY</strong></h4><span><strong>aptech.com</strong></span></div>
                             <div *ngIf="this.deliveryDetail.id!=0">
-                              <app-test-line  [currentStep]="this.currentStep"></app-test-line>
+                              <app-test-line [imageUrl]="this.deliveryDetail.receiveImage"  [currentStep]="this.currentStep"></app-test-line>
                             </div>
                             
                     </div>
