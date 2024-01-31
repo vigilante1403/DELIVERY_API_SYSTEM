@@ -26,8 +26,8 @@
                             <td>{{ service.id }}</td>
                             <td>{{ service.serviceName }}</td>
                             <td>{{ service.price }}</td>
-                            <td>{{ service.prePaid }}</td>
-                            <td>{{ service.collect }}</td>
+                            <td>{{ service.prePaid==true ?'Yes':'No' }}</td>
+                            <td>{{ service.collect ==true ?'Yes':'No'}}</td>
                         </tr>
                     </tbody>
                   </table>
