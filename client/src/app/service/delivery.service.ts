@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IDelivery, IDeliveryStatus, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitChangeLocation, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
+import { IDelivery, IDeliveryStatus, IOrderShow, IPayment, IReturnPayInfoParcel, IService, ISubmitCancelOrder, ISubmitChangeLocation, ISubmitListParcel, ISubmitOrder } from '../interface/delivery/IDelivery';
 import { env } from '../config/environment';
 import { ICustomer } from '../interface/account/IUser'
 
@@ -101,5 +101,11 @@ export class DeliveryService {
   }
   updateReceiveImage(form:any){
     return this.http.post<any>(env+'/Delivery/update-receive-image',form)
+  }
+  addCancelOrderNotif(data:ISubmitCancelOrder){
+    return this.http.post<any>(env+'/Order/add-cancel-order-notif',data)
+  }
+  getAllCancel(){
+    return this.http.get<any>(env+'/Order/get-all-require-cancel')
   }
 }

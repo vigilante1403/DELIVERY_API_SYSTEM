@@ -917,8 +917,24 @@ namespace api.Controllers{
                 title="Complete your payment at TARS Delivery";
             }
         }
-         
-        var sendResult = await SendEmailAsync("new.vytruong.1812@gmail.com",title,body);
+         var requiredDelete = await _unitOfWork.CancelOrderSubmittedByCustomerRepository.GetEntityByExpression(x=>x.OrderId==orderId,null,"Order");
+         var sendResult = await SendEmailAsync("new.vytruong.1812@gmail.com",title,body);
+         if(requiredDelete.Any()){
+            foreach(var require in requiredDelete){
+                try
+                {
+                    require.Check=true;
+                    _unitOfWork.Save();
+                }
+                catch (System.Exception)
+                {
+                    
+                    return BadRequest(new ErrorResponse(500,"Error at table cancel order submit"));
+                }
+                
+            }
+         }
+        
         if(sendResult==true){
             return Ok();
         }else{
@@ -926,6 +942,39 @@ namespace api.Controllers{
         }
 
     }
-
+    [HttpPost("add-cancel-order-notif")]
+    public async Task<ActionResult> CustomerSubmitCancelOrder([FromBody] SubmitCancelOrder submit){
+        var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(x=>x.Id==submit.OrderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+        if(!orders.Any()){
+            return BadRequest(new ErrorResponse(404));
+        }
+        var order = orders.FirstOrDefault();
+        if(order.OrderStatusId!=2){
+            return BadRequest(new ErrorResponse(401));
+        }
+        var cancel = new CancelOrderSubmittedByCustomer{
+            OrderId=order.Id,
+            Check=false
+        };
+        if(submit.Reason.Length>0){
+            cancel.Reason=submit.Reason;
+        }
+        try
+        {
+             _unitOfWork.CancelOrderSubmittedByCustomerRepository.Add(cancel);
+        }
+        catch (System.Exception)
+        {
+            
+            return BadRequest(new ErrorResponse(500));
+        }
+        return Ok();
+    }
+    [HttpGet("get-all-require-cancel")]
+    public async Task<ActionResult<IEnumerable<int>>> GetAllRequireCancel(){
+        var requires = await _unitOfWork.CancelOrderSubmittedByCustomerRepository.GetEntityByExpression(x=>x.Check==false,null,"Order");
+        var orderIds = requires.Select(x=>x.OrderId);
+        return Ok(orderIds);
+    }
     }
 }

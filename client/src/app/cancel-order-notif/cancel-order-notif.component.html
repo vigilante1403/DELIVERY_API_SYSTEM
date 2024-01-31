@@ -1,0 +1,20 @@
+<div class="container d-flex flex-column col-lg-8 justify-content-center" style="background-color: white; margin-top:60px">
+    <h2><strong>Cancel Delivery Form</strong></h2>
+    <form  class="form-group flex-wrap p-3  " >
+        <div class="form-input col-lg-12 ">
+          <label for="exampleInputEmail2"
+            class="form-label fs-6 text-uppercase text-black">Please tell us why you want to cancel your delivery:</label>
+          <input (change)="onChangeReason($event)" type="text"  
+            class="form-control ps-3" placeholder="Reason...">
+            
+        </div>
+        
+        <div class="d-grid my-3">
+          <button
+            class="btn btn-primary btn-lg btn-dark text-uppercase btn-rounded-none fs-6" (click)="onSubmit()">Submit</button>
+        </div>
+      </form>
+</div>
+
+
+

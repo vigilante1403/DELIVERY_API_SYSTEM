@@ -37,25 +37,29 @@ export class NewCartComponent implements OnInit {
     if(this.service.customer.id==''||true){
       try {
         this.service.getCustomerInfo(localStorage.getItem('userEmail')).subscribe({
-          next:(res)=>{console.log('customer Id:'+res.id);this.customerId=res.id;this.service.customer=res},
+          next:(res)=>{console.log('customer Id:'+res.id);this.customerId=res.id;this.service.customer=res;
+          this.service.updateStatusDeliveries(res.id).subscribe({
+            next:(res)=>{console.log(res)},
+            error:(err)=>{console.log(err)}
+          })
+        
+          this.service.fetchAllDeliveriesOfSpecificCustomer(res.id).subscribe({
+            next:(res)=>{console.log(res);this.deliveries=res;this.filterAllDeliveriesWithOrderIds(res);this.filter1(res);this.filter2(res);this.filter3(res)},
+            error:(err)=>{console.log(err)}
+          })
+          this.service.fetchAllUnFinishedOrders(res.id).subscribe({
+            next:(res)=>{console.log(res);this.unfinished=res},
+            error:(err)=>{console.log(err)}
+          })
+        },
            error:(err)=>console.log(err)
           })
       } catch (error) {
         console.log(error)
       }
     }
-    this.service.updateStatusDeliveries(this.service.customer.id).subscribe({
-      next:(res)=>{console.log(res)},
-      error:(err)=>{console.log(err)}
-    })
-    this.service.fetchAllDeliveriesOfSpecificCustomer(this.service.customer.id).subscribe({
-      next:(res)=>{console.log(res);this.deliveries=res;this.filterAllDeliveriesWithOrderIds(res);this.filter1(res);this.filter2(res);this.filter3(res)},
-      error:(err)=>{console.log(err)}
-    })
-    this.service.fetchAllUnFinishedOrders(this.service.customer.id).subscribe({
-      next:(res)=>{console.log(res);this.unfinished=res},
-      error:(err)=>{console.log(err)}
-    })
+    
+    
     
   }
   filter1(data:IDelivery[]){

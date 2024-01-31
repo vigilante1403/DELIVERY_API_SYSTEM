@@ -25,5 +25,7 @@ namespace api.Data{
         public DbSet<District> Districts{get;set;}
         public DbSet<Ward> Wards{get;set;}
         public DbSet<PricePerDistance> PricePerDistances{get;set;}
+        public DbSet<CancelOrderSubmittedByCustomer> CancelOrderSubmittedByCustomers{get;set;}
+
     }
 }

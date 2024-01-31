@@ -23,7 +23,8 @@ export interface IOrderShow{
     orderStatus:string,
     orderPaymentId?:number,
     deliveryAgentId?:number,
-    pricePerDistanceId:number
+    pricePerDistanceId:number,
+    requiredDelete?:boolean
 }
 export interface ISubmitParcel{
     id:number,
@@ -148,7 +149,8 @@ export interface IDelivering{
     deliveryAgentName:string,
     deliveryDate:Date,
     deliveryStatusName:string,
-    receiveImage?:string
+    receiveImage?:string,
+    delete?:boolean
 }
 export interface IReturnPayInfoParcel{
     orderId:number,
@@ -204,4 +206,8 @@ export interface IPricePerDistance{
 export interface IDeliveryStatus{
     id:number,
     statusName:string
+}
+export interface ISubmitCancelOrder{
+    orderId:number,
+    reason?:string
 }

@@ -22,6 +22,7 @@ namespace api.DAL{
         private GenericRepository<District> _districtRepository;
         private GenericRepository<Ward> _wardRepository;
         private GenericRepository<PricePerDistance> _pricePerDistanceRepository;
+        private GenericRepository<CancelOrderSubmittedByCustomer> _cancelOrderSubmittedByCustomerRepository;
 
         
         public readonly ApplicationDbContext _db;
@@ -223,6 +224,16 @@ namespace api.DAL{
             }
             set{
                 _pricePerDistanceRepository=value;
+            } }
+            public GenericRepository<CancelOrderSubmittedByCustomer> CancelOrderSubmittedByCustomerRepository {
+            get{
+                if(_cancelOrderSubmittedByCustomerRepository==null){
+                    this._cancelOrderSubmittedByCustomerRepository = new GenericRepository<CancelOrderSubmittedByCustomer>(_db);
+                }
+                return _cancelOrderSubmittedByCustomerRepository;
+            }
+            set{
+                _cancelOrderSubmittedByCustomerRepository=value;
             } }
 
         public void Dispose()

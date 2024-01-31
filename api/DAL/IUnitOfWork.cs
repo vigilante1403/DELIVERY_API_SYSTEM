@@ -21,6 +21,7 @@ namespace api.DAl{
         GenericRepository<District> DistrictRepository{get;set;}
         GenericRepository<Ward> WardRepository{get;set;}
         GenericRepository<PricePerDistance> PricePerDistanceRepository{get;set;}
+        GenericRepository<CancelOrderSubmittedByCustomer> CancelOrderSubmittedByCustomerRepository{get;set;}
         
 
     }

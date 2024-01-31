@@ -48,6 +48,7 @@ import { UserModule } from './user/user.module';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { VerifySendToComponent } from './user/forgot-password/verify-send-to/verify-send-to.component';
 import { NewPasswordComponent } from './user/forgot-password/new-password/new-password.component';
+import { CancelOrderNotifComponent } from './cancel-order-notif/cancel-order-notif.component';
 
 
 
@@ -76,7 +77,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ConfirmDialogComponent,
     ForgotPasswordComponent,
     VerifySendToComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    CancelOrderNotifComponent
 
   ],
   imports: [

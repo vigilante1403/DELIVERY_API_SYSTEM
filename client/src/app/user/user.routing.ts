@@ -1,3 +1,4 @@
+import { CancelOrderNotifComponent } from '../cancel-order-notif/cancel-order-notif.component';
 import { EditProfileComponent } from '../employee/edit-profile/edit-profile.component';
 import { AuthenticationGuard } from '../middleware/authentication.guard';
 import { PeriodComponent } from '../period/period.component';
@@ -25,12 +26,12 @@ export const UserRoute: Routes = [
     {path:'order/cart/:customerId/:orderId/add-addresses',component:AddressFormComponent},
     {path:'order/cart/:customerId/:orderId/checkout',component:CheckoutComponent},
     {path:'new-cart',component:NewCartComponent},
-
-    {path: 'change-password', component: ChangePasswordComponent},
+    {path:'cancel-order-submit/:orderId',component:CancelOrderNotifComponent},
+    {path:'change-password', component: ChangePasswordComponent},
     {path:"checkout",component:NewCheckoutComponent},
     {path:'edit/:orderId',component:UpdateUnpaidFormsComponent},
     {path:'profile',component:ProfileComponent},
     {path:'period',component:PeriodComponent},
-    {path: 'edit-profile',component:EditProfileComponent},
+    {path:'edit-profile',component:EditProfileComponent},
     
 ];

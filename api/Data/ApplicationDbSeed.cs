@@ -35,11 +35,11 @@ namespace api.Data{
              using(var scope=appBuilder.ApplicationServices.CreateScope()){
                  Console.WriteLine("Runnning total step function");
                  var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-            // Your logic here, for example:
+            
            SendEmailToCustomerSystem.TotalSteps(unitOfWork);
              }
                 
-            // SendEmailToCustomerSystem.TotalSteps(unitOfWork);  // Uncomment this line if needed
+         
         }
     }
 }

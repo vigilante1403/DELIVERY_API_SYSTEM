@@ -14,6 +14,7 @@
                         <th scope="col">Delivery Agent</th>
                         <th scope="col">Status</th>
                         <th scope="col">Expect arrive at</th>
+                        <th scope="col">Required cancel</th>
                         <th scope="col">Details</th>
                       </tr>
                     </thead>
@@ -25,7 +26,20 @@
                         <td>{{delivery.deliveryAgentName}}</td>
                         <td>{{delivery.deliveryStatusName}}</td>
                         <td>{{delivery.deliveryDate}}</td>
-                        <td><button class="btn btn-warning text-white" (click)="openModal(template,delivery.orderId)">Edit</button></td>
+                        <td>{{ delivery.delete }}</td>
+                        <td>
+
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-warning text-white">Action</button>
+                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split text-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" (click)="openModal(template,delivery.orderId)">Edit</a>
+                              <a class="dropdown-item" (click)="confirmDialog(delivery.orderId)">Delete</a>
+                            </div>
+                          </div> 
+                         </td>
                       </tr>
                       
                     </tbody>

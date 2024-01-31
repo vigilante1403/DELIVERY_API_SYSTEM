@@ -1,4 +1,5 @@
 import { Component, Input, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { IDelivery, IReturnPayInfoParcel, Payment, ReturnParcel, Show } from 'src/app/interface/delivery/IDelivery';
 
@@ -29,7 +30,7 @@ export class DeliveringTableComponent {
   contactAddress:string=''
   modalRef?: BsModalRef;
 items1: number[];
-constructor(private modalService: BsModalService) {
+constructor(private modalService: BsModalService,private router:Router) {
   this.items1 = Array(15).fill(0);
 }
 
@@ -67,5 +68,14 @@ ConvertContactData(contactAddress:any){
   var address= json["Address"]
   var phone = json["PhoneNumber"]
   this.contactAddress = name+', Address: '+address+', PhoneNumber: (+84)'+phone
+}
+closeModal(){
+  this.modalRef?.hide()
+}
+redirectCancelPage(orderId:any){
+  this.modalRef?.hide()
+  var url = "/user/cancel-order-submit/"+orderId
+  this.router.navigateByUrl(url)
+
 }
 }

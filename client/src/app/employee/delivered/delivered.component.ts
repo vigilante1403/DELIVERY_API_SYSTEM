@@ -1,5 +1,6 @@
 import { Component, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ManageService } from 'src/app/admin/manage/manage.service';
 import { IDelivering, IDelivery, IOrderShow } from 'src/app/interface/delivery/IDelivery';
 import { DeliveryService } from 'src/app/service/delivery.service';
 
@@ -11,10 +12,10 @@ import { DeliveryService } from 'src/app/service/delivery.service';
 export class DeliveredComponent {
   items:IDelivering[]=[]
   deliveries:IDelivery[]=[]
-  
+  storedOrders:IOrderShow[]=[]
   modalRef?: BsModalRef;
   orderId:number=0
-constructor(private modalService: BsModalService,private service:DeliveryService) {
+constructor(private modalService: BsModalService,private service:DeliveryService,private manage:ManageService) {
   this.service.updateAllDeliveries().subscribe({
     next:(res)=>{console.log(res)},
     error:(err)=>{console.log(err)}
@@ -23,14 +24,21 @@ constructor(private modalService: BsModalService,private service:DeliveryService
  
 }
 ngOnInit(): void {
-  this.service.fetchAllReachedDeliveries().subscribe({
-    next:(res)=>{console.log(res);this.deliveries=res; localStorage.setItem('deliveries',JSON.stringify(res));
-    this.splitAddressToRoute(
-      JSON.parse(localStorage.getItem('storedOrders')!),
-      res
-    );},
+  this.manage.getAllOrders().subscribe({
+    next:(res)=>{
+    this.storedOrders=res;localStorage.setItem('storedOrders',JSON.stringify(res));
+    this.service.fetchAllReachedDeliveries().subscribe({
+      next:(res)=>{this.deliveries=res; localStorage.setItem('deliveries',JSON.stringify(res));
+      this.splitAddressToRoute(
+        this.storedOrders,
+        res
+      );},
+      error:(err)=>{console.log(err)}
+    })
+  },
     error:(err)=>{console.log(err)}
   })
+  
  
 }
 openModal(template: TemplateRef<void>,orderId:number) {
