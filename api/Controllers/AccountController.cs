@@ -211,6 +211,8 @@ namespace api.Controllers
             var token="";
             if(role=="admin"){
                 token = await _tokenService.CreateAdminToken(user);
+            }else if(role=="employee"){
+                token = await _tokenService.CreateEmployeeToken(user);
             }else{
                 token= await _tokenService.CreateToken(user);
             }
