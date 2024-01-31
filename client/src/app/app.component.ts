@@ -28,6 +28,9 @@ export class AppComponent implements OnInit {
   isAdminRoute():boolean{
     return this.router.url.startsWith('/admin')
   }
+  isUserRoute():boolean{
+    return this.router.url.startsWith('/user')
+  }
   isEmployeeRoute():boolean{
     return this.router.url.startsWith('/employee')
   }

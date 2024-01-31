@@ -1,7 +1,7 @@
 
     
 
-    <div *ngIf="isHomeRoute()">
+    <div *ngIf="!isAdminRoute()&&!isUserRoute()&&!isEmployeeRoute()">
         <!-- Home Component with Top Nav Bar -->
         <app-nav-bar></app-nav-bar> 
        <router-outlet></router-outlet> 
@@ -25,7 +25,7 @@
         </div>
         <notifier-container></notifier-container>
       </div>
-      <div  *ngIf="!isHomeRoute()&&!isAdminRoute()&&!isEmployeeRoute()" #otherRoute>
+      <div  *ngIf="isUserRoute()" #otherRoute>
         <!-- Other Component with Sidebar -->
         <div class="page-wrapper bg-image" [ngClass]="{'toggled' : getSideBarState()}">
             <app-sidebar></app-sidebar>

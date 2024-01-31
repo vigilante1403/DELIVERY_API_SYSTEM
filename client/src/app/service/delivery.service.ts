@@ -90,4 +90,10 @@ export class DeliveryService {
   fetchAllPaymentStatus(){
     return this.http.get<IDeliveryStatus[]>(env+'/Payment/order-payment-status')
   }
+  cancelOrderAndItPayment(orderId:number){
+    return this.http.post<any>(env+'/Payment/order-payment/cancel',orderId)
+  }
+  cancelPaidOrderNotPickUpYet(orderId:number){
+    return this.http.post<any>(env+'/Payment/paid-orders/cancel',orderId)
+  }
 }

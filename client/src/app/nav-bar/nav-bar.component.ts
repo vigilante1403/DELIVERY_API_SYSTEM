@@ -4,13 +4,17 @@ import { LoginComponent } from './modal/login/login.component';
 import { ModalComponent } from './modal/modal.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { DeliveryService } from '../service/delivery.service';
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-  constructor(public bs:BsModalService,public modalService:ModalService,public service:DeliveryService) { } // inject modal service
+  private readonly _notif;
+  constructor(public bs:BsModalService,public modalService:ModalService,public service:DeliveryService,public notif:NotifierService) { 
+    this._notif=notif;
+  } // inject modal service
   customerId:string=''
   ngOnInit(): void {
     if(localStorage.getItem('userEmail')!=null){
@@ -37,7 +41,14 @@ export class NavBarComponent implements OnInit {
   //   }
   // }
 
-  
+  checkAlert(){
+    if(this.modalService.user.userId==""){
+      this._notif.show({
+        type: 'warning',
+        message: "You need to login first",
+      })
+    }
+  }
   @ViewChild('myModal')
   myModal?: ModalComponent;
 

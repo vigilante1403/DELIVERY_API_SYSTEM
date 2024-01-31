@@ -17,6 +17,8 @@ using System.Text;
 using Twilio.Rest.Microvisor.V1;
 using api.services;
 using AutoMapper;
+using System.Net.Mail;
+using System.Net;
 
 namespace api.Controllers{
     [ApiController]
@@ -203,8 +205,8 @@ namespace api.Controllers{
         [HttpGet("order-payments/{customerId}")]
         public async Task<ActionResult<List<ReturnPayInfoParcel>>> RetrieveALLPaymentsOfCustomer([FromRoute] string customerId){
             var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(w=>w.CustomerId==customerId,q=>q.OrderByDescending(r=>r.OrderDate),"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
-            var ordersId = orders.Where(i=>i.OrderPaymentId.HasValue).Select(x=>x.Id);
-            var ordersIdList = orders.Where(e=>e.OrderPaymentId.HasValue).Select(t=>t.OrderPaymentId.Value);
+            var ordersId = orders.Where(i=>i.OrderPaymentId.HasValue&&i.OrderPayment.OrderPaymentStatusId!=4).Select(x=>x.Id);
+            var ordersIdList = orders.Where(e=>e.OrderPaymentId.HasValue&&e.OrderPayment.OrderPaymentStatusId!=4).Select(t=>t.OrderPaymentId.Value);
             var orderDTOs = _mapper.Map<IEnumerable<Order>,IEnumerable<OrderDTO>>(orders);
             var payments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(w=>ordersIdList.Contains(w.Id),null,"OrderPaymentStatus");
              var paymentDTOs = _mapper.Map<IEnumerable<OrderPayment>,IEnumerable<ReturnPayment>>(payments);
@@ -241,6 +243,101 @@ namespace api.Controllers{
             return Ok(result);
 
         }
+        [HttpPost("order-payment/cancel")]
+        public async Task<ActionResult> CancelOrder([FromBody] int orderId){
+            var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(x=>x.Id==orderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            if(!orders.Any()){
+                return BadRequest(new ErrorResponse(404,$"Can't process orderId No.{orderId}"));
+            }
+            var order=orders.FirstOrDefault();
+            var orderPaymentId = order.OrderPaymentId;
+            var payments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(r=>r.Id==orderPaymentId,null,"OrderPaymentStatus");
+            if(!payments.Any()){
+                return BadRequest(new ErrorResponse(404,$"Can't process orderpayment no.{orderPaymentId}"));
+            }
+            var payment = payments.FirstOrDefault();
+            try
+            {
+                order.OrderStatusId=4;
+                payment.OrderPaymentStatusId=4;
+                _unitOfWork.Save();
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500,"Error at order-payment/cancel api"));
+            }
+            return Ok();
+        }
+        [HttpPost("paid-orders/cancel")]
+        public async Task<ActionResult> CancelPaidOrder([FromBody] int orderId){
+             var orders = await _unitOfWork.OrderRepository.GetEntityByExpression(x=>x.Id==orderId,null,"Service,Customer,OrderStatus,OrderPayment,PricePerDistance,DeliveryAgent");
+            if(!orders.Any()){
+                return BadRequest(new ErrorResponse(404,$"Can't process orderId No.{orderId}"));
+            }
+            var order=orders.FirstOrDefault();
+            var orderPaymentId = order.OrderPaymentId;
+            var payments = await _unitOfWork.OrderPaymentRepository.GetEntityByExpression(r=>r.Id==orderPaymentId,null,"OrderPaymentStatus");
+            if(!payments.Any()){
+                return BadRequest(new ErrorResponse(404,$"Can't process orderpayment no.{orderPaymentId}"));
+            }
+            var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(o=>o.OrderId==orderId,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            if(!deliveries.Any()){
+                return BadRequest(new ErrorResponse(404,"Can't find it delivery"));
+            }
+            var delivery = deliveries.FirstOrDefault();
+            try
+            {
+                order.OrderStatusId=4;
+                delivery.DeliveryStatusId=4;
+                _unitOfWork.Save();
+            }
+            catch (System.Exception)
+            {
+                
+                return BadRequest(new ErrorResponse(500,"Error at paid-orders/cancel api"));
+            }
+            var title="You have canceled your order";
+            var body = $" Dear customer,\n Your receiving this because your order No.{orderId} has been canceled.\n Please contact us to get your refund\n Have a good day!\n Tars Team";
+            var sendResult = await SendEmailAsync("new.vytruong.1812@gmail.com",title,body);
+            if(sendResult){
+                Console.WriteLine("Send email cancel success!");
+            }else{
+                return BadRequest(new ErrorResponse(500,"Send email cancel failed!"));
+            }
+            return Ok();
+        }
+        public static async Task<bool> SendEmailAsync(string userEmail,string title,string body)
+    {
+        
+        try
+        {
+            var smtpClient = new SmtpClient("smtp.gmail.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("new.vytruong.1812@gmail.com", "erya gvus chag rvok"),
+                EnableSsl = true,
+            };
+            
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress("new.vytruong.1812@gmail.com"),
+                Subject = title,
+                Body = body,
+                IsBodyHtml = false,
+            };
+
+            mailMessage.To.Add(userEmail);
+
+            await smtpClient.SendMailAsync(mailMessage);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending email: {ex.Message}");
+            return false;
+        }
+    }
         [HttpGet("order-payment/{orderId}")]
         public async Task<ActionResult<ReturnPayment>> GetOrderPaymentRequired([FromRoute] string orderId){
             int Id = 0;

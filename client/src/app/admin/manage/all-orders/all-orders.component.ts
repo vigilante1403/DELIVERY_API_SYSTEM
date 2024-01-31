@@ -233,9 +233,18 @@ receiveKeyword(event: Event) {
     this.ordersToShow=temp
   }
   @ViewChild('search') search!:ElementRef
+  @ViewChild('select1') select1!:ElementRef
+  @ViewChild('select2') select2!:ElementRef
+  @ViewChild('select3') select3!:ElementRef
+  @ViewChild('select4') select4!:ElementRef
   refreshButton(){
     this.ordersToShow=this.backupOrderToShow
     this.search.nativeElement.value=""
+    this.select1.nativeElement.value="-1"
+    this.select2.nativeElement.value="-1"
+    this.select3.nativeElement.value="-1"
+    this.select4.nativeElement.value="-1"
+
   }
   sortService() {
     if(this.selected2 == true) {

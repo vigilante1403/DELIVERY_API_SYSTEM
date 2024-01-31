@@ -48,18 +48,18 @@
                 </a>
               </li>
               <li class="nav-list mx-3">
-                <a href="#resources" class="nav-link px-2">
+                <a href="/#resources" class="nav-link px-2">
                   <h5>About</h5>
                 </a>
               </li>
               <li class="nav-list mx-3">
-                <a href="#service" class="nav-link px-2">
+                <a href="/service" class="nav-link px-2">
                   <h5>Services</h5>
                 </a>
               </li>
               
               <li class="nav-list mx-3">
-                <a href="#contact" class="nav-link px-2">
+                <a href="/#contact" class="nav-link px-2">
                   <h5>Contact</h5>
                 </a>
               </li>
@@ -72,16 +72,26 @@
                   aria-expanded="false"
                 >
                   <h5>
-                    Users
+                    My Zone
                     <iconify-icon
                       icon="ic:outline-arrow-drop-down"
                     ></iconify-icon>
                   </h5>
                 </a>
                 <ul class="dropdown-menu">
-                  <li>
-                    <a routerLink="/user" class="dropdown-item text-uppercase"
-                      >Dashboard</a
+                  <li >
+                    <a routerLink="/user" (click)="checkAlert()" class="dropdown-item text-uppercase"
+                      > Dashboard</a
+                    >
+                  </li>
+                  <li *ngIf="this.modalService.user.role=='admin'">
+                    <a routerLink="/admin/manage/all" (click)="checkAlert()" class="dropdown-item text-uppercase"
+                      >Admin Dashboard</a
+                    >
+                  </li>
+                  <li *ngIf="this.modalService.user.role=='employee'" >
+                    <a routerLink="/employee" (click)="checkAlert()" class="dropdown-item text-uppercase"
+                      >Employee Dashboard</a
                     >
                   </li>
                   

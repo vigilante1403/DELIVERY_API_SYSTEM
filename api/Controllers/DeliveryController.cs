@@ -558,7 +558,7 @@ namespace api.Controllers
         }
         [HttpPut("update-location")]
         public async Task<ActionResult> UpdateDeliveryLocation([FromBody] SubmitChangeLocation submit){
-                var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.OrderId==submit.OrderId,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+                var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(t=>t.OrderId==submit.OrderId&&t.DeliveryStatusId!=4,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
                 var delivery = deliveries.FirstOrDefault();
                 try
                 {

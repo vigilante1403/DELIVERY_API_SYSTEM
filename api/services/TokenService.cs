@@ -56,6 +56,28 @@ namespace api.services{
              var token = tokenHandler.CreateToken(TokenDescriptor);
              return tokenHandler.WriteToken(token);
         }
+        public async Task<string> CreateEmployeeToken(AppUser user){
+            var roles = await _userManager.GetRolesAsync(user);
+            if(roles.Contains("employee")){
+                _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenEmployee:Key"]));
+            }
+            var claims = new List<Claim>{
+                new Claim(ClaimTypes.Email,user.Email),
+                new Claim(ClaimTypes.GivenName,user.DisplayName),
+                new Claim(ClaimTypes.Role,"employee")
+            };
+            var credentials = new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);
+            var TokenDescriptor = new SecurityTokenDescriptor{
+                Subject = new ClaimsIdentity(claims),
+                SigningCredentials = credentials,
+                Expires = DateTime.Now.AddDays(4),
+                Issuer = _config["TokenEmployee:Issuer"],
+                Audience = _config["TokenEmployee:Audience"]
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+             var token = tokenHandler.CreateToken(TokenDescriptor);
+             return tokenHandler.WriteToken(token);
+        }
     }
 
 }

@@ -14,10 +14,10 @@ export const routes: Routes = [
   {path: '', component:HomeComponent},
   {path: 'admin', loadChildren: ()=>import('./admin/admin.module').then(mod => mod.AdminModule),canActivate:[AuthenticationGuard,AuthorizationGuard]},
   {path: 'employee', loadChildren: ()=>import('./employee/employee.module').then(mod => mod.EmployeeModule),canActivate:[AuthenticationGuard,AuthorizationGuard]},
-  {path: 'user', loadChildren: ()=>import('./user/user.module').then(mod => mod.UserModule)},
+  {path: 'user', loadChildren: ()=>import('./user/user.module').then(mod => mod.UserModule),canActivate:[AuthenticationGuard]},
   {path: 'service', component: ServicePageComponent},
   {path: 'priceByDistance', component: PricePerDistanceComponent},
-  {path: 'profile', component: ProfileComponent},
+  // {path: 'profile', component: ProfileComponent},
   {path: 'agent', component: DeliveryAgentPageComponent}
   
 ];

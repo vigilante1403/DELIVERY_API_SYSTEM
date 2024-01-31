@@ -21,7 +21,19 @@
                         <td>{{ item.orderId }}</td>
                         <td>{{ item.orderDTO.orderDate }}</td>
                         <td>{{ item.orderDTO.service }}</td>
-                        <td><button (click)="openModal(template,item.orderId)" class="btn btn-warning text-white" >Pay Now</button></td>
+                        <!-- <td><button (click)="openModal(template,item.orderId)" class="btn btn-warning text-white" >Pay Now</button></td> -->
+                      <td>
+                        <div class="btn-group">
+                          <button type="button" class="btn btn-warning text-white">Action</button>
+                          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split text-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <div class="dropdown-menu">
+                            <a class="dropdown-item" (click)="openModal(template,item.orderId)">PayNow</a>
+                            <a class="dropdown-item" (click)="confirmDialog(item.orderId)">Cancel</a>
+                          </div>
+                        </div>  
+                      </td>
                       </tr>
                     </tbody>
                   </table>

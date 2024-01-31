@@ -6,6 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DeliveryService } from 'src/app/service/delivery.service';
 import { delay } from 'rxjs';
 import { NavigationExtras, Router } from '@angular/router';
+import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -25,12 +27,12 @@ export class WaitingPaymentComponent implements OnInit {
   contactAddress:string=''
   modalRef?: BsModalRef;
   items1: number[];
-  
+  result: string = '';
     orderId:number=0;
     ngOnInit(){
       
     }
-  constructor(private modalService: BsModalService,private toastr:ToastrService,private service:DeliveryService,private router:Router) {
+  constructor(private modalService: BsModalService,private toastr:ToastrService,private service:DeliveryService,private router:Router,public dialog:MatDialog) {
     this.items1 = Array(15).fill(0);
   }
   receiveFromChild(data:any){
@@ -66,6 +68,26 @@ export class WaitingPaymentComponent implements OnInit {
         });},
       error:(err)=>{console.log(err)}
     })
+  }
+  confirmDialog(orderId:number): void {
+    const message = `Are you sure you want to do this?`;
+
+    const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      maxWidth: "400px",
+      data: dialogData
+    });
+   
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      this.result = dialogResult;
+      if(dialogResult==true){
+        this.service.cancelOrderAndItPayment(orderId).subscribe({
+          next:(res)=>{console.log("Cancel complete")},
+          error:(err)=>{console.log(err)}
+        })
+      }
+    });
   }
   
 }

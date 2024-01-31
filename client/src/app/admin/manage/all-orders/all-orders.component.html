@@ -10,14 +10,14 @@
                           
                           <div class="form-input">
                             <label for="input">Service:</label>
-                            <select name="" id="" (change)="getServiceChoose($event)">
+                            <select name="" id="" #select1 (change)="getServiceChoose($event)">
                               <option value="-1">ALL</option>
                               <option value="{{ service.serviceName }}" *ngFor="let service of this.storedServices">{{ service.serviceName.toUpperCase() }}</option>
                             </select>
                           </div>
                           <div class="form-input">
                             <label for="input">Order Status:</label>
-                            <select name="" id="" (change)="getOrderStatusChoose($event)">
+                            <select name="" id="" #select2 (change)="getOrderStatusChoose($event)">
                               <option value="-1">ALL</option>
                               <option value="{{ status.statusName }}" *ngFor="let status of this.storedOrderStatus">
                                 {{ status.statusName }}
@@ -26,7 +26,7 @@
                           </div>
                           <div class="form-input">
                             <label for="input">Payment Status:</label>
-                            <select name="" id="" (change)="getPaymentStatusChoose($event)">
+                            <select name="" #select3 id="" (change)="getPaymentStatusChoose($event)">
                               <option value="-1">
                                 ALL
                               </option>
@@ -38,7 +38,7 @@
                           </div>
                           <div class="form-input">
                             <label for="input">Route:</label>
-                            <select name="" id="" (change)="getRouteChoose($event)">
+                            <select name="" id="" #select4 (change)="getRouteChoose($event)">
                               <option value="-1">
                                 ALL
                               </option>

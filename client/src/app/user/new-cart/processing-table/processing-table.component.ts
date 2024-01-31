@@ -1,6 +1,9 @@
 import { Component, Input, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ConfirmDialogComponent, ConfirmDialogModel } from 'src/app/confirm-dialog/confirm-dialog.component';
 import { IDelivery, IReturnPayInfoParcel, Payment, ReturnParcel, Show } from 'src/app/interface/delivery/IDelivery';
+import { DeliveryService } from 'src/app/service/delivery.service';
 
 @Component({
   selector: 'app-processing-table',
@@ -29,7 +32,7 @@ export class ProcessingTableComponent {
   contactAddress:string=''
   modalRef?: BsModalRef;
 items1: number[];
-constructor(private modalService: BsModalService) {
+constructor(private modalService: BsModalService,private service:DeliveryService,public dialog:MatDialog) {
   this.items1 = Array(15).fill(0);
 }
 
@@ -70,5 +73,30 @@ ConvertContactData(contactAddress:any){
   var address= json["Address"]
   var phone = json["PhoneNumber"]
   this.contactAddress = name+', Address: '+address+', PhoneNumber: (+84)'+phone
+}
+cancelPaidOrderAndDelivery(orderId:number){
+  
+}
+result:string=''
+confirmDialog(orderId:number): void {
+  this.modalRef?.hide()
+  const message = `Are you sure you want to do this?`;
+
+  const dialogData = new ConfirmDialogModel("Confirm Action", message);
+
+  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    maxWidth: "400px",
+    data: dialogData
+  });
+ 
+  dialogRef.afterClosed().subscribe(dialogResult => {
+    this.result = dialogResult;
+    if(dialogResult==true){
+      this.service.cancelPaidOrderNotPickUpYet(orderId).subscribe({
+        next:(res)=>{console.log("Cancel success!")},
+        error:(err)=>{console.log(err)}
+      })
+    }
+  });
 }
 }

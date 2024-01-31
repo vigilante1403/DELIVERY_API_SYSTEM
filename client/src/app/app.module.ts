@@ -41,6 +41,9 @@ import { DatePipe } from '@angular/common';
 import { ServicePageComponent } from './service-page/our-service/service-page.component';
 import { PricePerDistanceComponent } from './service-page/price-per-distance/price-per-distance.component';
 import { DeliveryAgentPageComponent } from './service-page/delivery-agent-page/delivery-agent-page.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { CustomMaterialModule } from './custom-material/custom-material.module';
+
 
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -64,7 +67,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     BackgroundComponent,
     ServicePageComponent,
     PricePerDistanceComponent,
-    DeliveryAgentPageComponent
+    DeliveryAgentPageComponent,
+    ConfirmDialogComponent,
+
   ],
   imports: [
    AgmCoreModule.forRoot({
@@ -141,6 +146,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       },
     }),
        AlertModule.forRoot(),
+       CustomMaterialModule
        
 
 

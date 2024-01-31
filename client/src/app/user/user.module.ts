@@ -35,6 +35,8 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     NgxPayPalModule,
     CollapseModule.forRoot(),
     NgxSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    MatFormFieldModule
+    
     
   ],
   exports:[
