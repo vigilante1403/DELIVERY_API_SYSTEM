@@ -18,6 +18,7 @@ import { TestLineComponent } from 'src/app/user/test-line/test-line.component';
 import { UserModule } from 'src/app/user/user.module';
 import { ChartComponent } from './chart/chart.component';
 import { NgChartsModule } from 'ng2-charts';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 
 
@@ -30,7 +31,8 @@ import { NgChartsModule } from 'ng2-charts';
     FontAwesomeModule,
     FormsModule,
     UserModule,
-    NgChartsModule
+    NgChartsModule,
+    TabsModule.forRoot()
   ]
 })
 export class ManageModule { }
