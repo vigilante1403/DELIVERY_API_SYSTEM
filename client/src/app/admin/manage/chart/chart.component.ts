@@ -6,6 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent {
+  dateChoose = new Date();
+  week:number=0;
   chartData = [
     {
       data: [330, 600, 260, 700],
@@ -18,6 +20,10 @@ export class ChartComponent {
     {
       data: [45, 67, 800, 500],
       label: 'Account C'
+    },
+    {
+      data: [100, 267, 500, 789],
+      label: 'Account D'
     }
   ];
   chartLabels = [

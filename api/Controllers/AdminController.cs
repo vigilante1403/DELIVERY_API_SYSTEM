@@ -105,10 +105,31 @@ namespace api.Controllers{
             IEnumerable<Delivery> deliveryList = await _unitOfWork.DeliveryRepository.GetEntityByExpression(q=>orderIdList.Contains(q.OrderId),null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
             return Ok(_mapper.Map<IEnumerable<Delivery>,IEnumerable<ReturnDelivery>>(deliveryList));
         }
-        //lay don hang duoc tao vao hnay --delivery hoan thanh vao waiting payment cua order
+        [HttpPost("get-analytics")]
+        public async Task<ActionResult<List<ReturnData>>> GetAnalyticsOfDoneAndCancelDeliveriesInPeriod([FromBody] SubmitReqAnalytics submit){
+            var startTime = submit.StartTime;
+            var endTime = startTime.AddDays(submit.Weeks*7);
+            var deliveries = await _unitOfWork.DeliveryRepository.GetEntityByExpression(x=>x.DeliveryDate>=startTime&&x.DeliveryDate<=endTime,null,"Order,DeliveryAgent,OrderPayment,DeliveryStatus");
+            List<ReturnData> list = new List<ReturnData>();
+            ReturnData done = new ReturnData{
+                Label="Success Delivery",
+                
+            };
+            ReturnData cancel = new ReturnData{
+                Label = "Canceled Delivery",
 
-        //lay delivery duoc pick up 
-        //lay delivery duoc giao
+            };
+            for(var i=1;i<=submit.Weeks;i++){
+                var endTemp = startTime.AddDays(i*7);
+                var totalSuccess = deliveries.Where(x=>x.DeliveryDate<=endTemp&&x.DeliveryStatusId==3).Count();
+                var totalFailed = deliveries.Where(i=>i.DeliveryDate<=endTemp&&i.DeliveryStatusId==4).Count();
+                done.Result.Append(totalSuccess);
+                cancel.Result.Append(totalFailed);
+            }
+                list.Add(done);
+                list.Add(cancel);
+                return Ok(list);
+        }
 
         
 
