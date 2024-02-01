@@ -1,1 +1,197 @@
-<app-add-location></app-add-location>
+
+
+<div class=" h-100" >
+    <div class="mask d-flex align-items-center h-100">
+      <div class="container">
+        <div class="row justify-content-center">
+          <tabset>
+            <tab heading="Countries" id="tab1">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body p-0">
+                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                      <div class="d-flex flex-row">
+                      <div class="form-input" style="margin-right: 20px;">
+                        <label for="input">Nhập từ khóa:</label>
+                        <input #search type="text" id="input" (input)="receiveKeyword($event)">
+                      </div>
+                     
+                      <div class="form-input" style="margin-right: 20px;">
+                        <label for="input">State:</label>
+                        <select (click)="getStateChoose($event)">
+                          <option value="-1">ALL</option>
+                          <option value="1" >Northern</option>
+                          <option value="2" >Central</option>
+                          <option value="3" >Southern</option>
+                        </select>
+                      </div>
+                      <div class="form-input" style="margin-right: 20px;">
+                        <label for="input">City:</label>
+                        <select (click)="getCityChoose($event)">
+                          <option value="-1">ALL</option>
+                          <option value="true" >City</option>
+                          <option value="false" >Province</option> 
+                        </select>
+                      </div>
+                      <div class="form-input"style="margin-right: 20px;">
+                            
+                        <a class="btn btn-primary text-white" (click)="searchButton()">Search</a>
+                        
+                       </div>
+                       <div class="form-input"style="margin-right: 20px;">
+                         
+                        <a class="btn btn-success text-white" (click)="refreshButton()">Refresh</a>
+                        
+                       </div>
+                       <div class="form-input"style="margin-right: 20px;"> 
+                        <a class="btn btn-warning text-white" href="/admin/manage/edit-location">Add Location</a>
+                      </div>
+                      
+                    </div>
+                      <table class="table table-striped mb-0">
+                        <thead style="background-color: #002d72!important;">
+                          <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">City/Province</th>
+                            <th scope="col">IsCity </th>
+                            <th scope="col">Region</th>
+                          
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of countries" >
+                                <td>{{item.id}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.specila == true ? "Yes": "No"}}</td>
+                                <td>
+                                  <span *ngIf="item.state == 1" class="badge bg-primary">Northern</span>
+                                  <span *ngIf="item.state == 2" class="badge bg-success">Central</span>
+                                  <span *ngIf="item.state == 3" class="badge bg-warning">Southern</span>
+                                </td>
+                              
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tab>
+            <tab heading="Districts">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body p-0">
+                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                      <div class="d-flex flex-row">
+                      <div class="form-input" style="margin-right: 20px;">
+                        <label for="input">Nhập từ khóa:</label>
+                        <input #search2 type="text" id="input" (input)="receiveKeyword2($event)" >
+                      </div>
+                      <div class="form-input" style="margin-right: 20px;">
+                        <label for="input">Countries:</label>
+                        <select name="" id="" (click)="getCountryChoose($event)">
+                          <option value="-1">ALL</option>
+                          <option *ngFor="let item of backupCoutries" value="{{item.name}}">{{item.name}}</option>
+                          
+                        </select>
+                      </div>
+                      <div class="form-input"style="margin-right: 20px;">
+                            
+                        <a class="btn btn-primary text-white" (click)="searchButton2()">Search</a>
+                        
+                       </div>
+                       <div class="form-input"style="margin-right: 20px;">
+                         
+                        <a class="btn btn-success text-white" (click)="refreshButton2()">Refresh</a>
+                        
+                       </div>
+                       <div class="form-input"style="margin-right: 20px;"> 
+                        <a class="btn btn-warning text-white" href="/admin/manage/add-location">Add Location</a>
+                      </div>
+                    </div>
+                      <table class="table table-striped mb-0">
+                        <thead style="background-color: #002d72!important;">
+                          <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">District</th>
+                            <th scope="col">City/Province</th>
+                           
+                          
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of districts" >
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.allPlacesInCountryName}}</td> 
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tab>
+            <tab heading="Wards">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-body p-0">
+                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; ">
+                      <div class="d-flex flex-row">
+                      <div class="form-input" style="margin-right: 20px;">
+                        <label for="input">Nhập từ khóa:</label>
+                        <input #search3 type="text" id="input" (input)="receiveKeyword3($event)" >
+                      </div>
+                      <div class="form-input" style="margin-right: 20px;">
+                        <label for="input">Districts:</label>
+                        <select name="" id="" (click)="getDistrictChoose($event)">
+                          <option value="-1">ALL</option>
+                         <option *ngFor="let item of backupDistricts" value="{{item.name}}">{{item.name}}</option>
+                        </select>
+                      </div>
+                      <div class="form-input"style="margin-right: 20px;">
+                            
+                        <a class="btn btn-primary text-white" (click)="searchButton3()">Search</a>
+                        
+                       </div>
+                       <div class="form-input"style="margin-right: 20px;">
+                         
+                        <a class="btn btn-success text-white" (click)="refreshButton3()">Refresh</a>
+                        
+                       </div>
+                       <div class="form-input"style="margin-right: 20px;"> 
+                        <a class="btn btn-warning text-white" href="/admin/manage/edit-location">Add Location</a>
+                      </div>
+                    </div>
+                      <table class="table table-striped mb-0">
+                        <thead style="background-color: #002d72!important;">
+                          <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Ward </th>
+                            <th scope="col">District </th>
+                            <th scope="col">Zipcode</th>
+                  
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of wards" >
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.districtName}}</td>
+                            <td>{{item.zipCode}}    
+                            </td>                 
+                        </tr>
+                           
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tab>
+          </tabset>
+         
+        </div>
+      </div>
+    </div>
+  </div>

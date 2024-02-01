@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from '../config/environment';
-import { ICountry, IDeliveryAgent, IDistrict, IPayment, IPaymentStatus, IWard } from '../interface/delivery/IDelivery';
+import { ICountry, IDeliveryAgent, IDistrict, IDistrict2, IPayment, IPaymentStatus, IWard, IWard2 } from '../interface/delivery/IDelivery';
 
 @Injectable({
   providedIn: 'root'
@@ -58,5 +58,12 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
   }
   editAvatarOnly(data:any){
     return this.http.post<any>(env+'/Account/update-avatar-only',data)
+  }
+
+  fetchAllDistricts2(){
+    return this.http.get<IDistrict2[]>(env+'/Address/districts/all')
+  }
+  fetchAllWards2(){
+    return this.http.get<IWard2[]>(env+'/Address/wards/all')
   }
 }

@@ -74,5 +74,18 @@ namespace api.Controllers{
         }
         return Ok();
        }
+
+  /// get All District and Ward convert to string by FK 
+
+       [HttpGet("districts/all")]
+       public async Task<ActionResult<IEnumerable<ReturnDistrictDTO>>> GetAllDistricts2(){
+        var districtList = await _unitOfWork.DistrictRepository.GetEntityByExpression(null,q=>q.OrderBy(r=>r.Name),"AllPlacesInCountry");
+        return Ok(_mapper.Map<IEnumerable<District>,IEnumerable<ReturnDistrictDTO>>(districtList));
+       }
+       [HttpGet("wards/all")]
+       public async Task<ActionResult<List<ReturnWardDTO>>> GetAllWards2(){
+        var wardList = await _unitOfWork.WardRepository.GetEntityByExpression(null,q=>q.OrderBy(r=>r.Name),"District");
+        return Ok(_mapper.Map<IEnumerable<Ward>,List<ReturnWardDTO>>(wardList));
+       }
     }
 }

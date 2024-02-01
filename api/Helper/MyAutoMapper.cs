@@ -31,6 +31,13 @@ namespace api.Helper{
             .ForMember(w=>w.CodMoney,m=>m.MapFrom(q=>q.VPPMoney))
             .ForMember(y=>y.DeliveryStatusName,n=>n.MapFrom(s=>s.DeliveryStatus.StatusName))
             .ForMember(t=>t.ReceiveImage,k=>k.MapFrom<ImageResolver>());
+
+            CreateMap<District,ReturnDistrictDTO>()
+            .ForMember(d=>d.AllPlacesInCountryName,r=>r.MapFrom(o=>o.AllPlacesInCountry.Name));
+
+            CreateMap<Ward,ReturnWardDTO>()
+            .ForMember(e=>e.DistrictName,w=>w.MapFrom(q=>q.District.Name));
+
         }
     }
 }

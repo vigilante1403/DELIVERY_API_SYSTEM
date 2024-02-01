@@ -88,6 +88,17 @@ export interface IWard{
     districtId:number,
     zipCode?:number
 }
+export interface IDistrict2{
+    id:number,
+    name:string,
+    allPlacesInCountryName:string
+}
+export interface IWard2{
+    id:number,
+    name:string,
+    districtName:string,
+    zipCode?:number
+}
 export interface IDeliveryAgent{
     id:number,
     agentName:string,
