@@ -222,3 +222,11 @@ export interface ISubmitCancelOrder{
     orderId:number,
     reason?:string
 }
+export interface ISubmitReqAnalyze{
+    startTime:Date,
+    weeks:number
+}
+export interface IReturnData{
+    label:string,
+    data:number[]
+}

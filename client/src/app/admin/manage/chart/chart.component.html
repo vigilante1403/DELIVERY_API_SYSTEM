@@ -1,6 +1,16 @@
 <div style="width: 100%; background-color:white" >
-  <form></form>
-    <canvas
+  <form>
+    <label for="">Date To Start Analyze:</label>
+    <input type="date" (change)="onDateChoose($event)" [max]="maxDate">
+    <label for="">Week To Analyze</label>
+    <input type="number" (change)="onWeekInput($event)">
+    <label for="">View Type:</label>
+    <select name="" id="" (change)="onSetTypeView($event)">
+      <option value="line">Line</option>
+    <option value="bar">Bar</option></select>
+    <button (click)="onSubmit()">Submit</button>
+  </form>
+    <canvas *ngIf="this.show"
       baseChart
       [type]="chartType"
       [legend]="true"
@@ -9,7 +19,7 @@
       [options]="chartOptions"
     >
     </canvas>
-    <button (click)="newDataPoint([900, 50, 300], 'May')">
+    <!-- <button (click)="newDataPoint([900, 50, 300], 'May')">
         Add data point
-      </button>
+      </button> -->
   </div>

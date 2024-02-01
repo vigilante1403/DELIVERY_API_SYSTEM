@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { env } from 'src/app/config/environment';
-import { IOrderShow, IOrderStatus, IUser } from 'src/app/interface/delivery/IDelivery';
+import { IOrderShow, IOrderStatus, IReturnData, ISubmitReqAnalyze, IUser } from 'src/app/interface/delivery/IDelivery';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +23,8 @@ export class ManageService {
   }
   addNewWard(ward:any){
     return this.http.post<any>(env+'/Address/ward',ward)
+  }
+  addNewAnalyzeData(data:ISubmitReqAnalyze){
+    return this.http.post<IReturnData[]>(env+'/Admin/get-analytics',data)
   }
 }

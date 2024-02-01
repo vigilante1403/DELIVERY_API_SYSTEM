@@ -76,7 +76,10 @@ export class AdminSidebarService {
           title: 'Make roles',
           url:'/admin/make-role'
         },
-       
+        {
+          title: 'Generate Chart',
+          url:'/admin/manage/chart'
+        },
         
       ]
     },

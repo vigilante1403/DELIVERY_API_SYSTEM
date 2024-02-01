@@ -113,18 +113,20 @@ namespace api.Controllers{
             List<ReturnData> list = new List<ReturnData>();
             ReturnData done = new ReturnData{
                 Label="Success Delivery",
-                
+                Data = new List<int>()
             };
             ReturnData cancel = new ReturnData{
                 Label = "Canceled Delivery",
-
+                Data = new List<int>()
             };
+            var start = startTime;
             for(var i=1;i<=submit.Weeks;i++){
                 var endTemp = startTime.AddDays(i*7);
-                var totalSuccess = deliveries.Where(x=>x.DeliveryDate<=endTemp&&x.DeliveryStatusId==3).Count();
-                var totalFailed = deliveries.Where(i=>i.DeliveryDate<=endTemp&&i.DeliveryStatusId==4).Count();
-                done.Result.Append(totalSuccess);
-                cancel.Result.Append(totalFailed);
+                var totalSuccess = deliveries.Where(x=>x.DeliveryDate<=endTemp&&x.DeliveryStatusId==3&&x.DeliveryDate>=start).Count();
+                var totalFailed = deliveries.Where(i=>i.DeliveryDate<=endTemp&&i.DeliveryStatusId==4&&i.DeliveryDate>=start).Count();
+                done.Data.Add(totalSuccess);
+                cancel.Data.Add(totalFailed);
+                start=startTime.AddDays(i*7);
             }
                 list.Add(done);
                 list.Add(cancel);
