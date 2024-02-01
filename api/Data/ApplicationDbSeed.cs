@@ -20,23 +20,23 @@ namespace api.Data{
             //  TelegramBotInitializer.BotStart();
              
              
-             System.Timers.Timer timer = new System.Timers.Timer(10 * 60 * 1000); // 10 minutes in milliseconds
+             System.Timers.Timer timer = new System.Timers.Timer(1 * 60 * 1000); // 10 minutes in milliseconds
 
         // Hook up the Elapsed event
-        timer.Elapsed +=(sender,e)=> OnTimedEvent(sender,e,applicationBuilder);
+        timer.Elapsed +=(sender,e)=> OnTimedEventAsync(sender,e,applicationBuilder);
 
         // Start the timer
         timer.Start();
              
             }
         }
-        private static void OnTimedEvent(object sender, ElapsedEventArgs e,IApplicationBuilder appBuilder)
+        private static async Task OnTimedEventAsync(object sender, ElapsedEventArgs e,IApplicationBuilder appBuilder)
         {
              using(var scope=appBuilder.ApplicationServices.CreateScope()){
                  Console.WriteLine("Runnning total step function");
                  var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
             
-           SendEmailToCustomerSystem.TotalSteps(unitOfWork);
+           await SendEmailToCustomerSystem.TotalSteps(unitOfWork);
              }
                 
          

@@ -19,6 +19,7 @@ import { VerifySendToComponent } from "../user/forgot-password/verify-send-to/ve
 import { UpdateUnpaidFormsComponent } from "../user/update-unpaid-forms/update-unpaid-forms.component";
 import { MakeRoleComponent } from "./make-role/make-role.component";
 import { NewEmployeeComponent } from "./new-employee/new-employee.component";
+import { AddLocationComponent } from "./manage/location/action/add-location/add-location.component";
 
 
 export const AdminRoute: Routes = [
@@ -41,6 +42,7 @@ export const AdminRoute: Routes = [
     {path:"checkout",component:NewCheckoutComponent},
     {path:'edit/:orderId',component:UpdateUnpaidFormsComponent},
     {path:'make-role' ,component:MakeRoleComponent},
-    {path:'new-employee',component:NewEmployeeComponent}
+    {path:'new-employee',component:NewEmployeeComponent},
+    {path:'add-location',component:AddLocationComponent}
     
 ];

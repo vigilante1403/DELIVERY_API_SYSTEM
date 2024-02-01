@@ -8,6 +8,6 @@ export const manageRoutes:Routes=[
     {path:'all/:option',component:ManageComponent},
     {path:'all',component:ManageComponent},
     {path:'chart',component:ChartComponent},
-    {path:'add-location',component:AddLocationComponent}
+    
     
 ]

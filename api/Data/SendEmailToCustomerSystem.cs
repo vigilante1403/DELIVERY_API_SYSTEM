@@ -89,7 +89,7 @@ namespace api.Data{
                 body = $" Dear customer,\n Your order No.{delivery.OrderId} has been collected and start to deliver\n Have a good day\n Tars Team";
                 caseChoose=1;
             }
-            if(now.Date==delivery.DeliveryDate.Date&&diff2.TotalMinutes<=20&&diff2.TotalMinutes>0){
+            else if(now.Date==delivery.DeliveryDate.Date&&diff2.TotalMinutes<=20&&diff2.TotalMinutes>0){
                 title="Delivery Complete Announce";
                 body = $" Dear customer,\n Your order No.{delivery.OrderId} has reached your recipient\n Thank you for using our service\n Have a good day\n Tars Team";
                 caseChoose=2;
@@ -149,7 +149,7 @@ namespace api.Data{
             return false;
         }
     }
-    public static async void TotalSteps(IUnitOfWork unitOfWork){
+    public static async Task TotalSteps(IUnitOfWork unitOfWork){
         SendEmailToCustomerSystem system = new SendEmailToCustomerSystem(unitOfWork);
        await system.Seed();
        await system.SendOrderEmail();

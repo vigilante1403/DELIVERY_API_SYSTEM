@@ -165,15 +165,39 @@ export class NewAddressComponent {
     }
     onSubmit(){
       if(this.addressForm.invalid){
-        console.log("Form invalid")
+        console.log("Form invalid");
+        this.notifier.show({
+          type: 'error',
+          message: 'Form Invalid!',
+          id:'errorId'
+        })
+        setTimeout(()=>{
+          this.notifier.hide("errorId")
+        },2000)
         return;
       }else{
         if(!this.validateInfo()){
-          console.log("Address or phone number invalid")
+          console.log("Address or phone number invalid");
+          this.notifier.show({
+            type: 'error',
+            message: 'Address or phone number invalid',
+            id:'errorId'
+          })
+          setTimeout(()=>{
+            this.notifier.hide("errorId")
+          },2000)
           return;
         }
         if(this.selectedCountry==0||this.selectedDistrict==0||this.selectedWard==0||this.selectedCountry2==0||this.selectedDistrict2==0||this.selectedWard2==0){
-          console.log("Form invalid")
+          console.log("Form invalid");
+          this.notifier.show({
+            type: 'error',
+            message: 'You have to choose location',
+            id:'errorId'
+          })
+          setTimeout(()=>{
+            this.notifier.hide("errorId")
+          },2000)
           return;
         }else{
           var submitAddress:ISubmitAddress=({

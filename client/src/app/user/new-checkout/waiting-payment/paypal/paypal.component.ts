@@ -4,6 +4,7 @@ import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { EventEmitter } from '@angular/core';
+import { DeliveryService } from 'src/app/service/delivery.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class PaypalComponent implements OnInit {
   public payPalConfig?: IPayPalConfig;
   @Input() orderId!:number
   @Input() totalAmount!:number
-constructor(private service:CheckoutService,private router:Router,private toastr:ToastrService){
+constructor(private service:CheckoutService,private router:Router,private toastr:ToastrService,private delivery:DeliveryService){
 
 }
 ngOnInit(): void {
@@ -70,7 +71,11 @@ private initConfig(totalAmount:any): void {
       console.log('onApprove - you can get full order details inside onApprove: ', details);
       var submitDelivery=({orderId:this.orderId})
         this.service.createNewDelivery(submitDelivery).subscribe({
-          next:(res)=>{console.log(res);this.router.navigateByUrl("/user/checkout")},
+          next:(res)=>{console.log(res);
+            this.delivery.sendEmail(submitDelivery.orderId).subscribe({
+              next:(res)=>{console.log(res)},
+              error:(err)=>{console.log(err)}
+            });this.router.navigateByUrl("/user/checkout")},
           error:(err)=>{console.log(err)}
         })
     })
@@ -83,6 +88,7 @@ private initConfig(totalAmount:any): void {
   onClientAuthorization: (data) => {
     console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
     this.showSuccess = true;
+    
     this.dataToParent()
     this.toastr.success("Pay successfully","Payment")
     this.router.navigateByUrl("/user/new-cart")

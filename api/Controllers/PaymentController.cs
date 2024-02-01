@@ -404,8 +404,9 @@ namespace api.Controllers{
                     var agent = agentList.Where(e=>e.Id==address.DeliveryAgentId).FirstOrDefault();
                     var charges = agent.Charges.Value;
                     var maxWeight=agent.MaxFreeWeight;
-                    var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(null,null,"DeliveryAgent");
-                    var newServiceChosen = serviceList.Where(r=>r.DeliveryAgentId==address.DeliveryAgentId).FirstOrDefault();
+                    var serviceId=order.ServiceId;
+                    var serviceList = await _unitOfWork.ServiceRepository.GetEntityByExpression(x=>x.Id==serviceId,null,"DeliveryAgent");
+                    var newServiceChosen = serviceList.FirstOrDefault();
                     var ServicePrice = newServiceChosen.Price;
                     // DateTime today = DateTime.Now;
                     // var year = today.Year;

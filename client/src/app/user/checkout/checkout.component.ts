@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { delay } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NotifierService } from 'angular-notifier';
+import { DeliveryService } from 'src/app/service/delivery.service';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
@@ -37,7 +38,7 @@ export class CheckoutComponent {
     public showError: boolean = false;
     public payPalConfig?: IPayPalConfig;
     private readonly notifier: NotifierService;
-  constructor(public service:CheckoutService,public routeActivate:ActivatedRoute,private router:Router,private spinner: NgxSpinnerService, private _notifier: NotifierService){
+  constructor(private delivery:DeliveryService,public service:CheckoutService,public routeActivate:ActivatedRoute,private router:Router,private spinner: NgxSpinnerService, private _notifier: NotifierService){
     this.notifier=_notifier
   }
   ngOnInit(){
@@ -110,6 +111,10 @@ export class CheckoutComponent {
                 this.notifier.hide('THAT_NOTIFICATION_ID');
                this.navigateTo("/user/new-cart");
               },2000);
+              this.delivery.sendEmail(this.orderShow.id).subscribe({
+                next:(res)=>{console.log(res)},
+                error:(err)=>{console.log(err)}
+              })
              },
             error:(err)=>{console.log(err)
               this.notifier.show({
@@ -148,6 +153,7 @@ export class CheckoutComponent {
     var submitDelivery=({orderId:Number(this.routeActivate.snapshot.paramMap.get('orderId')),zipCodeStart:Number(localStorage.getItem('wardStart')!) ,zipCodeEnd:Number(localStorage.getItem('wardEnd')!)})
           this.service.createNewDelivery(submitDelivery).subscribe({
             next:(res)=>{console.log(res);
+              this.delivery.sendEmail(submitDelivery.orderId).subscribe({next:(res)=>{console.log},error:(err)=>{console.log(err)}})
               this.notifier.show({
                 type: 'success',
                 message: 'Create new delivery success!',

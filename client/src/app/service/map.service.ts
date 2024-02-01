@@ -59,7 +59,7 @@ createMap(mapDiv: HTMLElement, options: google.maps.MapOptions): google.maps.Map
   editAvatarOnly(data:any){
     return this.http.post<any>(env+'/Account/update-avatar-only',data)
   }
-
+  
   fetchAllDistricts2(){
     return this.http.get<IDistrict2[]>(env+'/Address/districts/all')
   }

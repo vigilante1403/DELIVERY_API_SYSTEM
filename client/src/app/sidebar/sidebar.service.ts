@@ -33,6 +33,10 @@ export class SidebarService {
           title: 'Change password',
           url:"/user/change-password"
         },
+        {
+          title: 'Your profile',
+          url:"/user/profile"
+        }
         
       ]
     },

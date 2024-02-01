@@ -6,6 +6,7 @@ import { IOrderShow, IService, ISubmitOrder } from 'src/app/interface/delivery/I
 import { DeliveryService } from 'src/app/service/delivery.service';
 import { CheckoutService } from '../../checkout/checkout.service';
 import { Route, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-orders-form',
@@ -21,8 +22,11 @@ export class OrdersFormComponent implements OnInit {
   error:string=''
   contact:string=''
   prePaid:number=0;
-  selectedError:string=''
-  constructor(private formBuilder: FormBuilder,public service:DeliveryService,public checkout:CheckoutService,private router:Router) {}
+  selectedError:string='';
+  private notifier : NotifierService
+  constructor(private _notifier: NotifierService,private formBuilder: FormBuilder,public service:DeliveryService,public checkout:CheckoutService,private router:Router) {
+    this.notifier=_notifier;
+  }
 
   ngOnInit() {
     this.ordersForm = this.formBuilder.group({
@@ -103,6 +107,14 @@ export class OrdersFormComponent implements OnInit {
     }
   //  this.validateContactAddress();
    if(this.error.length>0||this.selectedError.length>0){
+    this.notifier.show({
+      type: 'error',
+      message: 'You have to choose service!',
+      id:'errorId'
+    })
+    setTimeout(()=>{
+      this.notifier.hide("errorId")
+    },2000)
     console.log('submit failed!')
    }else{
     if(this.ordersForm.valid){

@@ -108,4 +108,7 @@ export class DeliveryService {
   getAllCancel(){
     return this.http.get<any>(env+'/Order/get-all-require-cancel')
   }
+  sendEmail(orderId:any){
+    return this.http.get(env+'/Order/send-email-order/'+orderId)
+  }
 }
